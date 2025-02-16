@@ -12,7 +12,7 @@ export default function BlogsPage() {
       <h1 className="heading">
        The Entrepreneurial<span className="text-purple"> Times</span>
       </h1>
-      <div className=" container p-1 mt-[35px] w-full items-center justify-center ">
+      <div className=" container md:px-6 xl:px-10 px-0 mt-[35px] w-full items-center justify-center ">
         <BackgroundGradient className="rounded-[22px] w-full p-8 sm:p-10 bg-shivansh ">
           <Image
             src={`/news.jpg`}
