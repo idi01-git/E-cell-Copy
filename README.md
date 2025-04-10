@@ -11,10 +11,10 @@ This website serves as the digital front for showcasing events, initiatives, and
 
 <!-- Add screenshots of your site here -->
 <p float="left">
-  <img src="public/homepage.png" width="300"/>
-  <img src="public/services.png" width="300"/>
-  <img src="public/blog.png" width="300"/>
-  <img src="public/goal.png" width="300"/>
+  <img src="public/homepage.png" width="500"/>
+  <img src="public/services.png" width="500"/>
+  <img src="public/blog.png" width="500"/>
+  <img src="public/goal.png" width="500"/>
 </p>
 
 ## 🛠️ Tech Stack
