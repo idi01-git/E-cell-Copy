@@ -72,7 +72,7 @@ You can also fork the repository, make changes, and create a pull request.
 
 ## 🧑‍💻 Contributors
 
-- [Shivansh Kaushik](https://github.com/your-username)
+- [Shivansh Kaushik](https://github.com/PhantomPhreak007)
 
 
 Made by the Shivansh Kaushik @ IET Lucknow
