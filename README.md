@@ -14,6 +14,7 @@ This website serves as the digital front for showcasing events, initiatives, and
   <img src="public/homepage.png" width="300"/>
   <img src="public/services.png" width="300"/>
   <img src="public/blog.png" width="300"/>
+  <img src="public/goal.png" width="300"/>
 </p>
 
 ## 🛠️ Tech Stack
