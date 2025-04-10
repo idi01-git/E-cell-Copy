@@ -11,9 +11,9 @@ This website serves as the digital front for showcasing events, initiatives, and
 
 <!-- Add screenshots of your site here -->
 <p float="left">
-  <img src="screenshots/homepage.png" width="300"/>
-  <img src="screenshots/events.png" width="300"/>
-  <img src="screenshots/team.png" width="300"/>
+  <img src="public/homepage.png" width="300"/>
+  <img src="public/services.png" width="300"/>
+  <img src="public/blog.png" width="300"/>
 </p>
 
 ## 🛠️ Tech Stack
