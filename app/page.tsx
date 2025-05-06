@@ -5,7 +5,7 @@ import { navItems } from "@/data";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
 import Approach from "@/components/Approach";
-import RecentProjects from "@/components/RecentProjects";
+import Blogssec from "@/components/Blogssec";
 import { FloatingNav } from "@/components/ui/FloatingNavbar";
 import Jordon from "@/components/Jordon";
 import About from "@/components/About";
@@ -19,7 +19,7 @@ const Home = () => {
         <Hero />
         <About />
         <Services />
-        <RecentProjects />
+        <Blogssec />
         <Approach />
         <Jordon />
         <Footer />

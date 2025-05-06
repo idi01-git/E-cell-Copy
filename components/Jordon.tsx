@@ -14,7 +14,7 @@ const Jordon = () => {
         <BackgroundGradient className="rounded-[22px] max-w-sm p-8 sm:p-10 bg-shivansh ">
           <Image
             src={`/vineet.jpg`}
-            alt="jordans"
+            alt="vineet kansal"
             height="350"
             width="400"
             className="object-contain rounded-[300px] "
@@ -36,7 +36,7 @@ const Jordon = () => {
         <BackgroundGradient className="rounded-[22px] max-w-sm p-4 sm:p-10 bg-shivansh">
           <Image
             src={`/vineet.jpg`}
-            alt="jordans"
+            alt="vineet kansal"
             height="400"
             width="400"
             className="object-contain rounded-[300px]"
@@ -58,7 +58,7 @@ const Jordon = () => {
         <BackgroundGradient className="rounded-[22px] max-w-sm p-4 sm:p-10 bg-shivansh">
           <Image
             src={`/vineet.jpg`}
-            alt="jordans"
+            alt="vineet kansal"
             height="400"
             width="400"
             className="object-contain rounded-[300px] "

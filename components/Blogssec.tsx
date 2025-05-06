@@ -6,7 +6,7 @@ import { FaLocationArrow } from "react-icons/fa6";
 import { projects } from "@/data";
 import { PinContainer } from "./ui/Pin";
 
-const RecentProjects = () => {
+const Blogssec = () => {
   return (
     <div className="my-[150px] " id="#recentprojects" >
       <h1 className="heading mb-[60px] ">
@@ -21,7 +21,7 @@ const RecentProjects = () => {
             <Link href={`/blogs/${item.id}`}>
               <PinContainer
                 title="/Ecell/blogs"
-                href="https://twitter.com/mannupaaji"
+                href="https://twitter.com/man"
               >
                 <div className="relative flex items-center justify-center sm:w-96 w-[80vw] overflow-hidden h-[20vh] lg:h-[30vh] mb-10">
                   <div
@@ -81,4 +81,4 @@ const RecentProjects = () => {
   );
 };
 
-export default RecentProjects;
+export default Blogssec;
