@@ -21,17 +21,13 @@ export const FloatingNav = ({
   className?: string;
 }) => {
   const { scrollYProgress } = useScroll();
-
-  // set true for the initial state so that nav bar is visible in the hero section
   const [visible, setVisible] = useState(true);
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
-    // Check if current is not undefined and is a number
     if (typeof current === "number") {
       let direction = current! - scrollYProgress.getPrevious()!;
 
       if (scrollYProgress.get() < 0.05) {
-        // also set true for the initial state
         setVisible(true);
       } else {
         if (direction < 0) {
@@ -55,42 +51,77 @@ export const FloatingNav = ({
           opacity: visible ? 1 : 0,
         }}
         transition={{
-          duration: 0.2,
+          duration: 0.3,
+          ease: "easeInOut",
         }}
         className={cn(
-          // change rounded-full to rounded-lg
-          // remove dark:border-white/[0.2] dark:bg-black bg-white border-transparent
-          // change  pr-2 pl-8 py-2 to px-10 py-5
-          "flex max-w-fit md:min-w-[70vw] lg:min-w-fit fixed z-[5000] top-10 inset-x-0 mx-auto px-10 py-5 rounded-lg border border-black/.1 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] items-center justify-center space-x-4",
+          "flex max-w-fit md:min-w-[70vw] lg:min-w-fit fixed z-[5000] top-6 inset-x-0 mx-auto px-8 py-4 rounded-2xl border border-white/20 shadow-2xl items-center justify-center space-x-6",
           className
         )}
         style={{
-          backdropFilter: "blur(16px) saturate(180%)",
-          backgroundColor: "rgba(17, 25, 40, 0.75)",
-          borderRadius: "12px",
-          border: "1px solid rgba(255, 255, 255, 0.125)",
+          backdropFilter: "blur(20px) saturate(180%)",
+          backgroundColor: "rgba(15, 23, 42, 0.8)",
+          borderRadius: "16px",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
         }}
       >
-        <img src="ecell-logo.png" className=" h-[50x] w-[50px] m-0 " />
+        {/* Logo */}
+        <motion.div
+          className="flex items-center gap-3"
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2 }}
+        >
+          <motion.img
+            src="/ecell-logo.png"
+            className="h-8 w-8"
+            alt="E-Cell Logo"
+            whileHover={{ rotate: 360 }}
+            transition={{ duration: 0.6 }}
+          />
+          <span className="text-white font-bold text-lg hidden sm:block">
+            E-Cell
+          </span>
+        </motion.div>
+
+        {/* Navigation Items */}
         {navItems.map((navItem: any, idx: number) => (
-          <Link
-            key={`link=${idx}`}
-            href={`/${navItem.link}`}
-            className={cn(
-              "relative dark:text-neutral-50 items-center  flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500"
-            )}
-          >
-            <span className="block sm:hidden">{navItem.icon}</span>
-            {/* add !cursor-pointer */}
-            {/* remove hidden sm:block for the mobile responsive */}
-            <span className=" text-sm !cursor-pointer">{navItem.name}</span>
-          </Link>
+          <motion.div key={`link=${idx}`}>
+            <Link
+              href={navItem.link}
+              className={cn(
+                "relative flex items-center space-x-2 text-neutral-300 hover:text-white transition-all duration-300 px-4 py-2 rounded-lg group"
+              )}
+            >
+              {/* Icon for mobile */}
+              <span className="block sm:hidden text-lg">{navItem.icon}</span>
+              
+              {/* Text */}
+              <motion.span
+                className="text-sm font-medium"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+              >
+                {navItem.name}
+              </motion.span>
+
+              {/* Hover Effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                layoutId="navbar-hover"
+              />
+            </Link>
+          </motion.div>
         ))}
-        {/* remove this login btn */}
-        {/* <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
-          <span>Login</span>
-          <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
-        </button> */}
+
+        {/* CTA Button */}
+        <motion.button
+          className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-2 rounded-lg font-semibold text-sm hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
+          whileHover={{ scale: 1.05, y: -2 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Join Us
+        </motion.button>
       </motion.div>
     </AnimatePresence>
   );

@@ -27,7 +27,7 @@ const config = {
     },
     extend: {
       colors: {
-        shivansh:"rgba(0,3,25,1)",
+        shivansh: "rgba(0,3,25,1)",
         black: {
           DEFAULT: "#000",
           100: "#000319",
@@ -147,6 +147,40 @@ const config = {
             transform: "translate(calc(-50% - 0.5rem))",
           },
         },
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        slideUp: {
+          "0%": { opacity: "0", transform: "translateY(50px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        slideInLeft: {
+          "0%": { opacity: "0", transform: "translateX(-50px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        slideInRight: {
+          "0%": { opacity: "0", transform: "translateX(50px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        scaleIn: {
+          "0%": { opacity: "0", transform: "scale(0.8)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+        bounceIn: {
+          "0%": { opacity: "0", transform: "scale(0.3)" },
+          "50%": { transform: "scale(1.05)" },
+          "70%": { transform: "scale(0.9)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
+        floating: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-20px)" },
+        },
+        pulseGlow: {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(59, 130, 246, 0.5)" },
+          "50%": { boxShadow: "0 0 40px rgba(59, 130, 246, 0.8)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -160,6 +194,17 @@ const config = {
         fifth: "moveInCircle 20s ease infinite",
         scroll:
           "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+        fadeIn: "fadeIn 0.6s ease-out forwards",
+        slideUp: "slideUp 0.8s ease-out forwards",
+        slideInLeft: "slideInLeft 0.8s ease-out forwards",
+        slideInRight: "slideInRight 0.8s ease-out forwards",
+        scaleIn: "scaleIn 0.6s ease-out forwards",
+        bounceIn: "bounceIn 0.8s ease-out forwards",
+        floating: "floating 3s ease-in-out infinite",
+        pulseGlow: "pulseGlow 2s ease-in-out infinite",
+      },
+      backdropBlur: {
+        xs: "2px",
       },
     },
   },
