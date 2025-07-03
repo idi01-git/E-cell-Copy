@@ -2,9 +2,9 @@ export const navItems = [
   { name: "About", link: "#about" },
   { name: "Services", link: "#services" },
   { name: "Blogs", link: "#recentprojects" },
+  { name: "Gallery", link: "#gallery" },
   { name: "Contact", link: "#contact" },
 ];
-
 
 export const projects = [
   {
@@ -55,9 +55,7 @@ export const projects = [
     iconLists: [],
     link: "/ui.apple.com",
   },
-  
 ];
-
 
 export const socialMedia = [
   {
@@ -73,7 +71,7 @@ export const socialMedia = [
     img: "/link.svg",
   },
   {
-    id:4,
-    img:"/instag.svg",
+    id: 4,
+    img: "/instag.svg",
   },
 ];
