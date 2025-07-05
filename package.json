@@ -5,11 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:analyze": "ANALYZE=true next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "vercel --prod",
-    "export": "next build && next export"
+    "deploy": "vercel --prod"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",

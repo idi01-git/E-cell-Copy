@@ -1,5 +1,4 @@
 import * as React from "react";
-import Image from "next/image";
 import { CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -69,15 +68,10 @@ export function Gallery() {
             >
               <div className="w-full h-full flex items-center justify-center">
                 <CardContent className="aspect-[4/3] w-full h-auto p-0 flex items-center justify-center overflow-hidden">
-                  <Image
+                  <img
                     src={img}
                     alt={`Gallery image ${index + 1}`}
-                    width={400}
-                    height={300}
                     className="object-cover w-full h-full rounded-xl shadow-lg"
-                    priority={index < 2}
-                    placeholder="blur"
-                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                   />
                 </CardContent>
               </div>
