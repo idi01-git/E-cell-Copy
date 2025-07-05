@@ -182,23 +182,38 @@ const Countdown = ({
   className,
   enableAnimations = true,
 }: CountdownProps) => {
+  const [isMounted, setIsMounted] = useState(false);
   const [eventDate] = useState(
     () =>
       targetDate ||
       new Date(
-        Date.now() + 2 * 24 * 3600 * 1000 + 5 * 3600 * 1000 + 30 * 60 * 1000
+        (typeof window !== "undefined" ? Date.now() : 0) +
+          2 * 24 * 3600 * 1000 +
+          5 * 3600 * 1000 +
+          30 * 60 * 1000
       )
   );
 
   const [timeLeft, setTimeLeft] = useState(() => {
+    if (typeof window === "undefined") return 0;
     const target = targetDate || eventDate;
     return Math.max(0, Math.floor((+target - Date.now()) / 1000));
   });
+
+  useEffect(() => {
+    setIsMounted(true);
+    if (typeof window !== "undefined") {
+      const target = targetDate || eventDate;
+      setTimeLeft(Math.max(0, Math.floor((+target - Date.now()) / 1000)));
+    }
+  }, [targetDate, eventDate]);
 
   const shouldReduceMotion = useReducedMotion();
   const shouldAnimate = enableAnimations && !shouldReduceMotion;
 
   useEffect(() => {
+    if (!isMounted) return;
+
     const target = targetDate || eventDate;
 
     const update = () => {
@@ -213,7 +228,7 @@ const Countdown = ({
     update();
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
-  }, [targetDate, eventDate, onComplete]);
+  }, [targetDate, eventDate, onComplete, isMounted]);
 
   const getTimeUnits = (seconds: number) => {
     const days = Math.floor(seconds / 86400);
@@ -482,6 +497,24 @@ const Countdown = ({
 };
 
 export default function CountdownDemo() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <div className="min-h-screen bg-background p-4 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-lg text-muted-foreground">
+            Loading countdown...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background p-4 flex items-center justify-center">
       <Countdown />

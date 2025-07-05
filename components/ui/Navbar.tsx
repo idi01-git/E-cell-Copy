@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown, User } from "lucide-react";
 import Image from "next/image";
@@ -42,7 +42,7 @@ const Navbar = ({
       animate={{ scale: 1 }}
       whileHover={{
         scale: 1.1,
-        filter: "drop-shadow(0 0 8px rgba(234, 179, 8, 0.6))",
+        filter: "drop-shadow(0 0 12px rgba(254, 243, 199, 0.8))",
       }}
       transition={{ duration: 0.3, ease: "easeOut" }}
       onClick={() => window.location.reload()}
@@ -63,7 +63,43 @@ const Navbar = ({
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-  const [activeItem, setActiveItem] = useState(0);
+  const [activeItem, setActiveItem] = useState(0); // About is at index 0
+
+  // Scroll detection for active section
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = menuItems.map((item) =>
+        document.querySelector(item.link)
+      );
+      const scrollPosition = window.scrollY + 200; // Offset for better detection with increased navbar height
+
+      // Check if we're at the top of the page (About section)
+      if (scrollPosition < 300) {
+        setActiveItem(0); // About section
+        return;
+      }
+
+      sections.forEach((section, index) => {
+        if (section) {
+          const sectionTop = (section as HTMLElement).offsetTop;
+          const sectionHeight = (section as HTMLElement).offsetHeight;
+
+          if (
+            scrollPosition >= sectionTop &&
+            scrollPosition < sectionTop + sectionHeight
+          ) {
+            setActiveItem(index);
+          }
+        }
+      });
+    };
+
+    // Run once on mount to set initial state
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [menuItems]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -86,7 +122,7 @@ const Navbar = ({
     e.preventDefault();
     const element = document.querySelector(link);
     if (element) {
-      const navbarHeight = 96; // 6rem (py-6) + navbar content height
+      const navbarHeight = 134; // Updated navbar height (h-28 = 112px + py-8 = 48px = 160px total, but actual content area is ~134px)
       const elementPosition =
         element.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - navbarHeight - 20; // Additional 20px buffer
@@ -99,8 +135,8 @@ const Navbar = ({
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full py-6 px-4 h-24">
-      <div className="flex items-center justify-between px-6 py-3 bg-background/80 backdrop-blur-md border border-border rounded-full shadow-lg w-full max-w-4xl relative">
+    <div className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full py-8 px-4 h-28">
+      <div className="flex items-center justify-between px-8 py-4 bg-background/80 backdrop-blur-md border border-border rounded-full shadow-lg w-full max-w-4xl relative">
         <div className="flex items-center">
           <div className="mr-6">{logo}</div>
         </div>
@@ -108,7 +144,7 @@ const Navbar = ({
         <nav className="hidden md:flex items-center relative bg-background/50 backdrop-blur-sm rounded-full px-2 py-1 border border-border/50">
           {/* Tubelight Indicator */}
           <motion.div
-            className="absolute inset-y-1 bg-primary/10 rounded-full border border-primary/20"
+            className="absolute inset-y-1 bg-yellow-300/10 rounded-full border border-yellow-300/20"
             layoutId="tubelight"
             initial={false}
             animate={{
@@ -122,9 +158,9 @@ const Navbar = ({
             }}
           >
             {/* Glowing effect */}
-            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-primary rounded-full">
-              <div className="absolute w-8 h-3 bg-primary/30 rounded-full blur-sm -top-1 -left-1" />
-              <div className="absolute w-6 h-2 bg-primary/40 rounded-full blur-xs" />
+            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-yellow-200 rounded-full">
+              <div className="absolute w-8 h-3 bg-yellow-200/30 rounded-full blur-sm -top-1 -left-1" />
+              <div className="absolute w-6 h-2 bg-yellow-200/40 rounded-full blur-xs" />
             </div>
           </motion.div>
 
@@ -154,7 +190,7 @@ const Navbar = ({
                         ? hoveredItem === index
                         : activeItem === index
                     )
-                      ? "text-primary"
+                      ? "text-yellow-200"
                       : "text-foreground/70 hover:text-foreground"
                   }`}
                 >
@@ -181,7 +217,7 @@ const Navbar = ({
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 bg-background z-[60] pt-24 px-6 md:hidden"
+            className="fixed inset-0 bg-background z-[60] pt-32 px-6 md:hidden"
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
