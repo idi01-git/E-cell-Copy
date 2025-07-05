@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, User } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import Image from "next/image";
 import { navItems } from "@/data";
 
@@ -30,8 +30,6 @@ interface MenuItem {
 interface NavbarProps {
   logo?: React.ReactNode;
   menuItems?: MenuItem[];
-  ctaText?: string;
-  ctaHref?: string;
 }
 
 const Navbar = ({
@@ -53,17 +51,56 @@ const Navbar = ({
         width={32}
         height={32}
         className="rounded-full"
+        priority
+        placeholder="blur"
+        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
       />
     </motion.div>
   ),
   menuItems = navItems,
-  ctaText = "Get Started",
-  ctaHref = "#",
 }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [activeItem, setActiveItem] = useState(0);
+
+  // Scroll-based active section detection
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 166; // Offset for navbar height (increased by ~20%)
+
+      // Check each section to see which one is currently in view
+      const sections = menuItems.map((item) => {
+        const element = document.querySelector(item.link);
+        if (!element) return { index: -1, top: 0, bottom: 0 };
+
+        const rect = element.getBoundingClientRect();
+        const top = rect.top + window.scrollY;
+        const bottom = top + rect.height;
+
+        return { index: menuItems.indexOf(item), top, bottom };
+      });
+
+      // Find the section that contains the current scroll position
+      const currentSection = sections.find(
+        (section) =>
+          scrollPosition >= section.top && scrollPosition < section.bottom
+      );
+
+      if (currentSection && currentSection.index !== -1) {
+        setActiveItem(currentSection.index);
+      }
+    };
+
+    // Add scroll listener
+    window.addEventListener("scroll", handleScroll);
+
+    // Initial check
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [menuItems]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -86,7 +123,7 @@ const Navbar = ({
     e.preventDefault();
     const element = document.querySelector(link);
     if (element) {
-      const navbarHeight = 96; // 6rem (py-6) + navbar content height
+      const navbarHeight = 112; // 7rem (py-7) + navbar content height (h-28)
       const elementPosition =
         element.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - navbarHeight - 20; // Additional 20px buffer
@@ -99,8 +136,8 @@ const Navbar = ({
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full py-6 px-4 h-24">
-      <div className="flex items-center justify-between px-6 py-3 bg-background/80 backdrop-blur-md border border-border rounded-full shadow-lg w-full max-w-4xl relative">
+    <div className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full py-7 px-4 h-28">
+      <div className="flex items-center justify-between px-6 py-4 bg-background/80 backdrop-blur-md border border-border rounded-full shadow-lg w-full max-w-4xl relative">
         <div className="flex items-center">
           <div className="mr-6">{logo}</div>
         </div>
@@ -208,7 +245,11 @@ const Navbar = ({
                 >
                   <a
                     href={item.link}
-                    className="text-base text-foreground font-medium block"
+                    className={`text-base font-medium block transition-colors ${
+                      activeItem === i
+                        ? "text-primary"
+                        : "text-foreground hover:text-primary"
+                    }`}
                     onClick={(e) => {
                       handleItemClick(i);
                       handleNavClick(e, item.link);

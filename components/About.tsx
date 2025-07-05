@@ -1,8 +1,6 @@
 "use client";
-import Image from "next/image";
 import React from "react";
-import { CardBody, CardContainer, CardItem } from "../components/ui/3d-card";
-import Link from "next/link";
+import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
 
 const About = () => {
   return (

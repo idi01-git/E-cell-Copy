@@ -1,22 +1,83 @@
 "use client";
 
-import { navItems } from "@/data";
 import { useEffect } from "react";
+import dynamic from "next/dynamic";
 
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/Footer";
-import Blogssec from "@/components/Blogssec";
-import Jordon from "@/components/Jordon";
-import About from "@/components/About";
-import Services from "@/components/Services";
-import Gallery from "@/components/ui/Gallery";
-import { BackgroundBeams } from "@/components/ui/background-beams";
-import CountdownDemo from "@/components/ui/CountdownDemo";
-import { BackgroundPaths } from "@/components/ui/animated-infinity-background";
 import FadeInSection from "@/components/ui/FadeInSection";
-import RadialOrbitalFeatureSection from "@/components/ui/RadialOrbitalFeatureSection";
-import MorphingText from "@/components/ui/morphing-text";
-import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+
+// Lazy load heavy components
+const Blogssec = dynamic(() => import("@/components/Blogssec"), {
+  loading: () => <LoadingSpinner size="lg" className="h-96" />,
+  ssr: true,
+});
+
+const Jordon = dynamic(() => import("@/components/Jordon"), {
+  loading: () => <LoadingSpinner size="lg" className="h-96" />,
+  ssr: true,
+});
+
+const About = dynamic(() => import("@/components/About"), {
+  loading: () => <LoadingSpinner size="lg" className="h-96" />,
+  ssr: true,
+});
+
+const Services = dynamic(() => import("@/components/Services"), {
+  loading: () => <LoadingSpinner size="lg" className="h-96" />,
+  ssr: true,
+});
+
+const Gallery = dynamic(() => import("@/components/ui/Gallery"), {
+  loading: () => <LoadingSpinner size="lg" className="h-96" />,
+  ssr: true,
+});
+
+const BackgroundBeams = dynamic(
+  () =>
+    import("@/components/ui/background-beams").then((mod) => ({
+      default: mod.BackgroundBeams,
+    })),
+  {
+    ssr: false,
+  }
+);
+
+const BackgroundPaths = dynamic(
+  () =>
+    import("@/components/ui/animated-infinity-background").then((mod) => ({
+      default: mod.BackgroundPaths,
+    })),
+  {
+    loading: () => <LoadingSpinner size="lg" className="h-96" />,
+    ssr: true,
+  }
+);
+
+const RadialOrbitalFeatureSection = dynamic(
+  () => import("@/components/ui/RadialOrbitalFeatureSection"),
+  {
+    loading: () => <LoadingSpinner size="lg" className="h-96" />,
+    ssr: true,
+  }
+);
+
+const MorphingText = dynamic(() => import("@/components/ui/morphing-text"), {
+  loading: () => <LoadingSpinner size="lg" className="h-96" />,
+  ssr: true,
+});
+
+const TextGenerateEffect = dynamic(
+  () =>
+    import("@/components/ui/text-generate-effect").then((mod) => ({
+      default: mod.TextGenerateEffect,
+    })),
+  {
+    loading: () => <LoadingSpinner size="lg" className="h-96" />,
+    ssr: true,
+  }
+);
 
 const Home = () => {
   useEffect(() => {
@@ -49,9 +110,6 @@ const Home = () => {
       />
       <BackgroundBeams className="z-0" />
       <div className="max-w-7xl w-full relative z-10 pt-32">
-        <FadeInSection>
-          <CountdownDemo />
-        </FadeInSection>
         <FadeInSection>
           <div id="about" className="my-12">
             <MorphingText
