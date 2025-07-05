@@ -86,12 +86,20 @@ const Navbar = ({
     e.preventDefault();
     const element = document.querySelector(link);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      const navbarHeight = 96; // 6rem (py-6) + navbar content height
+      const elementPosition =
+        element.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - navbarHeight - 20; // Additional 20px buffer
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
     }
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full py-6 px-4">
+    <div className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full py-6 px-4 h-24">
       <div className="flex items-center justify-between px-6 py-3 bg-background/80 backdrop-blur-md border border-border rounded-full shadow-lg w-full max-w-4xl relative">
         <div className="flex items-center">
           <div className="mr-6">{logo}</div>
@@ -173,7 +181,7 @@ const Navbar = ({
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 bg-background z-50 pt-24 px-6 md:hidden"
+            className="fixed inset-0 bg-background z-[60] pt-24 px-6 md:hidden"
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}

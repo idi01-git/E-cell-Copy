@@ -29,6 +29,9 @@ const Home = () => {
         if ("scrollRestoration" in window.history) {
           window.history.scrollRestoration = "manual";
         }
+        // Add padding to body to account for fixed navbar
+        document.body.style.paddingTop = "0";
+        document.body.style.scrollPaddingTop = "120px";
       }
     }, 0);
 
@@ -45,7 +48,7 @@ const Home = () => {
         backgroundStyle="gradient"
       />
       <BackgroundBeams className="z-0" />
-      <div className="max-w-7xl w-full relative z-10">
+      <div className="max-w-7xl w-full relative z-10 pt-32">
         <FadeInSection>
           <CountdownDemo />
         </FadeInSection>
