@@ -15,6 +15,12 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import type { UseEmblaCarouselType } from "embla-carousel-react";
 import { projects } from "@/data";
+import dynamic from "next/dynamic";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+const BlurFade = dynamic(
+  () => import("@/components/ui/blur-fade").then((mod) => mod.BlurFade),
+  { ssr: false }
+);
 
 const badgeVariants = cva(
   "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
@@ -193,20 +199,35 @@ const BlogCarousel = () => {
           <Badge variant="secondary" className="mb-6">
             Latest Updates
           </Badge>
-          <h2 className="mb-3 text-pretty text-3xl font-semibold md:mb-4 md:text-4xl lg:mb-6 lg:max-w-3xl lg:text-5xl">
-            The Entrepreneureial Times
-          </h2>
-          <p className="mb-8 text-muted-foreground md:text-base lg:max-w-2xl lg:text-lg">
-            Take a look at the monthly newsletter of E-cell Iet Lko for the
-            updates regarding the entrepreneurial world.
-          </p>
+          <BlurFade delay={0.25} inView>
+            <h2 className="mb-3 text-pretty text-3xl font-semibold md:mb-4 md:text-4xl lg:mb-6 lg:max-w-3xl lg:text-5xl">
+              The Entrepreneureial Times
+            </h2>
+          </BlurFade>
+          <BlurFade delay={0.5} inView>
+            <p className="mb-8 text-muted-foreground md:text-base lg:max-w-2xl lg:text-lg">
+              Take a look at the monthly newsletter of E-cell Iet Lko for the
+              updates regarding the entrepreneurial world
+            </p>
+          </BlurFade>
+          <BlurFade delay={0.75} inView>
+            <InteractiveHoverButton text="Read More" />
+          </BlurFade>
         </div>
         <Carousel
           opts={{
             align: "start",
-            loop: true,
+            loop: false,
             skipSnaps: false,
             dragFree: false,
+          }}
+          className="w-full"
+          setApi={setApi}
+          onMouseDown={(e) => e.preventDefault()}
+          onTouchStart={(e) => e.preventDefault()}
+          onWheel={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
           }}
           plugins={[
             Autoplay({
@@ -215,14 +236,21 @@ const BlogCarousel = () => {
               stopOnMouseEnter: true,
             }),
           ]}
-          className="w-full"
-          setApi={setApi}
         >
-          <CarouselContent className="-ml-2 sm:-ml-4 py-4">
+          <CarouselContent
+            className="py-4"
+            onWheelCapture={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+          >
             {projects.map((item, index) => (
               <CarouselItem
                 key={item.id}
-                className="px-2 md:basis-1/2 lg:basis-1/3"
+                className={cn(
+                  "px-2 md:basis-1/2 lg:basis-1/3 transition-transform duration-300",
+                  selectedIndex === index ? "scale-105 z-10" : "scale-100"
+                )}
               >
                 <div className="w-full h-full flex flex-col items-center justify-center">
                   <div className="aspect-[4/3] w-full h-auto p-0 flex items-center justify-center overflow-hidden">

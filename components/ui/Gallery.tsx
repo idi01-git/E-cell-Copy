@@ -7,6 +7,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import { SparklesText } from "@/components/ui/sparkles-text";
+import { LiquidButton } from "@/components/ui/liquid-glass-button";
 
 const galleryImages = [
   "/news.jpg",
@@ -22,11 +25,42 @@ export function Gallery() {
       id="gallery"
       className="w-full flex flex-col items-center py-20 bg-background"
     >
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-foreground">
-        Gallery
-      </h2>
-      <Carousel className="w-full">
-        <CarouselContent>
+      <SparklesText
+        text="Gallery"
+        className="text-center font-[Bebas Neue] text-5xl md:text-6xl font-bold mb-2 text-foreground"
+        sparklesCount={9}
+        colors={{ first: "#fff", second: "#9E7AFF" }}
+      />
+      <div
+        className="text-center font-[Italianno] mb-8"
+        style={{
+          fontSize: 34,
+          color: "white",
+          textShadow:
+            "0 0 12px rgba(255,255,255,0.7), 0 0 32px rgba(255,255,255,0.5)",
+        }}
+      >
+        Dive into our gallery of startup shenanigans—where ideas spark, chaos
+        brews,
+        <br />
+        and memories are made!
+      </div>
+      <Carousel
+        className="w-full"
+        plugins={[
+          Autoplay({
+            delay: 3000,
+            stopOnInteraction: false,
+            stopOnMouseEnter: false,
+          }),
+        ]}
+      >
+        <CarouselContent
+          onWheelCapture={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        >
           {galleryImages.map((img, index) => (
             <CarouselItem
               key={index}
@@ -47,6 +81,9 @@ export function Gallery() {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
+      <LiquidButton size="lg" className="mt-8">
+        See More
+      </LiquidButton>
     </section>
   );
 }

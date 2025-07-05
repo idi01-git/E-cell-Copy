@@ -27,7 +27,7 @@ const config = {
     },
     extend: {
       colors: {
-        shivansh:"rgba(0,3,25,1)",
+        shivansh: "rgba(0,3,25,1)",
         black: {
           DEFAULT: "#000",
           100: "#000319",
@@ -41,8 +41,10 @@ const config = {
         },
         blue: {
           "100": "#E4ECFF",
+          ...colors.blue,
         },
-        purple: "#CBACF9",
+        purple: colors.purple,
+        teal: colors.teal,
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -147,6 +149,30 @@ const config = {
             transform: "translate(calc(-50% - 0.5rem))",
           },
         },
+        pulse: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: ".5" },
+        },
+        ping: {
+          "75%, 100%": {
+            transform: "scale(2.5)",
+            opacity: "0",
+          },
+        },
+        "orb-pulse": {
+          "0%, 100%": {
+            transform: "scale(1)",
+            opacity: "1",
+            boxShadow:
+              "0 0 32px 8px rgba(139,92,246,0.25), 0 0 64px 16px rgba(20,184,166,0.15)",
+          },
+          "50%": {
+            transform: "scale(1.13)",
+            opacity: "0.92",
+            boxShadow:
+              "0 0 48px 16px rgba(139,92,246,0.35), 0 0 96px 32px rgba(20,184,166,0.25)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -160,6 +186,9 @@ const config = {
         fifth: "moveInCircle 20s ease infinite",
         scroll:
           "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+        pulse: "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        ping: "ping 2s cubic-bezier(0, 0, 0.2, 1) infinite",
+        "orb-pulse": "orb-pulse 2.5s ease-in-out infinite",
       },
     },
   },

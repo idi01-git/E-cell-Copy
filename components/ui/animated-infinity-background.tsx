@@ -99,7 +99,7 @@ export function BackgroundPaths({
   };
 
   return (
-    <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background">
+    <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background pt-32">
       {/* Fade-out gradient at the top for smooth merging with Navbar */}
       <div className="absolute top-0 left-0 w-full h-32 pointer-events-none z-20 bg-gradient-to-t from-transparent to-background" />
       {/* Animated golden gradient orb */}

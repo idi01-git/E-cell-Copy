@@ -8,7 +8,11 @@ import { PinContainer } from "./ui/Pin";
 import BlogCarousel from "./ui/BlogCarousel";
 
 const Blogssec = () => {
-  return <BlogCarousel />;
+  return (
+    <div id="blogs">
+      <BlogCarousel />
+    </div>
+  );
 };
 
 export default Blogssec;

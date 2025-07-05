@@ -37,7 +37,7 @@ interface NavbarProps {
 const Navbar = ({
   logo = (
     <motion.div
-      className="w-8 h-8"
+      className="w-8 h-8 cursor-pointer"
       initial={{ scale: 0.8 }}
       animate={{ scale: 1 }}
       whileHover={{
@@ -45,6 +45,7 @@ const Navbar = ({
         filter: "drop-shadow(0 0 8px rgba(234, 179, 8, 0.6))",
       }}
       transition={{ duration: 0.3, ease: "easeOut" }}
+      onClick={() => window.location.reload()}
     >
       <Image
         src="/ecell-logo.png"
@@ -78,9 +79,20 @@ const Navbar = ({
     setActiveItem(index);
   };
 
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    link: string
+  ) => {
+    e.preventDefault();
+    const element = document.querySelector(link);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <div className="flex justify-center w-full py-6 px-4">
-      <div className="flex items-center justify-between px-6 py-3 bg-background border border-border rounded-full shadow-lg w-full max-w-4xl relative z-10">
+    <div className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full py-6 px-4">
+      <div className="flex items-center justify-between px-6 py-3 bg-background/80 backdrop-blur-md border border-border rounded-full shadow-lg w-full max-w-4xl relative">
         <div className="flex items-center">
           <div className="mr-6">{logo}</div>
         </div>
@@ -124,7 +136,10 @@ const Navbar = ({
               >
                 <a
                   href={item.link}
-                  onClick={() => handleItemClick(index)}
+                  onClick={(e) => {
+                    handleItemClick(index);
+                    handleNavClick(e, item.link);
+                  }}
                   className={`flex items-center text-sm font-medium px-4 py-2 rounded-full transition-colors relative ${
                     (
                       hoveredItem !== null
@@ -186,7 +201,11 @@ const Navbar = ({
                   <a
                     href={item.link}
                     className="text-base text-foreground font-medium block"
-                    onClick={toggleMenu}
+                    onClick={(e) => {
+                      handleItemClick(i);
+                      handleNavClick(e, item.link);
+                      toggleMenu();
+                    }}
                   >
                     {item.name}
                   </a>

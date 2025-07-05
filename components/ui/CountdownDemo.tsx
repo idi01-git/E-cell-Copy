@@ -290,16 +290,23 @@ const Countdown = ({
       initial={shouldAnimate ? "hidden" : "visible"}
       animate="visible"
       whileHover="hover"
-      variants={containerVariants}
+      variants={{
+        ...containerVariants,
+        hover: {
+          ...containerVariants.hover,
+          boxShadow:
+            "0 0 0 2px rgba(253, 224, 71, 0.25), 0 0 32px 8px rgba(253, 224, 71, 0.35), 0 0 80px 24px rgba(253, 224, 71, 0.25)",
+        },
+      }}
       className={cn(
         "relative w-full max-w-4xl mx-auto rounded-2xl border bg-card text-card-foreground overflow-hidden",
-        "border-gray-200/80 shadow-lg shadow-gray-200/50 dark:border-border dark:shadow-xl dark:shadow-black/30",
+        "border-yellow-600/80 shadow-lg shadow-yellow-600/50 dark:border-yellow-300/30 dark:shadow-xl dark:shadow-yellow-300/30",
         "bg-gradient-to-br from-background via-background to-muted/20",
         className
       )}
     >
-      {/* Updated: Light theme background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 dark:from-primary/5 dark:via-transparent dark:to-secondary/5" />
+      {/* Updated: Gold theme background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-yellow-600/5 via-transparent to-yellow-400/5 dark:from-yellow-300/5 dark:via-transparent dark:to-yellow-200/5" />
 
       <div className="relative p-6 sm:p-8 space-y-6 sm:space-y-8">
         {/* Header */}
@@ -308,7 +315,7 @@ const Countdown = ({
           variants={shouldAnimate ? childVariants : {}}
         >
           <motion.div
-            className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-primary/10 text-primary border border-primary/20"
+            className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-yellow-600/10 text-yellow-600 dark:text-yellow-300 border border-yellow-600/20 dark:border-yellow-300/20 shadow-yellow-600/50 dark:shadow-yellow-300/50"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 }}
@@ -318,14 +325,14 @@ const Countdown = ({
           </motion.div>
 
           <motion.h1
-            className="text-3xl sm:text-4xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent"
+            className="text-3xl sm:text-4xl font-bold tracking-tight bg-gradient-to-br from-yellow-600 via-yellow-400 to-yellow-200 dark:from-yellow-300 dark:via-yellow-200 dark:to-yellow-100 bg-clip-text text-transparent"
             variants={shouldAnimate ? childVariants : {}}
           >
             {title}
           </motion.h1>
 
           <motion.p
-            className="text-base sm:text-lg text-muted-foreground max-w-md mx-auto"
+            className="text-base sm:text-lg text-yellow-300/80 max-w-md mx-auto"
             variants={shouldAnimate ? childVariants : {}}
           >
             {description}
@@ -339,8 +346,8 @@ const Countdown = ({
             variants={shouldAnimate ? childVariants : {}}
           >
             <div className="text-center">
-              <div className="text-sm font-medium text-muted-foreground mb-3 sm:mb-4">
-                Event starts in:
+              <div className="text-sm font-medium text-yellow-400 mb-3 sm:mb-4">
+                <span className="text-yellow-400">Event starts in:</span>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-lg mx-auto">
@@ -357,19 +364,19 @@ const Countdown = ({
                     animate={index === 3 ? "pulse" : "initial"}
                     className="relative"
                   >
-                    {/* Updated: Light theme number background */}
-                    <div className="bg-gradient-to-br from-muted/50 to-muted/80 rounded-xl sm:rounded-2xl p-3 sm:p-4 border backdrop-blur-sm border-gray-200/60 shadow-sm shadow-gray-100/50 dark:border-border/50 dark:shadow-none dark:from-muted/50 dark:to-muted/80">
-                      <div className="text-2xl sm:text-3xl font-bold tabular-nums text-foreground mb-0.5 sm:mb-1">
+                    {/* Updated: Gold theme number background */}
+                    <div className="bg-gradient-to-br from-yellow-600/10 to-yellow-400/20 dark:from-yellow-300/10 dark:to-yellow-200/20 rounded-xl sm:rounded-2xl p-3 sm:p-4 border backdrop-blur-sm border-yellow-600/60 dark:border-yellow-300/60 shadow-sm shadow-yellow-600/50 dark:shadow-yellow-300/50">
+                      <div className="text-2xl sm:text-3xl font-bold tabular-nums text-yellow-600 dark:text-yellow-300 mb-0.5 sm:mb-1">
                         {unit.value.toString().padStart(2, "0")}
                       </div>
-                      <div className="text-xs sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">
+                      <div className="text-xs sm:text-xs text-yellow-600 dark:text-yellow-300 font-medium uppercase tracking-wider">
                         {unit.label}
                       </div>
                     </div>
 
                     {index === 3 && shouldAnimate && (
                       <motion.div
-                        className="absolute inset-0 rounded-xl sm:rounded-2xl border-2 border-primary/30"
+                        className="absolute inset-0 rounded-xl sm:rounded-2xl border-2 border-yellow-600/30 dark:border-yellow-300/30"
                         animate={{
                           opacity: [0, 0.5, 0],
                           scale: [1, 1.05, 1],
@@ -406,9 +413,9 @@ const Countdown = ({
                     repeat: Infinity,
                     ease: "easeInOut",
                   }}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-yellow-600/10 text-yellow-600 dark:text-yellow-300 border border-yellow-600/20 dark:border-yellow-300/20"
                 >
-                  <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                  <div className="w-2 h-2 rounded-full bg-yellow-600 dark:bg-yellow-300 animate-pulse" />
                   <span className="text-xs sm:text-sm font-medium">
                     Starting Soon!
                   </span>
@@ -449,7 +456,7 @@ const Countdown = ({
             <Button
               size="lg"
               reflection
-              className="w-full px-6 py-4 sm:px-8 sm:py-6 text-base sm:text-lg font-semibold bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-lg shadow-primary/25"
+              className="w-full px-6 py-4 sm:px-8 sm:py-6 text-base sm:text-lg font-semibold bg-gradient-to-br from-yellow-600 via-yellow-400 to-yellow-200 dark:from-yellow-300 dark:via-yellow-200 dark:to-yellow-100 hover:from-yellow-700 hover:via-yellow-500 hover:to-yellow-300 dark:hover:from-yellow-400 dark:hover:via-yellow-300 dark:hover:to-yellow-200 shadow-lg shadow-yellow-600/25 dark:shadow-yellow-300/25"
             >
               {timeLeft > 0 ? "Get Notified" : "Join Event Now"}
             </Button>
@@ -463,7 +470,7 @@ const Countdown = ({
               size="lg"
               variant="outline"
               reflection
-              className="w-full px-6 py-4 sm:px-8 sm:py-6 text-base sm:text-lg font-semibold border-2 border-primary/50 text-primary hover:bg-primary/10 shadow-lg shadow-primary/10"
+              className="w-full px-6 py-4 sm:px-8 sm:py-6 text-base sm:text-lg font-semibold border-2 border-yellow-600/50 dark:border-yellow-300/50 text-yellow-600 dark:text-yellow-300 hover:bg-yellow-600/10 dark:hover:bg-yellow-300/10 shadow-lg shadow-yellow-600/10 dark:shadow-yellow-300/10"
             >
               Learn More
             </Button>

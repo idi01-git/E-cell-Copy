@@ -1,36 +1,13 @@
 "use client";
-import { useRef, useEffect, useState } from "react";
 import { Box, Lock, Search, Settings, Sparkles } from "lucide-react";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
-import { HandWrittenTitle } from "@/components/ui/hand-writing-text";
 
 const Services = () => {
-  const [isInView, setIsInView] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Check if IntersectionObserver is available (client-side only)
-    if (typeof window === "undefined" || !window.IntersectionObserver) return;
-
-    const observer = new window.IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div className="my-[150px] " id="services" ref={sectionRef}>
-      {isInView && <HandWrittenTitle title="Our Services" />}
+    <div className="my-[150px] " id="#services" >
+      <h1 className="heading mb-[80px] ">
+        Service<span className="text-purple">s</span>
+      </h1>
       <ul className="grid grid-cols-1 mb-[80px]  grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
         <GridItem
           area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]"

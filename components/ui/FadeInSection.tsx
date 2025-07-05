@@ -15,6 +15,10 @@ export default function FadeInSection({
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
+
+    // Check if IntersectionObserver is available (client-side only)
+    if (typeof window === "undefined" || !window.IntersectionObserver) return;
+
     const observer = new window.IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
