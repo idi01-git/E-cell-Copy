@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const morphTime = 1.5;
@@ -10,7 +10,8 @@ const useMorphingText = (texts: string[]) => {
   const textIndexRef = useRef(0);
   const morphRef = useRef(0);
   const cooldownRef = useRef(0);
-  const timeRef = useRef(new Date());
+  const timeRef = useRef<Date | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   const text1Ref = useRef<HTMLSpanElement>(null);
   const text2Ref = useRef<HTMLSpanElement>(null);
@@ -66,13 +67,20 @@ const useMorphingText = (texts: string[]) => {
   }, []);
 
   useEffect(() => {
+    setIsMounted(true);
+    timeRef.current = new Date();
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted || !timeRef.current) return;
+
     let animationFrameId: number;
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
       const newTime = new Date();
-      const dt = (newTime.getTime() - timeRef.current.getTime()) / 1000;
+      const dt = (newTime.getTime() - timeRef.current!.getTime()) / 1000;
       timeRef.current = newTime;
 
       cooldownRef.current -= dt;
@@ -85,7 +93,7 @@ const useMorphingText = (texts: string[]) => {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [doMorph, doCooldown]);
+  }, [doMorph, doCooldown, isMounted]);
 
   return { text1Ref, text2Ref };
 };
@@ -102,11 +110,15 @@ const Texts: React.FC<Pick<MorphingTextProps, "texts">> = ({ texts }) => {
       <span
         className="absolute inset-x-0 top-0 m-auto inline-block w-full"
         ref={text1Ref}
-      />
+      >
+        {texts[0]}
+      </span>
       <span
         className="absolute inset-x-0 top-0 m-auto inline-block w-full"
         ref={text2Ref}
-      />
+      >
+        {texts[1] || texts[0]}
+      </span>
     </>
   );
 };

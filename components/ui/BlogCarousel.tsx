@@ -201,13 +201,13 @@ const BlogCarousel = () => {
           </Badge>
           <BlurFade delay={0.25} inView>
             <h2 className="mb-3 text-pretty text-3xl font-semibold md:mb-4 md:text-4xl lg:mb-6 lg:max-w-3xl lg:text-5xl">
-              The Entrepreneureial Times
+              The Entrepreneurial Times
             </h2>
           </BlurFade>
           <BlurFade delay={0.5} inView>
             <p className="mb-8 text-muted-foreground md:text-base lg:max-w-2xl lg:text-lg">
-              Take a look at the monthly newsletter of E-cell Iet Lko for the
-              updates regarding the entrepreneurial world
+              Take a look at the monthly newsletter of E-Cell IET Lucknow for
+              the updates regarding the entrepreneurial world
             </p>
           </BlurFade>
           <BlurFade delay={0.75} inView>
