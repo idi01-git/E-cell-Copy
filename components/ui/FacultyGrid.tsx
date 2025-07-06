@@ -326,7 +326,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
               <div className="mt-auto pt-4">
                 <p className="text-xs text-muted-foreground">
-                  Click for more details
+                  Click for more Info
                 </p>
               </div>
             </motion.div>

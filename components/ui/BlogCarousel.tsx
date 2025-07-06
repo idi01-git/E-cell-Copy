@@ -261,17 +261,19 @@ const BlogCarousel = () => {
                     />
                   </div>
                   <div className="w-full bg-transparent p-3 sm:p-4 flex flex-col items-start">
+                    <div className="w-full flex justify-between items-center mb-2">
+                      <span className="text-xs text-muted-foreground">
+                        {item.publicationDate}
+                      </span>
+                    </div>
                     <h3 className="text-base sm:text-lg font-semibold hover:underline md:text-xl mb-2">
-                      <a href={item.link} target="_blank">
-                        {item.title}
-                      </a>
+                      <a href={item.link}>{item.title}</a>
                     </h3>
                     <p className="text-muted-foreground mb-3 sm:mb-4 text-sm sm:text-base">
                       {item.des}
                     </p>
                     <a
                       href={item.link}
-                      target="_blank"
                       className="flex items-center text-foreground hover:underline font-medium text-sm sm:text-base"
                     >
                       Read more
