@@ -31,7 +31,7 @@ const Home = () => {
         }
         // Add padding to body to account for fixed navbar
         document.body.style.paddingTop = "0";
-        document.body.style.scrollPaddingTop = "160px";
+        document.body.style.scrollPaddingTop = "180px"; // Increased for better scroll behavior
       }
     }, 0);
 
@@ -48,12 +48,12 @@ const Home = () => {
         backgroundStyle="gradient"
       />
       <BackgroundBeams className="z-0" />
-      <div className="max-w-7xl w-full relative z-10 pt-40">
+      <div className="max-w-7xl w-full relative z-10 pt-44">
         <FadeInSection>
           <CountdownDemo />
         </FadeInSection>
         <FadeInSection>
-          <div id="about" className="my-16 max-w-5xl mx-auto">
+          <div id="about" className="my-20 max-w-5xl mx-auto">
             <div className="text-center mb-16">
               <MorphingText
                 texts={["About E-Cell", "IET Lucknow"]}

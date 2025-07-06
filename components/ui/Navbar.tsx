@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown, User } from "lucide-react";
 import Image from "next/image";
@@ -65,41 +65,77 @@ const Navbar = ({
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [activeItem, setActiveItem] = useState(0); // About is at index 0
 
-  // Scroll detection for active section
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = menuItems.map((item) =>
-        document.querySelector(item.link)
-      );
-      const scrollPosition = window.scrollY + 200; // Offset for better detection with increased navbar height
+  // Improved scroll detection for active section
+  const handleScroll = useCallback(() => {
+    const scrollPosition = window.scrollY;
+    const navbarHeight = 160; // Total navbar height including padding
+    const offset = navbarHeight + 50; // Additional offset for better detection
 
-      // Check if we're at the top of the page (About section)
-      if (scrollPosition < 300) {
-        setActiveItem(0); // About section
+    // Get all sections
+    const sections = menuItems.map((item) => {
+      const element = document.querySelector(item.link);
+      return element ? element : null;
+    });
+
+    // Check if we're above the About section
+    const aboutSection = sections[0];
+    if (aboutSection) {
+      const aboutRect = aboutSection.getBoundingClientRect();
+      const aboutTop = aboutRect.top + scrollPosition;
+
+      if (scrollPosition + offset < aboutTop) {
+        setActiveItem(0); // Keep About active when above it
         return;
       }
+    }
 
-      sections.forEach((section, index) => {
-        if (section) {
-          const sectionTop = (section as HTMLElement).offsetTop;
-          const sectionHeight = (section as HTMLElement).offsetHeight;
+    // Find which section is currently in view
+    let currentSectionIndex = activeItem; // Start with current active item
 
-          if (
-            scrollPosition >= sectionTop &&
-            scrollPosition < sectionTop + sectionHeight
-          ) {
-            setActiveItem(index);
-          }
+    // Check each section from top to bottom
+    for (let i = 0; i < sections.length; i++) {
+      const section = sections[i];
+      if (section) {
+        const rect = section.getBoundingClientRect();
+        const sectionTop = rect.top + scrollPosition;
+        const sectionBottom = sectionTop + rect.height;
+
+        // Check if we've entered this section
+        if (
+          scrollPosition + offset >= sectionTop &&
+          scrollPosition + offset < sectionBottom
+        ) {
+          currentSectionIndex = i;
+          break;
         }
-      });
-    };
+      }
+    }
 
+    // Only update if the section has actually changed
+    if (currentSectionIndex !== activeItem) {
+      setActiveItem(currentSectionIndex);
+    }
+  }, [menuItems, activeItem]);
+
+  useEffect(() => {
     // Run once on mount to set initial state
     handleScroll();
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [menuItems]);
+    // Add scroll listener with throttling
+    let ticking = false;
+    const scrollListener = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", scrollListener, { passive: true });
+    return () => window.removeEventListener("scroll", scrollListener);
+  }, [handleScroll]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -122,7 +158,7 @@ const Navbar = ({
     e.preventDefault();
     const element = document.querySelector(link);
     if (element) {
-      const navbarHeight = 134; // Updated navbar height (h-28 = 112px + py-8 = 48px = 160px total, but actual content area is ~134px)
+      const navbarHeight = 160; // Total navbar height
       const elementPosition =
         element.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - navbarHeight - 20; // Additional 20px buffer
@@ -244,7 +280,11 @@ const Navbar = ({
                 >
                   <a
                     href={item.link}
-                    className="text-base text-foreground font-medium block"
+                    className={`text-base font-medium block transition-colors ${
+                      activeItem === i
+                        ? "text-yellow-200"
+                        : "text-foreground hover:text-foreground/80"
+                    }`}
                     onClick={(e) => {
                       handleItemClick(i);
                       handleNavClick(e, item.link);
