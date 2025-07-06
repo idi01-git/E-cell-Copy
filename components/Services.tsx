@@ -29,9 +29,11 @@ const Services = () => {
   }, []);
 
   return (
-    <div className="my-[150px] " id="services" ref={sectionRef}>
-      {isInView && <HandWrittenTitle title="Our Services" />}
-      <ul className="grid grid-cols-1 mb-[80px]  grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
+    <div className="my-[80px] " id="services" ref={sectionRef}>
+      <div className="relative w-full max-w-4xl mx-auto py-16">
+        {isInView && <HandWrittenTitle title="Our Services" />}
+      </div>
+      <ul className="grid grid-cols-1 mb-[40px]  grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-3 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
         <GridItem
           area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/5]"
           icon={<Box className="h-4 w-4 text-black dark:text-neutral-400" />}

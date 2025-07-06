@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect, ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import {
   Mail,
   Phone,
@@ -300,10 +301,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               className="absolute inset-0 p-6 flex flex-col items-center justify-center text-center"
             >
               <div className="relative mb-4">
-                <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-primary/20 shadow-lg">
-                  <img
+                <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-primary/20 shadow-lg relative">
+                  <Image
                     src={faculty.photo}
                     alt={faculty.name}
+                    width={192}
+                    height={192}
                     className="w-full h-full object-cover"
                   />
                 </div>

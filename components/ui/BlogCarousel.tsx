@@ -5,6 +5,7 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import {
   Carousel,
   CarouselContent,
@@ -200,12 +201,12 @@ const BlogCarousel = () => {
             Latest Updates
           </Badge>
           <BlurFade delay={0.25} inView>
-            <h2 className="mb-3 text-pretty text-3xl font-semibold md:mb-4 md:text-4xl lg:mb-6 lg:max-w-3xl lg:text-5xl">
+            <h2 className="mb-3 text-pretty text-4xl font-normal font-playfair md:mb-4 md:text-5xl lg:mb-6 lg:max-w-3xl lg:text-6xl mx-auto">
               The Entrepreneurial Times
             </h2>
           </BlurFade>
           <BlurFade delay={0.5} inView>
-            <p className="mb-8 text-muted-foreground md:text-base lg:max-w-2xl lg:text-lg">
+            <p className="mb-8 text-muted-foreground md:text-base lg:max-w-3xl lg:text-lg mx-auto">
               Take a look at the monthly newsletter of E-Cell IET Lucknow for
               the updates regarding the entrepreneurial world
             </p>
@@ -254,10 +255,13 @@ const BlogCarousel = () => {
               >
                 <div className="w-full h-full flex flex-col items-center justify-center">
                   <div className="aspect-[4/3] w-full h-auto p-0 flex items-center justify-center overflow-hidden">
-                    <img
+                    <Image
                       src={item.img}
                       alt={item.title}
+                      width={400}
+                      height={300}
                       className="object-cover w-full h-full rounded-xl shadow-lg"
+                      priority={index < 2}
                     />
                   </div>
                   <div className="w-full bg-transparent p-3 sm:p-4 flex flex-col items-start">

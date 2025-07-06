@@ -10,6 +10,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import { SparklesText } from "@/components/ui/sparkles-text";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
+import Image from "next/image";
 
 const galleryImages = [
   "/news.jpg",
@@ -32,9 +33,9 @@ export function Gallery() {
         colors={{ first: "#fff", second: "#9E7AFF" }}
       />
       <div
-        className="text-center font-[Italianno] mb-8"
+        className="text-center font-kapakana mb-8"
         style={{
-          fontSize: 34,
+          fontSize: 36,
           color: "white",
           textShadow:
             "0 0 12px rgba(255,255,255,0.7), 0 0 32px rgba(255,255,255,0.5)",
@@ -68,10 +69,13 @@ export function Gallery() {
             >
               <div className="w-full h-full flex items-center justify-center">
                 <CardContent className="aspect-[4/3] w-full h-auto p-0 flex items-center justify-center overflow-hidden">
-                  <img
+                  <Image
                     src={img}
                     alt={`Gallery image ${index + 1}`}
+                    width={400}
+                    height={300}
                     className="object-cover w-full h-full rounded-xl shadow-lg"
+                    priority={index < 2}
                   />
                 </CardContent>
               </div>

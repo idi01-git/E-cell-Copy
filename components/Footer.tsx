@@ -1,4 +1,5 @@
 import { FaLocationArrow } from "react-icons/fa6";
+import Image from "next/image";
 
 import { socialMedia } from "@/data";
 import MagicButton from "./MagicButton";
@@ -23,9 +24,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="w-full pt-20 pb-10" id="contact">
-      {/* background grid */}
-      <div className="w-full absolute left-0 -bottom-72 min-h-96 pointer-events-none"></div>
+    <footer className="w-full pt-20 pb-10 bg-transparent" id="contact">
       <div className="relative z-10 flex mt-16 md:flex-row flex-col justify-between items-center">
         <p className="md:text-base text-sm md:font-normal font-light">
           Designed & Developed by Shivansh
@@ -39,7 +38,14 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={link.img} alt={link.alt} className="w-6 h-6" />
+              <Image
+                src={link.img}
+                alt={link.alt}
+                width={24}
+                height={24}
+                className="w-6 h-6"
+                priority={false}
+              />
             </a>
           ))}
         </div>

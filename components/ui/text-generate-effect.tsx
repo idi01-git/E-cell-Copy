@@ -69,7 +69,7 @@ export const TextGenerateEffect = ({
     const interval = setInterval(runAnimation, repeatInterval);
 
     return () => clearInterval(interval);
-  }, [isMounted, repeatInterval]);
+  }, [isMounted, repeatInterval, runAnimation]);
 
   const renderWords = () => {
     return (

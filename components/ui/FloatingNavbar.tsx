@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export const FloatingNav = ({
   navItems,
@@ -71,7 +72,13 @@ export const FloatingNav = ({
           border: "1px solid rgba(255, 255, 255, 0.125)",
         }}
       >
-        <img src="ecell-logo.png" className=" h-[50x] w-[50px] m-0 " />
+        <Image
+          src="/ecell-logo.png"
+          alt="E-Cell Logo"
+          width={50}
+          height={50}
+          className="h-[50px] w-[50px] m-0"
+        />
         {navItems.map((navItem: any, idx: number) => (
           <Link
             key={`link=${idx}`}

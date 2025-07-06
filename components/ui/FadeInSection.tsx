@@ -26,7 +26,7 @@ export default function FadeInSection({
           controls.start({ opacity: 1, y: 0 });
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }
     );
     observer.observe(node);
     return () => observer.disconnect();

@@ -1,22 +1,25 @@
 "use client";
 
 import { navItems } from "@/data";
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
 
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/Footer";
-import Blogssec from "@/components/Blogssec";
-import Jordon from "@/components/Jordon";
-import About from "@/components/About";
-import Services from "@/components/Services";
-import Gallery from "@/components/ui/Gallery";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import CountdownDemo from "@/components/ui/CountdownDemo";
 import { BackgroundPaths } from "@/components/ui/animated-infinity-background";
 import FadeInSection from "@/components/ui/FadeInSection";
-import RadialOrbitalFeatureSection from "@/components/ui/RadialOrbitalFeatureSection";
 import MorphingText from "@/components/ui/morphing-text";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+
+// Lazy load components that are lower on the page
+const Services = lazy(() => import("@/components/Services"));
+const Blogssec = lazy(() => import("@/components/Blogssec"));
+const Gallery = lazy(() => import("@/components/ui/Gallery"));
+const RadialOrbitalFeatureSection = lazy(
+  () => import("@/components/ui/RadialOrbitalFeatureSection")
+);
+const Jordon = lazy(() => import("@/components/Jordon"));
 
 const Home = () => {
   useEffect(() => {
@@ -74,17 +77,57 @@ const Home = () => {
           </div>
         </FadeInSection>
         <FadeInSection>
-          <Services />
+          <Suspense
+            fallback={
+              <div className="h-96 flex items-center justify-center">
+                Loading Services...
+              </div>
+            }
+          >
+            <Services />
+          </Suspense>
         </FadeInSection>
         <FadeInSection>
-          <Blogssec />
+          <Suspense
+            fallback={
+              <div className="h-96 flex items-center justify-center">
+                Loading Blogs...
+              </div>
+            }
+          >
+            <Blogssec />
+          </Suspense>
         </FadeInSection>
         <FadeInSection>
-          <Gallery />
+          <Suspense
+            fallback={
+              <div className="h-96 flex items-center justify-center">
+                Loading Gallery...
+              </div>
+            }
+          >
+            <Gallery />
+          </Suspense>
         </FadeInSection>
-        <RadialOrbitalFeatureSection />
+        <Suspense
+          fallback={
+            <div className="h-96 flex items-center justify-center">
+              Loading Features...
+            </div>
+          }
+        >
+          <RadialOrbitalFeatureSection />
+        </Suspense>
         <FadeInSection>
-          <Jordon />
+          <Suspense
+            fallback={
+              <div className="h-96 flex items-center justify-center">
+                Loading Mentors...
+              </div>
+            }
+          >
+            <Jordon />
+          </Suspense>
         </FadeInSection>
         <Footer />
       </div>
