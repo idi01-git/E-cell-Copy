@@ -1,8 +1,17 @@
 "use client";
 import { useRef, useEffect, useState } from "react";
 import { Box, Lock, Search, Settings, Sparkles } from "lucide-react";
-import { GlowingEffect } from "@/components/ui/glowing-effect";
+import dynamic from "next/dynamic";
 import { HandWrittenTitle } from "@/components/ui/hand-writing-text";
+
+const GlowingEffect = dynamic(
+  () =>
+    import("@/components/ui/glowing-effect").then((mod) => mod.GlowingEffect),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
 
 const Services = () => {
   const [isInView, setIsInView] = useState(false);

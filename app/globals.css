@@ -130,4 +130,7 @@ img {
   .font-dancing {
     font-family: 'Dancing Script', cursive;
   }
+  .font-anton {
+    font-family: var(--font-anton), sans-serif;
+  }
 }

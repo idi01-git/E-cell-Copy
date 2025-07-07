@@ -53,6 +53,7 @@ const Navbar = ({
         width={32}
         height={32}
         className="rounded-full"
+        priority={true}
       />
     </motion.div>
   ),

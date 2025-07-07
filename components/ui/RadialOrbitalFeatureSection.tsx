@@ -2,6 +2,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Brain, Eye, Heart, Building, Link } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Anton } from "next/font/google";
+
+const anton = Anton({ weight: "400", subsets: ["latin"] });
 
 // Add CSS for wave pulse animation and central object effects
 const waveStyles = `
@@ -140,6 +143,7 @@ const defaultTimelineData: TimelineItem[] = [
 export default function RadialOrbitalFeatureSection({
   timelineData = defaultTimelineData,
 }: RadialOrbitalFeatureSectionProps) {
+  const [isMounted, setIsMounted] = useState(false);
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>(
     {}
   );
@@ -163,6 +167,12 @@ export default function RadialOrbitalFeatureSection({
       setPulseEffect({});
       setAutoRotate(true);
       setHiddenTitles({});
+    } else {
+      setTimeout(() => {
+        if (Object.keys(expandedItems).length === 0) {
+          setAutoRotate(true);
+        }
+      }, 0);
     }
   };
 
@@ -202,6 +212,7 @@ export default function RadialOrbitalFeatureSection({
   };
 
   useEffect(() => {
+    setIsMounted(true);
     let rotationTimer: NodeJS.Timeout;
 
     if (autoRotate) {
@@ -264,6 +275,8 @@ export default function RadialOrbitalFeatureSection({
     return relatedItems.includes(itemId) && pulseEffect[itemId];
   };
 
+  if (!isMounted) return null;
+
   return (
     <div
       className="w-full h-screen flex flex-col items-center justify-center bg-transparent overflow-hidden relative"
@@ -275,7 +288,7 @@ export default function RadialOrbitalFeatureSection({
 
       {/* Background Text */}
       <div
-        className="pointer-events-none whitespace-pre-wrap text-center text-[10rem] font-semibold leading-none absolute z-0 opacity-20 text-white tracking-wider"
+        className={`pointer-events-none whitespace-pre-wrap text-center text-[10rem] font-semibold leading-none absolute z-0 opacity-20 text-white tracking-wider ${anton.className}`}
         style={{ fontFamily: "var(--font-anton), sans-serif" }}
       >
         Our Goals

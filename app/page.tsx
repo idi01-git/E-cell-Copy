@@ -2,6 +2,7 @@
 
 import { navItems } from "@/data";
 import { useEffect, Suspense, lazy } from "react";
+import dynamic from "next/dynamic";
 
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/Footer";
@@ -15,11 +16,34 @@ import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 // Lazy load components that are lower on the page
 const Services = lazy(() => import("@/components/Services"));
 const Blogssec = lazy(() => import("@/components/Blogssec"));
-const Gallery = lazy(() => import("@/components/ui/Gallery"));
-const RadialOrbitalFeatureSection = lazy(
-  () => import("@/components/ui/RadialOrbitalFeatureSection")
+const Gallery = dynamic(() => import("@/components/ui/Gallery"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-96 flex items-center justify-center">
+      Loading Gallery...
+    </div>
+  ),
+});
+const Jordon = dynamic(() => import("@/components/Jordon"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-96 flex items-center justify-center">
+      Loading Mentors...
+    </div>
+  ),
+});
+
+const RadialOrbitalFeatureSection = dynamic(
+  () => import("@/components/ui/RadialOrbitalFeatureSection"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-96 flex items-center justify-center">
+        Loading Features...
+      </div>
+    ),
+  }
 );
-const Jordon = lazy(() => import("@/components/Jordon"));
 
 const Home = () => {
   useEffect(() => {
@@ -109,15 +133,17 @@ const Home = () => {
             <Gallery />
           </Suspense>
         </FadeInSection>
-        <Suspense
-          fallback={
-            <div className="h-96 flex items-center justify-center">
-              Loading Features...
-            </div>
-          }
-        >
-          <RadialOrbitalFeatureSection />
-        </Suspense>
+        <FadeInSection>
+          <Suspense
+            fallback={
+              <div className="h-96 flex items-center justify-center">
+                Loading Features...
+              </div>
+            }
+          >
+            <RadialOrbitalFeatureSection />
+          </Suspense>
+        </FadeInSection>
         <FadeInSection>
           <Suspense
             fallback={
