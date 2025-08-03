@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 // --- Helper Components & Data ---
 
@@ -126,7 +127,7 @@ const AnimatedTestimonials = ({
                     className="absolute inset-0 origin-bottom"
                     style={{ perspective: "1000px" }}
                   >
-                    <img
+                    <Image
                       src={testimonial.src}
                       alt={testimonial.name}
                       width={400}

@@ -1,2 +1,2 @@
 // Backup of the original Services component that uses BentoGrid
-export { default } from "@/components/ui/BentoGrid";
+export { BentoGrid } from "@/components/ui/BentoGrid";

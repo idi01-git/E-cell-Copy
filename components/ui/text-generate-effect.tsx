@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { motion, stagger, useAnimate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -24,7 +24,7 @@ export const TextGenerateEffect = ({
     setIsMounted(true);
   }, []);
 
-  const runAnimation = () => {
+  const runAnimation = useCallback(() => {
     if (!isMounted) return;
 
     // Reset all spans to initial state
@@ -57,7 +57,7 @@ export const TextGenerateEffect = ({
         }
       );
     }, 100); // Small delay to ensure reset is complete
-  };
+  }, [isMounted, animate, filter, duration, wordsArray.length]);
 
   useEffect(() => {
     if (!isMounted) return;
