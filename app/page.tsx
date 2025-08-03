@@ -156,7 +156,7 @@ const Home = () => {
             <Jordon />
           </Suspense>
         </FadeInSection>
-        
+
         {/* Contact Section with Title */}
         <FadeInSection>
           <div className="relative">
@@ -171,30 +171,33 @@ const Home = () => {
                       Connect?
                     </span>
                   </h2>
-                  
+
                   {/* Subtitle */}
                   <p className="text-sm md:text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
-                    Have an idea? Want to collaborate? Looking for mentorship? 
-                    <span className="text-yellow-400 font-medium"> We'd love to hear from you!</span>
+                    Have an idea? Want to collaborate? Looking for mentorship?
+                    <span className="text-yellow-400 font-medium">
+                      {" "}
+                      We&apos;d love to hear from you!
+                    </span>
                   </p>
                 </div>
-                
+
                 {/* Decorative Elements */}
                 <div className="flex items-center justify-center space-x-3 md:space-x-4 mt-1 md:mt-4">
                   <div className="w-8 md:w-16 h-px bg-gradient-to-r from-transparent via-yellow-400 to-transparent"></div>
                   <div className="w-1.5 md:w-3 h-1.5 md:h-3 bg-yellow-400 rounded-full animate-pulse"></div>
                   <div className="w-8 md:w-16 h-px bg-gradient-to-r from-transparent via-yellow-400 to-transparent"></div>
                 </div>
-                
+
                 {/* Call to Action */}
                 <div className="mt-1 md:mt-4">
                   <p className="text-xs md:text-sm text-white/50 uppercase tracking-wider">
-                    Let's Start Something Amazing Together
+                    Let&apos;s Start Something Amazing Together
                   </p>
                 </div>
               </div>
             </div>
-            
+
             {/* Contact Section Component */}
             <div className="mt-4 md:mt-8">
               <ContactSection

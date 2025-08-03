@@ -168,7 +168,7 @@ const AnimatedTestimonials = ({
                   {testimonials[active].designation}
                 </p>
                 <motion.p className="mt-6 md:mt-8 text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
-                  "{testimonials[active].quote}"
+                  &quot;{testimonials[active].quote}&quot;
                 </motion.p>
               </div>
             </motion.div>
