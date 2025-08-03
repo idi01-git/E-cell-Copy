@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Anton, Bebas_Neue } from "next/font/google";
+import { Inter, Anton, Bebas_Neue, Poppins } from "next/font/google";
 
 import "./globals.css";
 import { ThemeProvider } from "./provider";
@@ -14,6 +14,11 @@ const bebasNeue = Bebas_Neue({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-bebas-neue",
+});
+const poppins = Poppins({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
@@ -38,7 +43,6 @@ export default function RootLayout({
         <link rel="icon" href="/ecell-logo.png" sizes="any" />
         <link rel="preload" href="/ecell-logo.png" as="image" />
         <link rel="preload" href="/homepage.png" as="image" />
-        <link rel="preload" href="/services.png" as="image" />
         <link rel="preload" href="/goal.png" as="image" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -66,9 +70,28 @@ export default function RootLayout({
           as="style"
           href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap"
         />
+        {/* EmailJS Script */}
+        <script
+          type="text/javascript"
+          src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
+          async
+        />
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                if (typeof emailjs !== 'undefined') {
+                  emailjs.init("SsELCJJIDgQSbh_XE");
+                }
+              })();
+            `,
+          }}
+        />
       </head>
       <body
-        className={`${inter.className} ${anton.variable} ${bebasNeue.variable}`}
+        className={`${inter.className} ${anton.variable} ${bebasNeue.variable} ${poppins.variable}`}
+        suppressHydrationWarning
       >
         <ThemeProvider
           attribute="class"

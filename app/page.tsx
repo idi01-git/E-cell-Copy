@@ -12,9 +12,10 @@ import { BackgroundPaths } from "@/components/ui/animated-infinity-background";
 import FadeInSection from "@/components/ui/FadeInSection";
 import MorphingText from "@/components/ui/morphing-text";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
+import ContactSection from "@/components/ui/ContactSection";
 
 // Lazy load components that are lower on the page
-const Services = lazy(() => import("@/components/Services"));
+const Events = lazy(() => import("@/components/Services"));
 const Blogssec = lazy(() => import("@/components/Blogssec"));
 const Gallery = dynamic(() => import("@/components/ui/Gallery"), {
   ssr: false,
@@ -66,7 +67,7 @@ const Home = () => {
   }, []);
 
   return (
-    <main className="relative bg-transparent flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5">
+    <main className="relative bg-transparent flex justify-center items-center flex-col overflow-hidden mx-auto px-3 sm:px-6 lg:px-10">
       <Navbar />
       <BackgroundPaths
         title="BUILD INNOVATION"
@@ -75,18 +76,18 @@ const Home = () => {
         backgroundStyle="gradient"
       />
       <BackgroundBeams className="z-0" />
-      <div className="max-w-7xl w-full relative z-10 pt-44">
+      <div className="max-w-7xl w-full relative z-10 pt-12 md:pt-20 lg:pt-32 xl:pt-44">
         <FadeInSection>
           <CountdownDemo />
         </FadeInSection>
         <FadeInSection>
-          <div id="about" className="my-20 max-w-5xl mx-auto">
-            <div className="text-center mb-16">
+          <div id="about" className="my-6 md:my-12 lg:my-20 max-w-5xl mx-auto">
+            <div className="text-center mb-8 md:mb-16">
               <MorphingText
                 texts={["About E-Cell", "IET Lucknow"]}
-                className="mb-8"
+                className="mb-4 md:mb-8"
               />
-              <div className="w-24 h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent mx-auto mb-12"></div>
+              <div className="w-24 h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent mx-auto mb-8 md:mb-12"></div>
             </div>
             <FadeInSection>
               <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl p-8 md:p-12">
@@ -104,11 +105,11 @@ const Home = () => {
           <Suspense
             fallback={
               <div className="h-96 flex items-center justify-center">
-                Loading Services...
+                Loading Events...
               </div>
             }
           >
-            <Services />
+            <Events />
           </Suspense>
         </FadeInSection>
         <FadeInSection>
@@ -154,6 +155,57 @@ const Home = () => {
           >
             <Jordon />
           </Suspense>
+        </FadeInSection>
+        
+        {/* Contact Section with Title */}
+        <FadeInSection>
+          <div className="relative">
+            {/* Contact Section Title */}
+            <div className="max-w-6xl mx-auto px-4 mb-6 md:mb-8">
+              <div className="text-center space-y-2 md:space-y-4">
+                {/* Main Title */}
+                <div className="space-y-1 md:space-y-2">
+                  <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-white leading-tight">
+                    Ready to
+                    <span className="block bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 bg-clip-text text-transparent font-bold">
+                      Connect?
+                    </span>
+                  </h2>
+                  
+                  {/* Subtitle */}
+                  <p className="text-sm md:text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
+                    Have an idea? Want to collaborate? Looking for mentorship? 
+                    <span className="text-yellow-400 font-medium"> We'd love to hear from you!</span>
+                  </p>
+                </div>
+                
+                {/* Decorative Elements */}
+                <div className="flex items-center justify-center space-x-3 md:space-x-4 mt-1 md:mt-4">
+                  <div className="w-8 md:w-16 h-px bg-gradient-to-r from-transparent via-yellow-400 to-transparent"></div>
+                  <div className="w-1.5 md:w-3 h-1.5 md:h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+                  <div className="w-8 md:w-16 h-px bg-gradient-to-r from-transparent via-yellow-400 to-transparent"></div>
+                </div>
+                
+                {/* Call to Action */}
+                <div className="mt-1 md:mt-4">
+                  <p className="text-xs md:text-sm text-white/50 uppercase tracking-wider">
+                    Let's Start Something Amazing Together
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Contact Section Component */}
+            <div className="mt-4 md:mt-8">
+              <ContactSection
+                statusText="Ready to Innovate"
+                mainHeading="Let's Build"
+                gradientText="The Future"
+                description="Join E-Cell IET Lucknow in transforming bold entrepreneurial ideas into extraordinary ventures that drive innovation and create meaningful impact in the startup ecosystem."
+                buttonText="Get In Touch"
+              />
+            </div>
+          </div>
         </FadeInSection>
         <Footer />
       </div>

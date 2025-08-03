@@ -95,7 +95,7 @@ const useMorphingText = (texts: string[]) => {
     };
   }, [doMorph, doCooldown, isMounted]);
 
-  return { text1Ref, text2Ref };
+  return { text1Ref, text2Ref, isMounted };
 };
 
 interface MorphingTextProps {
@@ -104,20 +104,25 @@ interface MorphingTextProps {
 }
 
 const Texts: React.FC<Pick<MorphingTextProps, "texts">> = ({ texts }) => {
-  const { text1Ref, text2Ref } = useMorphingText(texts);
+  const { text1Ref, text2Ref, isMounted } = useMorphingText(texts);
+  
+  // Ensure consistent initial render between server and client
+  const initialText = texts[0] || "";
+  const secondText = texts[1] || texts[0] || "";
+  
   return (
     <>
       <span
         className="absolute inset-x-0 top-0 m-auto inline-block w-full"
         ref={text1Ref}
       >
-        {texts[0]}
+        {isMounted ? initialText : initialText}
       </span>
       <span
         className="absolute inset-x-0 top-0 m-auto inline-block w-full"
         ref={text2Ref}
       >
-        {texts[1] || texts[0]}
+        {isMounted ? secondText : secondText}
       </span>
     </>
   );

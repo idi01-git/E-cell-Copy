@@ -29,7 +29,7 @@ function HandWrittenTitle({ title = "Hand Written" }: HandWrittenTitleProps) {
           animate="visible"
           className="w-full h-full"
         >
-          <title>KokonutUI</title>
+          <title>Ecell Events</title>
           <motion.path
             d="M 950 90 
                            C 1250 300, 1050 480, 600 520

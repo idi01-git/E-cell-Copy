@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useAnimation } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function FadeInSection({
   children,
@@ -12,10 +12,15 @@ export default function FadeInSection({
 }) {
   const controls = useAnimation();
   const ref = useRef<HTMLDivElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const node = ref.current;
-    if (!node) return;
+    if (!node || !isMounted) return;
 
     // Check if IntersectionObserver is available (client-side only)
     if (typeof window === "undefined" || !window.IntersectionObserver) return;
@@ -30,7 +35,16 @@ export default function FadeInSection({
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [controls]);
+  }, [controls, isMounted]);
+
+  // During SSR, render children without animation to prevent hydration mismatch
+  if (!isMounted) {
+    return (
+      <div className={className}>
+        {children}
+      </div>
+    );
+  }
 
   return (
     <motion.div

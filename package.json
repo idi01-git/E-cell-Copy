@@ -10,8 +10,9 @@
     "deploy": "vercel --prod"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@radix-ui/react-slot": "^1.2.3",
-    "@tabler/icons-react": "^3.1.0",
+    "@tabler/icons-react": "^3.34.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "embla-carousel-autoplay": "^8.6.0",
@@ -24,6 +25,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.0.1",
+    "swiper": "^11.2.10",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vercel": "^44.2.7"

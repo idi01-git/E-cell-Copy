@@ -13,27 +13,29 @@ import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import Image from "next/image";
 
 const galleryImages = [
-  "/news.jpg",
-  "/goal.png",
-  "/services.png",
-  "/vineet.jpg",
-  "/news.webp",
+  "/gallery/1.jpg",
+  "/gallery/2.jpg",
+  "/gallery/3.jpg",
+  "/gallery/4.jpg",
+  "/gallery/5.jpg",
+  "/gallery/6.jpg",
+  "/gallery/7.jpg",
 ];
 
 export function Gallery() {
   return (
     <section
       id="gallery"
-      className="w-full flex flex-col items-center py-20 bg-background"
+      className="w-full flex flex-col items-center py-6 md:py-12 lg:py-20 bg-background"
     >
       <SparklesText
         text="Gallery"
-        className="text-center font-[Bebas Neue] text-5xl md:text-6xl font-bold mb-2 text-foreground"
+        className="text-center font-[Bebas Neue] text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-foreground"
         sparklesCount={9}
         colors={{ first: "#fff", second: "#9E7AFF" }}
       />
       <div
-        className="text-center font-kapakana mb-8"
+        className="text-center font-kapakana mb-4 md:mb-8"
         style={{
           fontSize: 36,
           color: "white",
@@ -85,7 +87,7 @@ export function Gallery() {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-      <LiquidButton size="lg" className="mt-8">
+      <LiquidButton size="lg" className="mt-4 md:mt-8">
         See More
       </LiquidButton>
     </section>

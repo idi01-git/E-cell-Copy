@@ -243,7 +243,13 @@ export default function RadialOrbitalFeatureSection({
 
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
-    const radius = 200;
+    // Responsive radius based on screen size
+    const radius =
+      typeof window !== "undefined" && window.innerWidth < 768
+        ? 120
+        : typeof window !== "undefined" && window.innerWidth < 1024
+        ? 160
+        : 200;
     const radian = (angle * Math.PI) / 180;
 
     const x = radius * Math.cos(radian) + centerOffset.x;
@@ -279,7 +285,7 @@ export default function RadialOrbitalFeatureSection({
 
   return (
     <div
-      className="w-full h-screen flex flex-col items-center justify-center bg-transparent overflow-hidden relative"
+      className="w-full min-h-[60vh] md:min-h-[80vh] lg:h-screen flex flex-col items-center justify-center bg-transparent overflow-hidden relative"
       ref={containerRef}
       onClick={handleContainerClick}
     >
@@ -294,7 +300,7 @@ export default function RadialOrbitalFeatureSection({
         Our Goals
       </div>
 
-      <div className="relative w-full max-w-4xl h-full flex items-center justify-center z-10">
+      <div className="relative w-full max-w-4xl h-full flex items-center justify-center z-10 px-2 sm:px-4">
         <div
           className="absolute w-full h-full flex items-center justify-center"
           ref={orbitRef}
@@ -304,16 +310,16 @@ export default function RadialOrbitalFeatureSection({
           }}
         >
           {/* Central Orb: with wave effect and custom orb-pulse animation */}
-          <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 via-blue-500 to-teal-500 animate-orb-pulse flex items-center justify-center z-10">
-            <div className="absolute w-20 h-20 rounded-full border border-white/20 animate-ping opacity-70"></div>
+          <div className="absolute w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-purple-500 via-blue-500 to-teal-500 animate-orb-pulse flex items-center justify-center z-10">
+            <div className="absolute w-16 h-16 md:w-20 md:h-20 rounded-full border border-white/20 animate-ping opacity-70"></div>
             <div
-              className="absolute w-24 h-24 rounded-full border border-white/10 animate-ping opacity-50"
+              className="absolute w-20 h-20 md:w-24 md:h-24 rounded-full border border-white/10 animate-ping opacity-50"
               style={{ animationDelay: "0.5s" }}
             ></div>
-            <div className="w-8 h-8 rounded-full bg-white/80 backdrop-blur-md" />
+            <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white/80 backdrop-blur-md" />
           </div>
 
-          <div className="absolute w-96 h-96 rounded-full border border-white/10"></div>
+          <div className="absolute w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full border border-white/10"></div>
 
           {timelineData.map((item, index) => {
             const position = calculateNodePosition(index, timelineData.length);
@@ -364,7 +370,7 @@ export default function RadialOrbitalFeatureSection({
 
                 <div
                   className={`
-                  w-10 h-10 rounded-full flex items-center justify-center relative
+                  w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center relative
                   ${
                     isExpanded
                       ? "bg-white text-black"
@@ -391,7 +397,13 @@ export default function RadialOrbitalFeatureSection({
                     zIndex: 1000, // Ensure logos appear above orbit lines
                   }}
                 >
-                  <Icon size={16} />
+                  <Icon
+                    size={
+                      typeof window !== "undefined" && window.innerWidth < 768
+                        ? 12
+                        : 16
+                    }
+                  />
                 </div>
 
                 <div
@@ -415,7 +427,7 @@ export default function RadialOrbitalFeatureSection({
                 </div>
 
                 {isExpanded && (
-                  <Card className="absolute top-20 left-1/2 -translate-x-1/2 w-[260px] min-h-[253px] bg-black/90 backdrop-blur-lg border-white/30 shadow-xl shadow-white/10 overflow-visible">
+                  <Card className="absolute top-16 md:top-20 left-1/2 -translate-x-1/2 w-[240px] md:w-[260px] min-h-[200px] md:min-h-[253px] bg-black/90 backdrop-blur-lg border-white/30 shadow-xl shadow-white/10 overflow-visible">
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-white/50"></div>
                     <div className="p-4 pb-2">
                       <div className="flex justify-between items-center">

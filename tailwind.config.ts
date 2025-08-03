@@ -26,6 +26,9 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        poppins: ["var(--font-poppins)", "Poppins", "sans-serif"],
+      },
       colors: {
         shivansh: "rgba(0,3,25,1)",
         black: {

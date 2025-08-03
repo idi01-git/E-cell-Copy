@@ -93,10 +93,27 @@ export const TextGenerateEffect = ({
     );
   };
 
+  // Show loading state during SSR to prevent hydration mismatch
+  if (!isMounted) {
+    return (
+      <div className={cn(className)}>
+        <div className="mt-4">
+          <div className="dark:text-white text-black leading-snug tracking-wide">
+            {wordsArray.map((word, idx) => (
+              <span key={word + idx} className="opacity-100">
+                {word}{" "}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={cn("font-bold", className)}>
+    <div className={cn(className)}>
       <div className="mt-4">
-        <div className=" dark:text-white text-black text-2xl leading-snug tracking-wide">
+        <div className="dark:text-white text-black leading-snug tracking-wide">
           {renderWords()}
         </div>
       </div>

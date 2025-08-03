@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, User } from "lucide-react";
+import { Menu, X, ChevronDown, User, Mail } from "lucide-react";
 import Image from "next/image";
 import { navItems } from "@/data";
 
@@ -16,8 +16,22 @@ const ProfileIcon = ({ className = "" }: { className?: string }) => (
     transition={{ duration: 0.3, delay: 0.2 }}
     whileHover={{ scale: 1.05 }}
   >
-    <button className="inline-flex items-center justify-center w-10 h-10 text-foreground/70 hover:text-foreground bg-background border border-border rounded-full hover:bg-accent transition-colors">
-      <User className="h-5 w-5" />
+    <button 
+      onClick={() => {
+        const contactSection = document.querySelector('#contact');
+        if (contactSection) {
+          const navbarHeight = 160;
+          const elementPosition = contactSection.getBoundingClientRect().top + window.pageYOffset;
+          const offsetPosition = elementPosition - navbarHeight - 20;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }
+      }}
+      className="inline-flex items-center justify-center w-10 h-10 text-foreground/70 hover:text-foreground bg-background border border-border rounded-full hover:bg-accent transition-colors"
+    >
+      <Mail className="h-5 w-5" />
     </button>
   </motion.div>
 );
@@ -65,9 +79,16 @@ const Navbar = ({
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const [activeItem, setActiveItem] = useState(0); // About is at index 0
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Improved scroll detection for active section
   const handleScroll = useCallback(() => {
+    if (!isMounted) return;
+    
     const scrollPosition = window.scrollY;
     const navbarHeight = 160; // Total navbar height including padding
     const offset = navbarHeight + 50; // Additional offset for better detection
@@ -116,9 +137,11 @@ const Navbar = ({
     if (currentSectionIndex !== activeItem) {
       setActiveItem(currentSectionIndex);
     }
-  }, [menuItems, activeItem]);
+  }, [menuItems, activeItem, isMounted]);
 
   useEffect(() => {
+    if (!isMounted) return;
+    
     // Run once on mount to set initial state
     handleScroll();
 
@@ -136,7 +159,7 @@ const Navbar = ({
 
     window.addEventListener("scroll", scrollListener, { passive: true });
     return () => window.removeEventListener("scroll", scrollListener);
-  }, [handleScroll]);
+  }, [handleScroll, isMounted]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -170,6 +193,54 @@ const Navbar = ({
       });
     }
   };
+
+  // During SSR, render a simplified version to prevent hydration mismatch
+  if (!isMounted) {
+    return (
+      <div className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full py-8 px-4 h-28">
+        <div className="flex items-center justify-between px-8 py-4 bg-background/80 backdrop-blur-md border border-border rounded-full shadow-lg w-full max-w-4xl relative">
+          <div className="flex items-center">
+            <div className="mr-6">
+              <div className="w-8 h-8 cursor-pointer">
+                <Image
+                  src="/ecell-logo.png"
+                  alt="E-Cell Logo"
+                  width={32}
+                  height={32}
+                  className="rounded-full"
+                  priority={true}
+                />
+              </div>
+            </div>
+          </div>
+          <nav className="hidden md:flex items-center relative bg-background/50 backdrop-blur-sm rounded-full px-2 py-1 border border-border/50">
+            {menuItems.map((item, index) => (
+              <div key={item.name} className="relative z-10" style={{ width: "120px" }}>
+                <div className="flex justify-center">
+                  <a
+                    href={item.link}
+                    className="flex items-center text-sm font-medium px-4 py-2 rounded-full transition-colors relative text-foreground/70"
+                  >
+                    {item.name}
+                  </a>
+                </div>
+              </div>
+            ))}
+          </nav>
+          <div className="hidden md:flex items-center">
+            <div className="inline-flex">
+              <button className="inline-flex items-center justify-center w-10 h-10 text-foreground/70 hover:text-foreground bg-background border border-border rounded-full hover:bg-accent transition-colors">
+                <Mail className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+          <button className="md:hidden flex items-center">
+            <Menu className="h-6 w-6 text-foreground" />
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-center w-full py-8 px-4 h-28">
