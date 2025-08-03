@@ -27,8 +27,8 @@ export const projects = [
   },
   {
     id: 3,
-    title: "Innovation in Technology: What's Next?",
-    des: "Dive into the latest technological innovations and how they're creating new opportunities for entrepreneurs.",
+    title: "Innovation in Technology: What&apos;s Next?",
+    des: "Dive into the latest technological innovations and how they&apos;re creating new opportunities for entrepreneurs.",
     img: "/news/3.jpg",
     iconLists: [],
     link: "https://medium.com/@ecell-iet-lucknow/innovation-in-technology-whats-next",
