@@ -8,7 +8,7 @@ import Image from "next/image";
 import { navItems } from "@/data";
 
 // Profile Icon Component
-const ProfileIcon = ({ className = "" }: { className?: string }) => (
+const ProfileIcon = ({ className = "", onContactClick }: { className?: string; onContactClick?: () => void }) => (
   <motion.div
     className={`inline-flex ${className}`}
     initial={{ opacity: 0, x: 20 }}
@@ -27,6 +27,10 @@ const ProfileIcon = ({ className = "" }: { className?: string }) => (
             top: offsetPosition,
             behavior: "smooth",
           });
+        }
+        // Close mobile menu if callback is provided
+        if (onContactClick) {
+          onContactClick();
         }
       }}
       className="inline-flex items-center justify-center w-10 h-10 text-foreground/70 hover:text-foreground bg-background border border-border rounded-full hover:bg-accent transition-colors"
@@ -368,7 +372,7 @@ const Navbar = ({
                 </motion.div>
               ))}
               <div className="pt-6 flex items-center justify-center">
-                <ProfileIcon />
+                <ProfileIcon onContactClick={toggleMenu} />
               </div>
             </div>
           </motion.div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { navItems } from "@/data";
-import { useEffect, Suspense, lazy } from "react";
+import { useState, useEffect, Suspense, lazy } from "react";
 import dynamic from "next/dynamic";
 
 import Navbar from "@/components/ui/Navbar";
@@ -13,6 +13,7 @@ import FadeInSection from "@/components/ui/FadeInSection";
 import MorphingText from "@/components/ui/morphing-text";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import ContactSection from "@/components/ui/ContactSection";
+import FloatingContactButton from "@/components/ui/FloatingContactButton";
 
 // Lazy load components that are lower on the page
 const Events = lazy(() => import("@/components/Services"));
@@ -47,6 +48,10 @@ const RadialOrbitalFeatureSection = dynamic(
 );
 
 const Home = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   useEffect(() => {
     // Use a timeout to ensure this runs after hydration
     const timer = setTimeout(() => {
@@ -197,21 +202,28 @@ const Home = () => {
                 </div>
               </div>
             </div>
-
-            {/* Contact Section Component */}
-            <div className="mt-4 md:mt-8">
-              <ContactSection
-                statusText="Ready to Innovate"
-                mainHeading="Let's Build"
-                gradientText="The Future"
-                description="Join E-Cell IET Lucknow in transforming bold entrepreneurial ideas into extraordinary ventures that drive innovation and create meaningful impact in the startup ecosystem."
-                buttonText="Get In Touch"
-              />
-            </div>
           </div>
         </FadeInSection>
+        {/* ContactSection is always mounted, but visually below the animated title */}
+        <div className="mt-4 md:mt-8">
+          <ContactSection
+            statusText="Ready to Innovate"
+            mainHeading="Let's Build"
+            gradientText="The Future"
+            description="Join E-Cell IET Lucknow in transforming bold entrepreneurial ideas into extraordinary ventures that drive innovation and create meaningful impact in the startup ecosystem."
+            buttonText="Get In Touch"
+            isModalOpen={isModalOpen}
+            openModal={openModal}
+            closeModal={closeModal}
+          />
+        </div>
         <Footer />
       </div>
+      
+      {/* Floating Contact Button */}
+      {!isModalOpen && (
+        <FloatingContactButton openModal={openModal} />
+      )}
     </main>
   );
 };

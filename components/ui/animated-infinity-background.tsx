@@ -101,7 +101,7 @@ export function BackgroundPaths({
   return (
     <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background pt-16 md:pt-24 lg:pt-32">
       {/* Fade-out gradient at the top for smooth merging with Navbar */}
-      <div className="absolute top-0 left-0 w-full h-32 pointer-events-none z-20 bg-gradient-to-t from-transparent to-background" />
+      <div className="absolute top-0 left-0 w-full h-32 pointer-events-none z-10 bg-gradient-to-t from-transparent to-background" />
       {/* Animated golden gradient orb */}
       {showGradientOrb && (
         <motion.div
@@ -234,10 +234,10 @@ export function BackgroundPaths({
         </motion.div>
       </div>
       {/* Fade-out gradient at the bottom for smooth merging */}
-      <div className="absolute bottom-0 left-0 w-full h-32 pointer-events-none z-20 bg-gradient-to-b from-transparent to-background" />
+      <div className="absolute bottom-0 left-0 w-full h-32 pointer-events-none z-10 bg-gradient-to-b from-transparent to-background" />
       {/* Horizontal fade gradients for left and right edges */}
-      <div className="absolute left-0 top-0 h-full w-24 pointer-events-none z-20 bg-gradient-to-l from-transparent to-background" />
-      <div className="absolute right-0 top-0 h-full w-24 pointer-events-none z-20 bg-gradient-to-r from-transparent to-background" />
+      <div className="absolute left-0 top-0 h-full w-24 pointer-events-none z-10 bg-gradient-to-l from-transparent to-background" />
+      <div className="absolute right-0 top-0 h-full w-24 pointer-events-none z-10 bg-gradient-to-r from-transparent to-background" />
     </div>
   );
 }

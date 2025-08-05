@@ -34,8 +34,8 @@ export const CardCarousel: React.FC<CarouselProps> = ({
   .swiper {
     width: 100%;
     padding-bottom: 50px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 8px;
+    padding-right: 8px;
   }
   
   .swiper-slide {
@@ -70,15 +70,15 @@ export const CardCarousel: React.FC<CarouselProps> = ({
 
   @media (min-width: 768px) {
     .swiper {
-      padding-left: 60px;
-      padding-right: 60px;
+      padding-left: 32px;
+      padding-right: 32px;
     }
   }
   `
   return (
     <div className="w-full">
       <style>{css}</style>
-      <div className="mx-auto w-full max-w-6xl rounded-[24px] border border-black/5 p-2 shadow-sm md:rounded-t-[44px]">
+      <div className="mx-auto w-full max-w-7xl rounded-[24px] border border-black/5 p-2 shadow-sm md:rounded-t-[44px]">
         <div className="relative mx-auto flex w-full flex-col rounded-[24px] border border-black/5 bg-neutral-800/5 p-2 shadow-sm md:items-start md:gap-8 md:rounded-b-[20px] md:rounded-t-[40px] md:p-2">
           <div className="flex w-full items-center justify-center gap-4">
             <div className="w-full">

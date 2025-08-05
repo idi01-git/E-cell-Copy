@@ -131,7 +131,7 @@ const GlowCard: React.FC<GlowCardProps> = ({
         backgroundAttachment: "fixed",
         border: "var(--border-size) solid var(--backup-border)",
         position: "relative",
-        touchAction: "none",
+        touchAction: "auto",
       };
 
     // Add width and height if provided
@@ -163,6 +163,7 @@ const GlowCard: React.FC<GlowCardProps> = ({
       mask-composite: intersect;
       opacity: 0; /* Initially hidden */
       transition: opacity 0.3s ease-in-out; /* Smooth transition for opacity */
+      touch-action: none; /* Prevent touch events on pseudo-elements */
     }
 
     [data-glow]:hover::before,
@@ -204,11 +205,24 @@ const GlowCard: React.FC<GlowCardProps> = ({
       background: none;
       pointer-events: none;
       border: none;
+      touch-action: none;
     }
     
     [data-glow] > [data-glow]::before {
       inset: -10px;
       border-width: 10px;
+    }
+
+    /* Mobile-specific fixes */
+    @media (max-width: 768px) {
+      [data-glow] {
+        touch-action: pan-y; /* Allow vertical scrolling on mobile */
+      }
+      
+      [data-glow]::before,
+      [data-glow]::after {
+        display: none; /* Disable glow effects on mobile to prevent interference */
+      }
     }
   `;
 
@@ -412,7 +426,7 @@ const FacultyGrid: React.FC = () => {
       name: "Prof. Vineet Kansal",
       position: "Director",
       subject: "IET Lucknow",
-      photo: "/vineet.jpg",
+      photo: "/mentors/vk.webp",
       email: "director@ietlucknow.ac.in",
       phone: "+91 (522) 123-4567",
       office: "Director Office, IET Lucknow",
@@ -431,7 +445,7 @@ const FacultyGrid: React.FC = () => {
       name: "Dr. Pushkar Tripathi",
       position: "Chairman",
       subject: "IIC Lucknow",
-      photo: "/vineet.jpg",
+      photo: "/mentors/pt.webp",
       email: "chairman.iic@ietlucknow.ac.in",
       phone: "+91 (522) 234-5678",
       office: "IIC Office, IET Lucknow",
@@ -450,7 +464,7 @@ const FacultyGrid: React.FC = () => {
       name: "Dr. Anurag Verma",
       position: "Founder",
       subject: "E-Cell IET Lucknow",
-      photo: "/vineet.jpg",
+      photo: "/mentors/av.webp",
       email: "founder@ecellietlucknow.ac.in",
       phone: "+91 (522) 345-6789",
       office: "E-Cell Office, IET Lucknow",

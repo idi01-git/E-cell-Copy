@@ -12,49 +12,49 @@ const testimonials = [
       "E-Summit 2024 was an incredible experience that brought together the brightest minds in entrepreneurship. The networking opportunities and insights gained were invaluable for our startup journey.",
     name: "E-Summit 2024",
     designation: "Annual Entrepreneurship Summit",
-    src: "/events/1.jpg",
+    src: "/events/1.webp",
   },
   {
     quote:
       "Startup Weekend was intense but incredibly rewarding. We went from idea to prototype in just 48 hours. The mentors and judges provided invaluable feedback that shaped our business model.",
     name: "Startup Weekend",
     designation: "48-Hour Startup Challenge",
-    src: "/events/2.jpg",
+    src: "/events/2.webp",
   },
   {
     quote:
       "The Innovation Bootcamp series transformed our understanding of entrepreneurship. The hands-on workshops and expert sessions gave us practical skills that we use daily in our ventures.",
     name: "Innovation Bootcamp",
     designation: "Intensive Workshop Series",
-    src: "/events/3.jpg",
+    src: "/events/3.webp",
   },
   {
     quote:
       "Pitch Perfect was nerve-wracking but exhilarating! Presenting our startup to industry experts and receiving constructive feedback helped us refine our pitch and business strategy.",
     name: "Pitch Perfect",
     designation: "Startup Pitching Competition",
-    src: "/events/4.jpg",
+    src: "/events/4.webp",
   },
   {
     quote:
       "Tech Expo showcased the incredible innovation happening on campus. Seeing other students&apos; projects and getting feedback from industry professionals was inspiring and motivating.",
     name: "Tech Expo",
     designation: "Innovation Showcase",
-    src: "/events/5.jpg",
+    src: "/events/5.webp",
   },
   {
     quote:
       "The mentorship program connected us with successful entrepreneurs who shared their journey and provided guidance. Their insights helped us avoid common pitfalls and accelerate our growth.",
     name: "Mentorship Program",
     designation: "Entrepreneurial Guidance",
-    src: "/events/6.jpg",
+    src: "/events/6.webp",
   },
   {
     quote:
       "The networking events organized by E-Cell opened doors we never imagined. We met potential investors, partners, and mentors who have been instrumental in our startup&apos;s success.",
     name: "Networking Events",
     designation: "Community Building",
-    src: "/events/7.jpg",
+    src: "/events/7.webp",
   },
 ];
 
@@ -95,7 +95,7 @@ const AnimatedTestimonials = ({
   const randomRotate = () => `${Math.floor(Math.random() * 16) - 8}deg`;
 
   return (
-    <div className="mx-auto max-w-sm px-4 py-20 font-sans antialiased md:max-w-4xl md:px-8 lg:px-12">
+    <div className="mx-auto max-w-sm px-4 py-8 md:py-16 lg:py-20 font-sans antialiased md:max-w-4xl md:px-8 lg:px-12">
       <div className="relative grid grid-cols-1 gap-y-12 md:grid-cols-2 md:gap-x-20">
         {/* Image Section */}
         <div className="flex items-center justify-center">
@@ -205,33 +205,7 @@ function AnimatedTestimonialsDemo() {
 // This is the root of our application.
 export function Component() {
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-slate-50 dark:bg-slate-950">
-      {/* Animated grid background with 10% opacity */}
-      <style>
-        {`
-                @keyframes animate-grid {
-                    0% { background-position: 0% 50%; }
-                    100% { background-position: 100% 50%; }
-                }
-                .animated-grid {
-                    width: 200%;
-                    height: 200%;
-                    /* Grid color for light and dark mode */
-                    background-image: 
-                        linear-gradient(to right, #e2e8f0 1px, transparent 1px), 
-                        linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
-                    background-size: 3rem 3rem;
-                    animation: animate-grid 40s linear infinite alternate;
-                }
-                .dark .animated-grid {
-                    background-image: 
-                        linear-gradient(to right, #1e293b 1px, transparent 1px), 
-                        linear-gradient(to bottom, #1e293b 1px, transparent 1px);
-                }
-            `}
-      </style>
-      <div className="animated-grid absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10" />
-
+    <div className="relative w-full">
       {/* Content */}
       <div className="z-10">
         <AnimatedTestimonialsDemo />

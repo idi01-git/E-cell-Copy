@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Sparkles, ArrowUpRight, X, CheckCircle, AlertCircle, Mail, Phone, FileText } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ContactSectionProps {
   statusText?: string;
@@ -11,6 +12,9 @@ interface ContactSectionProps {
   description?: string;
   buttonText?: string;
   className?: string;
+  isModalOpen: boolean;
+  openModal: () => void;
+  closeModal: () => void;
 }
 
 interface FormData {
@@ -36,9 +40,11 @@ const ContactSection: React.FC<ContactSectionProps> = ({
   gradientText = "Something Epic",
   description = "Transform your boldest ideas into extraordinary digital experiences that captivate, inspire, and drive meaningful results for your business.",
   buttonText = "Contact Us",
-  className = ""
+  className = "",
+  isModalOpen,
+  openModal,
+  closeModal,
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -93,20 +99,6 @@ const ContactSection: React.FC<ContactSectionProps> = ({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isModalOpen]);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-    setErrors({});
-    setShowSuccess(false);
-    setIsSuccess(false);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setFormData({ name: '', email: '', subject: '', phone: '', message: '' });
-    setErrors({});
-    setIsSuccess(false);
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -315,120 +307,11 @@ const ContactSection: React.FC<ContactSectionProps> = ({
 
   return (
     <>
-      <div className={`relative w-full min-h-screen bg-black overflow-hidden ${className}`} id="contact">
-      {/* CSS Animations */}
-      <style jsx global>{`
-        .grid-pattern {
-          background-image: 
-            linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-          background-size: 60px 60px;
-        }
-        
-        @keyframes pulse-slow {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 0.6; }
-        }
-        
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        
-        @keyframes slide-up {
-          from { 
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to { 
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        @keyframes gradient-shift {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        
-        @keyframes flip {
-          to { transform: rotate(360deg); }
-        }
-        
-        @keyframes rotate {
-          to { transform: rotate(360deg); }
-        }
-        
-        .animate-pulse-slow {
-          animation: pulse-slow 4s ease-in-out infinite;
-        }
-        
-        .animate-fade-in {
-          animation: fade-in 1s ease-out forwards;
-        }
-        
-        .animate-slide-up {
-          animation: slide-up 1s ease-out forwards;
-        }
-        
-        .animate-gradient-shift {
-          background-size: 200% 200%;
-          animation: gradient-shift 3s ease infinite;
-        }
-        
-        .animate-delay-200 {
-          animation-delay: 0.2s;
-        }
-        
-        .animate-delay-400 {
-          animation-delay: 0.4s;
-        }
-        
-        .animate-delay-600 {
-          animation-delay: 0.6s;
-        }
-        
-        .animate-delay-1000 {
-          animation-delay: 1s;
-        }
-        
-        .animate-flip {
-          animation: flip 6s infinite steps(2, end);
-        }
-        
-        .animate-rotate {
-          animation: rotate 3s linear infinite;
-        }
-        
-        .spark {
-          mask: linear-gradient(black, transparent 50%);
-        }
-        
-        .spark::before {
-          background: conic-gradient(from 0deg, transparent 0deg 340deg, black 360deg);
-          inset: 0 auto auto 50%;
-          transform: translate(-50%, -15%);
-        }
-      `}</style>
-
-      {/* Mesh Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/5" />
-      
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 grid-pattern opacity-20" />
-      
-      {/* Floating Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/[0.03] rounded-full blur-3xl animate-pulse-slow" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-white/[0.05] rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '2s' }} />
-      
-      {/* Main Container */}
-      <div className="relative z-10 flex items-center justify-center min-h-[50vh] md:min-h-screen p-2 md:p-4">
+      <div className={`w-full flex items-center justify-center p-2 md:p-4 pt-6 md:pt-8 ${className}`} id="contact">
         <div className="w-full max-w-7xl mx-auto">
           <div className="group relative backdrop-blur-2xl hover:backdrop-blur-3xl transition-all duration-700 bg-white/5 border border-white/20 rounded-3xl p-4 md:p-12 lg:p-16 hover:shadow-2xl hover:shadow-white/10">
-            
             {/* Content Grid */}
             <div className="grid lg:grid-cols-2 gap-4 md:gap-8 lg:gap-16 items-start">
-              
               {/* Left Content */}
               <div className="space-y-4 md:space-y-8">
                 {/* Status Badge - Above heading */}
@@ -441,7 +324,6 @@ const ContactSection: React.FC<ContactSectionProps> = ({
                     <Sparkles className="w-4 h-4 text-yellow-400" />
                   </div>
                 </div>
-
                 {/* Main Heading */}
                 <div className="animate-slide-up animate-delay-400">
                   <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-extralight leading-[0.85] tracking-[-0.03em] text-white">
@@ -451,7 +333,6 @@ const ContactSection: React.FC<ContactSectionProps> = ({
                     </span>
                   </h1>
                 </div>
-
                 {/* Description */}
                 <div className="animate-fade-in animate-delay-600">
                   <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-2xl font-light">
@@ -459,253 +340,258 @@ const ContactSection: React.FC<ContactSectionProps> = ({
                   </p>
                 </div>
               </div>
-
               {/* Right Content - CTA Button moved to bottom right */}
               <div className="flex justify-end items-end h-full lg:pt-20">
-                                  <div className="animate-fade-in animate-delay-1000">
-                    <button 
-                      onClick={openModal}
-                      className="group relative grid overflow-hidden rounded-full px-8 py-4 transition-all duration-200 shadow-[0_1000px_0_0_hsl(0_0%_85%)_inset] hover:shadow-lg min-w-[180px] bg-white text-black hover:scale-105"
-                    >
-                      <span className="spark absolute inset-0 h-[100%] w-[100%] animate-flip overflow-hidden rounded-full [mask:linear-gradient(black,_transparent_50%)] before:absolute before:aspect-square before:w-[200%] before:bg-[conic-gradient(from_0deg,transparent_0_340deg,black_360deg)] before:rotate-[-90deg] before:animate-rotate before:content-[''] before:[inset:0_auto_auto_50%] before:[translate:-50%_-15%]" />
-                      <span className="backdrop absolute inset-px rounded-[22px] transition-colors duration-200 bg-neutral-100 group-hover:bg-neutral-200" />
-                      <span className="z-10 flex items-center justify-center gap-2 text-sm font-medium">
-                        <span>{buttonText}</span>
-                        <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                      </span>
-                    </button>
-                  </div>
+                <div className="animate-fade-in animate-delay-1000">
+                  <button 
+                    onClick={openModal}
+                    className="group relative grid overflow-hidden rounded-full px-8 py-4 transition-all duration-200 shadow-[0_1000px_0_0_hsl(0_0%_85%)_inset] hover:shadow-lg min-w-[180px] bg-white text-black hover:scale-105"
+                  >
+                    <span className="spark absolute inset-0 h-[100%] w-[100%] animate-flip overflow-hidden rounded-full [mask:linear-gradient(black,_transparent_50%)] before:absolute before:aspect-square before:w-[200%] before:bg-[conic-gradient(from_0deg,transparent_0_340deg,black_360deg)] before:rotate-[-90deg] before:animate-rotate before:content-[''] before:[inset:0_auto_auto_50%] before:[translate:-50%_-15%]" />
+                    <span className="backdrop absolute inset-px rounded-[22px] transition-colors duration-200 bg-neutral-100 group-hover:bg-neutral-200" />
+                    <span className="z-10 flex items-center justify-center gap-2 text-sm font-medium">
+                      <span>{buttonText}</span>
+                      <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
-
             {/* Hover Glow Effect */}
             <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-white/0 via-white/0 to-white/0 group-hover:from-white/5 group-hover:via-white/5 group-hover:to-white/5 transition-all duration-700 pointer-events-none" />
           </div>
         </div>
       </div>
-    </div>
 
       {/* Modal Overlay */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
-          {/* Backdrop */}
-          <div 
-            className="absolute inset-0 bg-black bg-opacity-70 backdrop-blur-sm transition-opacity duration-300"
-            onClick={closeModal}
-          />
-          
-          {/* Modal */}
-          <div 
-            ref={modalRef}
-            className="relative w-full max-w-md bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl transform transition-all duration-300 scale-100 opacity-100 max-h-[90vh] overflow-hidden"
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-6"
+            initial={{ opacity: 0, scale: 0.7, y: 100 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.7, y: 100 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-neutral-800">
-              <h2 className="text-xl font-semibold text-white">
-                {isSuccess ? 'Success!' : 'Contact Us'}
-              </h2>
-              <button
-                onClick={closeModal}
-                className="p-2 text-neutral-400 hover:text-white transition-colors duration-200 rounded-full hover:bg-neutral-800"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+            {/* Backdrop */}
+            <div 
+              className="absolute inset-0 bg-black bg-opacity-20 md:bg-opacity-70 backdrop-blur-sm transition-opacity duration-300"
+              onClick={closeModal}
+            />
+            
+            {/* Modal */}
+            <div 
+              ref={modalRef}
+              className="relative w-full max-w-md bg-neutral-900 border border-neutral-800 rounded-2xl shadow-2xl transform transition-all duration-300 scale-100 opacity-100 max-h-[90vh] overflow-hidden"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b border-neutral-800">
+                <h2 className="text-xl font-semibold text-white">
+                  {isSuccess ? 'Success!' : 'Contact Us'}
+                </h2>
+                <button
+                  onClick={closeModal}
+                  className="p-2 text-neutral-400 hover:text-white transition-colors duration-200 rounded-full hover:bg-neutral-800"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
-            {/* Content */}
-            <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
-              {isSuccess ? (
-                // Success Animation
-                <div className="flex flex-col items-center justify-center py-6 space-y-4">
-                  {/* Animated Checkmark */}
-                  <div className="relative">
-                    <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center animate-pulse">
-                      <CheckCircle className="w-10 h-10 text-white animate-bounce" />
-                    </div>
-                    {/* Ripple effect */}
-                    <div className="absolute inset-0 w-16 h-16 bg-green-500 rounded-full animate-ping opacity-75"></div>
-                    <div className="absolute inset-0 w-16 h-16 bg-green-500 rounded-full animate-ping opacity-50" style={{ animationDelay: '0.5s' }}></div>
-                  </div>
-                  
-                  {/* Success Message */}
-                  <div className="text-center space-y-2">
-                    <h3 className="text-xl font-bold text-white">Message Sent!</h3>
-                    <p className="text-white/70 text-sm">
-                      Thank you for reaching out. We&apos;ll get back to you soon!
-                    </p>
-                  </div>
-                  
-                  {/* Progress Bar */}
-                  <div className="w-full bg-white/10 rounded-full h-1">
-                    <div className="bg-gradient-to-r from-green-500 to-green-600 h-1 rounded-full animate-pulse" style={{ animationDuration: '3s' }}></div>
-                  </div>
-                </div>
-              ) : (
-                // Contact Form
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  {/* Name Field */}
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
-                      Name <span className="text-red-400">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className={`w-full px-4 py-2 bg-neutral-800 border rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 ${
-                        errors.name ? 'border-red-500' : 'border-neutral-700'
-                      }`}
-                      placeholder="Enter your name"
-                    />
-                    {errors.name && (
-                      <p className="mt-1 text-sm text-red-400 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.name}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Email Field */}
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
-                      Email <span className="text-red-400">*</span>
-                    </label>
+              {/* Content */}
+              <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+                {isSuccess ? (
+                  // Success Animation
+                  <div className="flex flex-col items-center justify-center py-6 space-y-4">
+                    {/* Animated Checkmark */}
                     <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400" />
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        className={`w-full pl-10 pr-4 py-2 bg-neutral-800 border rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 ${
-                          errors.email ? 'border-red-500' : 'border-neutral-700'
-                        }`}
-                        placeholder="Enter your email"
-                      />
+                      <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center animate-pulse">
+                        <CheckCircle className="w-10 h-10 text-white animate-bounce" />
+                      </div>
+                      {/* Ripple effect */}
+                      <div className="absolute inset-0 w-16 h-16 bg-green-500 rounded-full animate-ping opacity-75"></div>
+                      <div className="absolute inset-0 w-16 h-16 bg-green-500 rounded-full animate-ping opacity-50" style={{ animationDelay: '0.5s' }}></div>
                     </div>
-                    {errors.email && (
-                      <p className="mt-1 text-sm text-red-400 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.email}
+                    
+                    {/* Success Message */}
+                    <div className="text-center space-y-2">
+                      <h3 className="text-xl font-bold text-white">Message Sent!</h3>
+                      <p className="text-white/70 text-sm">
+                        Thank you for reaching out. We&apos;ll get back to you soon!
                       </p>
-                    )}
+                    </div>
+                    
+                    {/* Progress Bar */}
+                    <div className="w-full bg-white/10 rounded-full h-1">
+                      <div className="bg-gradient-to-r from-green-500 to-green-600 h-1 rounded-full animate-pulse" style={{ animationDuration: '3s' }}></div>
+                    </div>
                   </div>
-
-                  {/* Subject Field */}
-                  <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-white mb-2">
-                      Subject <span className="text-red-400">*</span>
-                    </label>
-                    <div className="relative">
-                      <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                ) : (
+                  // Contact Form
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    {/* Name Field */}
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
+                        Name <span className="text-red-400">*</span>
+                      </label>
                       <input
                         type="text"
-                        id="subject"
-                        name="subject"
-                        value={formData.subject}
+                        id="name"
+                        name="name"
+                        value={formData.name}
                         onChange={handleInputChange}
-                        className={`w-full pl-10 pr-4 py-2 bg-neutral-800 border rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 ${
-                          errors.subject ? 'border-red-500' : 'border-neutral-700'
+                        className={`w-full px-4 py-2 bg-neutral-800 border rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 ${
+                          errors.name ? 'border-red-500' : 'border-neutral-700'
                         }`}
-                        placeholder="Enter subject"
+                        placeholder="Enter your name"
                       />
+                      {errors.name && (
+                        <p className="mt-1 text-sm text-red-400 flex items-center gap-1">
+                          <AlertCircle className="w-4 h-4" />
+                          {errors.name}
+                        </p>
+                      )}
                     </div>
-                    {errors.subject && (
-                      <p className="mt-1 text-sm text-red-400 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.subject}
-                      </p>
-                    )}
-                  </div>
 
-                  {/* Phone Field */}
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-white mb-2">
-                      Phone Number <span className="text-neutral-400">(Optional)</span>
-                    </label>
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400" />
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        className={`w-full pl-10 pr-4 py-2 bg-neutral-800 border rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 ${
-                          errors.phone ? 'border-red-500' : 'border-neutral-700'
-                        }`}
-                        placeholder="Enter your phone number"
-                      />
-                    </div>
-                    {errors.phone && (
-                      <p className="mt-1 text-sm text-red-400 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.phone}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Message Field */}
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-white mb-2">
-                      Message <span className="text-red-400">*</span>
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      rows={3}
-                      className={`w-full px-4 py-2 bg-neutral-800 border rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 resize-none ${
-                        errors.message ? 'border-red-500' : 'border-neutral-700'
-                      }`}
-                      placeholder="Enter your message (minimum 10 characters)"
-                    />
-                    {errors.message && (
-                      <p className="mt-1 text-sm text-red-400 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.message}
-                      </p>
-                    )}
-                    <p className="mt-1 text-xs text-neutral-400">
-                      Minimum 10 characters required
-                    </p>
-                  </div>
-
-                  {/* Submit Error */}
-                  {errors.submit && (
-                    <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-                      <p className="text-sm text-red-400 flex items-center gap-2">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.submit}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-neutral-800 hover:bg-white hover:text-black text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                  >
-                    {isSubmitting ? (
-                      <div className="flex items-center justify-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        Sending...
+                    {/* Email Field */}
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
+                        Email <span className="text-red-400">*</span>
+                      </label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          className={`w-full pl-10 pr-4 py-2 bg-neutral-800 border rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 ${
+                            errors.email ? 'border-red-500' : 'border-neutral-700'
+                          }`}
+                          placeholder="Enter your email"
+                        />
                       </div>
-                    ) : (
-                      'Send Message'
+                      {errors.email && (
+                        <p className="mt-1 text-sm text-red-400 flex items-center gap-1">
+                          <AlertCircle className="w-4 h-4" />
+                          {errors.email}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Subject Field */}
+                    <div>
+                      <label htmlFor="subject" className="block text-sm font-medium text-white mb-2">
+                        Subject <span className="text-red-400">*</span>
+                      </label>
+                      <div className="relative">
+                        <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                        <input
+                          type="text"
+                          id="subject"
+                          name="subject"
+                          value={formData.subject}
+                          onChange={handleInputChange}
+                          className={`w-full pl-10 pr-4 py-2 bg-neutral-800 border rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 ${
+                            errors.subject ? 'border-red-500' : 'border-neutral-700'
+                          }`}
+                          placeholder="Enter subject"
+                        />
+                      </div>
+                      {errors.subject && (
+                        <p className="mt-1 text-sm text-red-400 flex items-center gap-1">
+                          <AlertCircle className="w-4 h-4" />
+                          {errors.subject}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Phone Field */}
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-medium text-white mb-2">
+                        Phone Number <span className="text-neutral-400">(Optional)</span>
+                      </label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                        <input
+                          type="tel"
+                          id="phone"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          className={`w-full pl-10 pr-4 py-2 bg-neutral-800 border rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 ${
+                            errors.phone ? 'border-red-500' : 'border-neutral-700'
+                          }`}
+                          placeholder="Enter your phone number"
+                        />
+                      </div>
+                      {errors.phone && (
+                        <p className="mt-1 text-sm text-red-400 flex items-center gap-1">
+                          <AlertCircle className="w-4 h-4" />
+                          {errors.phone}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Message Field */}
+                    <div>
+                      <label htmlFor="message" className="block text-sm font-medium text-white mb-2">
+                        Message <span className="text-red-400">*</span>
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        rows={3}
+                        className={`w-full px-4 py-2 bg-neutral-800 border rounded-lg text-white placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200 resize-none ${
+                          errors.message ? 'border-red-500' : 'border-neutral-700'
+                        }`}
+                        placeholder="Enter your message (minimum 10 characters)"
+                      />
+                      {errors.message && (
+                        <p className="mt-1 text-sm text-red-400 flex items-center gap-1">
+                          <AlertCircle className="w-4 h-4" />
+                          {errors.message}
+                        </p>
+                      )}
+                      <p className="mt-1 text-xs text-neutral-400">
+                        Minimum 10 characters required
+                      </p>
+                    </div>
+
+                    {/* Submit Error */}
+                    {errors.submit && (
+                      <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+                        <p className="text-sm text-red-400 flex items-center gap-2">
+                          <AlertCircle className="w-4 h-4" />
+                          {errors.submit}
+                        </p>
+                      </div>
                     )}
-                  </button>
-                </form>
-              )}
+
+                    {/* Submit Button */}
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-neutral-800 hover:bg-white hover:text-black text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    >
+                      {isSubmitting ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          Sending...
+                        </div>
+                      ) : (
+                        'Send Message'
+                      )}
+                    </button>
+                  </form>
+                )}
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Success Message */}
       {showSuccess && (

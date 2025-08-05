@@ -24,7 +24,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="w-full pt-20 pb-10 bg-transparent" id="contact">
+    <footer className="w-full pt-8 pb-10 bg-transparent" id="contact">
       <div className="relative z-10 flex mt-16 md:flex-row flex-col justify-between items-center">
         <p className="md:text-base text-sm md:font-normal font-light">
           Designed & Developed by Shivansh
