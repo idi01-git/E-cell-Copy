@@ -36,7 +36,7 @@ interface FormErrors {
 
 const ContactSection: React.FC<ContactSectionProps> = ({
   statusText = "Ready to Transform ?",
-  mainHeading = "Let's Create",
+      mainHeading = "Let&apos;s Create",
   gradientText = "Something Epic",
   description = "Transform your boldest ideas into extraordinary digital experiences that captivate, inspire, and drive meaningful results for your business.",
   buttonText = "Contact Us",
@@ -81,7 +81,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = 'unset';
     };
-  }, [isModalOpen]);
+  }, [isModalOpen, closeModal]);
 
   // Close modal when clicking outside
   useEffect(() => {
@@ -98,7 +98,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isModalOpen]);
+  }, [isModalOpen, closeModal]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

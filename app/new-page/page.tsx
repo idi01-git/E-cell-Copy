@@ -103,7 +103,7 @@ const NewPage = () => {
             </h2>
             <p className="text-lg text-white/70 mb-8 max-w-2xl mx-auto">
               Join us in building the future of entrepreneurship and innovation. 
-              Let's create something amazing together.
+              Let&apos;s create something amazing together.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <LiquidButton size="lg">

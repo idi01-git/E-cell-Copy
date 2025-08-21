@@ -236,7 +236,7 @@ const Home = () => {
         <div className="mt-4 md:mt-8">
           <ContactSection
             statusText="Ready to Innovate"
-            mainHeading="Let's Build"
+            mainHeading="Let&apos;s Build"
             gradientText="The Future"
             description="Join E-Cell IET Lucknow in transforming bold entrepreneurial ideas into extraordinary ventures that drive innovation and create meaningful impact in the startup ecosystem."
             buttonText="Get In Touch"
