@@ -6,15 +6,16 @@ import { CardCarousel } from "@/components/ui/card-carousel";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import { projects } from "@/data";
+import Link from "next/link";
 
 const BlogCarousel = () => {
   // Transform projects data to match CardCarousel format
-  // Latest (first) item should have highest number
+  // Oldest (first) item should have lowest number, Latest (last) should have highest number
   const carouselImages = projects.map((project, index) => ({
     src: project.img,
     alt: project.title,
     link: project.link,
-    edition: `Edition ${projects.length - index}`, // Latest = Edition 6, Oldest = Edition 1
+    edition: `Edition ${index + 1}`, // Oldest = Edition 1, Latest = Edition 7
   }));
 
   return (
@@ -36,7 +37,9 @@ const BlogCarousel = () => {
             </p>
           </BlurFade>
           <BlurFade delay={0.75} inView>
-            <InteractiveHoverButton text="Read More" />
+            <Link href="/blogs">
+              <InteractiveHoverButton text="Read More" />
+            </Link>
           </BlurFade>
         </div>
         

@@ -13,26 +13,19 @@ const ProfileIcon = ({ className = "", onContactClick }: { className?: string; o
     className={`inline-flex ${className}`}
     initial={{ opacity: 0, x: 20 }}
     animate={{ opacity: 1, x: 0 }}
-    transition={{ duration: 0.3, delay: 0.2 }}
-    whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
+    whileHover={{ scale: 1.02 }}
   >
     <button 
-      onClick={() => {
-        const contactSection = document.querySelector('#contact');
-        if (contactSection) {
-          const navbarHeight = 160;
-          const elementPosition = contactSection.getBoundingClientRect().top + window.pageYOffset;
-          const offsetPosition = elementPosition - navbarHeight - 20;
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth",
-          });
-        }
-        // Close mobile menu if callback is provided
-        if (onContactClick) {
-          onContactClick();
-        }
-      }}
+              onClick={() => {
+          // Always redirect to homepage with contact section
+          window.location.href = '/#contact';
+          
+          // Close mobile menu if callback is provided
+          if (onContactClick) {
+            onContactClick();
+          }
+        }}
       className="inline-flex items-center justify-center w-10 h-10 text-foreground/70 hover:text-foreground bg-background border border-border rounded-full hover:bg-accent transition-colors"
     >
       <Mail className="h-5 w-5" />
@@ -59,11 +52,15 @@ const Navbar = ({
       initial={{ scale: 0.8 }}
       animate={{ scale: 1 }}
       whileHover={{
-        scale: 1.1,
-        filter: "drop-shadow(0 0 12px rgba(254, 243, 199, 0.8))",
+        scale: 1.05,
+        filter: "drop-shadow(0 0 8px rgba(254, 243, 199, 0.6))",
       }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      onClick={() => window.location.reload()}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      onClick={() => {
+        if (window.location.pathname !== '/') {
+          window.location.href = '/';
+        }
+      }}
     >
       <Image
         src="/ecell-logo.png"
@@ -82,16 +79,30 @@ const Navbar = ({
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-  const [activeItem, setActiveItem] = useState(0); // About is at index 0
+  const [activeItem, setActiveItem] = useState(0); // Default to About (index 0)
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
+    
+    // Set the correct active item based on current page
+    const pathname = window.location.pathname;
+    if (pathname.startsWith('/blogs')) {
+      setActiveItem(2); // Blogs is at index 2
+    } else if (pathname === '/gallery') {
+      setActiveItem(3); // Gallery is at index 3
+    }
   }, []);
 
   // Improved scroll detection for active section
   const handleScroll = useCallback(() => {
     if (!isMounted) return;
+    
+    // Don't change active item if we're on blog or gallery pages
+    const pathname = window.location.pathname;
+    if (pathname.startsWith('/blogs') || pathname === '/gallery') {
+      return;
+    }
     
     const scrollPosition = window.scrollY;
     const navbarHeight = 160; // Total navbar height including padding
@@ -146,6 +157,12 @@ const Navbar = ({
   useEffect(() => {
     if (!isMounted) return;
     
+    // Don't run scroll detection if we're on blog or gallery pages
+    const pathname = window.location.pathname;
+    if (pathname.startsWith('/blogs') || pathname === '/gallery') {
+      return;
+    }
+    
     // Run once on mount to set initial state
     handleScroll();
 
@@ -184,17 +201,14 @@ const Navbar = ({
     link: string
   ) => {
     e.preventDefault();
-    const element = document.querySelector(link);
-    if (element) {
-      const navbarHeight = 160; // Total navbar height
-      const elementPosition =
-        element.getBoundingClientRect().top + window.pageYOffset;
-      const offsetPosition = elementPosition - navbarHeight - 20; // Additional 20px buffer
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
+    
+    // Always redirect to homepage first, then scroll to section
+    if (link.startsWith('#')) {
+      // Navigate to homepage with hash
+      window.location.href = '/' + link;
+    } else {
+      // Navigate to homepage
+      window.location.href = '/';
     }
   };
 
@@ -264,9 +278,9 @@ const Navbar = ({
               width: 104,
             }}
             transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 30,
+              type: "tween",
+              duration: 0.3,
+              ease: "easeOut",
             }}
           >
             {/* Glowing effect */}
@@ -287,7 +301,7 @@ const Navbar = ({
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.2 }}
                 className="flex justify-center"
               >
                 <a
@@ -320,7 +334,7 @@ const Navbar = ({
         <motion.button
           className="md:hidden flex items-center"
           onClick={toggleMenu}
-          whileTap={{ scale: 0.9 }}
+          whileTap={{ scale: 0.95 }}
         >
           <Menu className="h-6 w-6 text-foreground" />
         </motion.button>
@@ -333,12 +347,12 @@ const Navbar = ({
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
           >
             <motion.button
               className="absolute top-6 right-6 p-2"
               onClick={toggleMenu}
-              whileTap={{ scale: 0.9 }}
+              whileTap={{ scale: 0.95 }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
@@ -351,8 +365,8 @@ const Navbar = ({
                   key={item.name}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 + 0.1 }}
-                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ delay: i * 0.05 + 0.1 }}
+                  exit={{ opacity: 0, x: 10 }}
                 >
                   <a
                     href={item.link}

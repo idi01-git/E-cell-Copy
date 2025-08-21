@@ -8,9 +8,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import { SparklesText } from "@/components/ui/sparkles-text";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import Image from "next/image";
+import Link from "next/link";
 
 const galleryImages = [
   "/gallery/1.webp",
@@ -28,25 +28,14 @@ export function Gallery() {
       id="gallery"
       className="w-full flex flex-col items-center py-6 md:py-12 lg:py-20 bg-background"
     >
-      <SparklesText
-        text="Gallery"
-        className="text-center font-[Bebas Neue] text-4xl md:text-5xl lg:text-6xl font-bold mb-2 text-foreground"
-        sparklesCount={9}
-        colors={{ first: "#fff", second: "#9E7AFF" }}
-      />
+      <h2 className="text-center text-4xl md:text-6xl font-bold text-black dark:text-white mb-4">
+        Gallery
+      </h2>
       <div
-        className="text-center font-kapakana mb-4 md:mb-8"
-        style={{
-          fontSize: 36,
-          color: "white",
-          textShadow:
-            "0 0 12px rgba(255,255,255,0.7), 0 0 32px rgba(255,255,255,0.5)",
-        }}
+        className="text-center text-xl text-black/80 dark:text-white/80 mb-6 md:mb-8 max-w-4xl mx-auto px-4"
       >
         Dive into our gallery of startup shenanigans—where ideas spark, chaos
-        brews,
-        <br />
-        and memories are made!
+        brews, and memories are made!
       </div>
       <Carousel
         className="w-full"
@@ -77,7 +66,14 @@ export function Gallery() {
                     width={400}
                     height={300}
                     className="object-cover w-full h-full rounded-xl shadow-lg"
-                    priority={index < 2}
+                    priority={index < 3}
+                    loading={index < 3 ? "eager" : "lazy"}
+                    onError={(e) => {
+                      console.error(`Failed to load image: ${img}`);
+                    }}
+                    onLoad={() => {
+                      console.log(`Successfully loaded image: ${img}`);
+                    }}
                   />
                 </CardContent>
               </div>
@@ -87,9 +83,11 @@ export function Gallery() {
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
-      <LiquidButton size="lg" className="mt-4 md:mt-8">
-        See More
-      </LiquidButton>
+      <Link href="/gallery">
+        <LiquidButton size="lg" className="mt-4 md:mb-8">
+          See More
+        </LiquidButton>
+      </Link>
     </section>
   );
 }

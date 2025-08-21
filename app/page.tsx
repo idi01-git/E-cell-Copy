@@ -52,7 +52,7 @@ const Home = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  useEffect(() => {
+    useEffect(() => {
     // Use a timeout to ensure this runs after hydration
     const timer = setTimeout(() => {
       if (typeof window !== "undefined") {
@@ -69,6 +69,34 @@ const Home = () => {
     }, 0);
 
     return () => clearTimeout(timer);
+  }, []);
+
+  // Separate useEffect for hash navigation
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash) {
+      const hash = window.location.hash;
+      let hasScrolled = false;
+      
+      const scrollToSection = () => {
+        if (hasScrolled) return; // Prevent multiple scrolls
+        
+        const element = document.querySelector(hash);
+        if (element) {
+          hasScrolled = true;
+          const navbarHeight = 160;
+          const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+          const offsetPosition = elementPosition - navbarHeight - 20;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }
+      };
+      
+      // Single attempt with a reasonable delay
+      setTimeout(scrollToSection, 800);
+    }
   }, []);
 
   return (
@@ -95,13 +123,13 @@ const Home = () => {
               <div className="w-24 h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent mx-auto mb-8 md:mb-12"></div>
             </div>
             <FadeInSection>
-              <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-2xl p-8 md:p-12">
-                <TextGenerateEffect
-                  words={`Entrepreneurship Cell (E-Cell) at IET Lucknow is a dynamic student-driven initiative dedicated to fostering innovation, entrepreneurial thinking, and startup culture on campus. Our mission is to inspire and empower students to explore the world of entrepreneurship by providing them with the necessary resources, mentorship, and networking opportunities. At E-Cell, we believe that every great idea deserves a chance to grow. Through workshops, speaker sessions, business competitions, and networking events, we aim to bridge the gap between theoretical knowledge and real-world startup challenges. We provide aspiring entrepreneurs with access to industry experts, venture capitalists, and successful alumni to guide them on their entrepreneurial journey. Our initiatives include startup incubation, investment pitching, hackathons, and leadership programs that help students transform their innovative ideas into successful businesses. By fostering a culture of creativity, risk-taking, and problem-solving, E-Cell IET Lucknow serves as a launchpad for future leaders and changemakers. Join us in shaping the future of entrepreneurship and innovation. Whether you are an aspiring entrepreneur, a mentor, or an investor, E-Cell IET Lucknow welcomes you to be a part of our growing community! 🚀`}
-                  className="font-roboto font-light italic text-white text-[0.8rem] leading-relaxed w-full max-w-4xl mx-auto text-center drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
-                  duration={1.5}
-                  filter={false}
-                />
+              <div className="text-center">
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 tracking-tight">
+                  Empowering Student Entrepreneurs
+                </h3>
+                <p className="text-lg md:text-xl text-white/80 leading-relaxed max-w-4xl mx-auto font-light">
+                  We inspire and equip students to transform innovative ideas into successful ventures through hands-on programs, expert mentorship, and a vibrant startup ecosystem. Our mission is to bridge the gap between academic learning and real-world entrepreneurship by providing students with the resources, connections, and guidance they need to build meaningful businesses. Through workshops, bootcamps, hackathons, and mentorship programs, we create opportunities for students to develop their entrepreneurial skills, validate their ideas, and connect with industry experts and potential investors. We believe in fostering a culture of innovation, collaboration, and action-oriented learning that prepares the next generation of founders and changemakers.
+                </p>
               </div>
             </FadeInSection>
           </div>

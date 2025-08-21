@@ -68,7 +68,24 @@ export const CardCarousel: React.FC<CarouselProps> = ({
     opacity: 1 !important;
   }
 
-  @media (min-width: 768px) {
+  /* Mobile (320px - 480px) */
+  @media (max-width: 480px) {
+    .swiper {
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+  }
+
+  /* Small tablets (481px - 768px) */
+  @media (min-width: 481px) and (max-width: 768px) {
+    .swiper {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  /* Desktop (769px+) */
+  @media (min-width: 769px) {
     .swiper {
       padding-left: 32px;
       padding-right: 32px;
@@ -83,7 +100,7 @@ export const CardCarousel: React.FC<CarouselProps> = ({
           <div className="flex w-full items-center justify-center gap-4">
             <div className="w-full">
               <Swiper
-                spaceBetween={30}
+                spaceBetween={20}
                 autoplay={{
                   delay: autoplayDelay,
                   disableOnInteraction: false,
@@ -93,6 +110,21 @@ export const CardCarousel: React.FC<CarouselProps> = ({
                 centeredSlides={true}
                 loop={true}
                 slidesPerView={"auto"}
+                initialSlide={6}
+                breakpoints={{
+                  320: {
+                    spaceBetween: 15,
+                  },
+                  480: {
+                    spaceBetween: 20,
+                  },
+                  768: {
+                    spaceBetween: 25,
+                  },
+                  1024: {
+                    spaceBetween: 30,
+                  },
+                }}
                 coverflowEffect={{
                   rotate: 0,
                   stretch: 0,
