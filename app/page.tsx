@@ -109,7 +109,7 @@ const Home = () => {
         backgroundStyle="gradient"
       />
       <BackgroundBeams className="z-0" />
-      <div className="max-w-7xl w-full relative z-10 pt-12 md:pt-20 lg:pt-32 xl:pt-44">
+      <div className="max-w-7xl w-full relative z-10 pt-4 md:pt-20 lg:pt-32 xl:pt-44">
         <FadeInSection>
           <CountdownDemo />
         </FadeInSection>

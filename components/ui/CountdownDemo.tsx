@@ -176,37 +176,34 @@ interface CountdownProps {
 
 const Countdown = ({
   targetDate,
-  title = "Event Countdown",
+  title = "Eureka Countdown",
   description = "Don't miss out on this amazing event!",
   onComplete,
   className,
   enableAnimations = true,
 }: CountdownProps) => {
   const [isMounted, setIsMounted] = useState(false);
-  const [eventDate] = useState(
-    () =>
-      targetDate ||
-      new Date(
-        (typeof window !== "undefined" ? Date.now() : 0) +
-          2 * 24 * 3600 * 1000 +
-          5 * 3600 * 1000 +
-          30 * 60 * 1000
-      )
-  );
+  
+  // Set your target date here - Example: August 23rd, 2:00 PM IST (GMT+5:30)
+  const [eventDate] = useState(() => {
+    // You can modify this date as needed
+    // Format: new Date(year, month-1, day, hour, minute)
+    // Month is 0-indexed (0 = January, 1 = February, etc.)
+    // Hour is 24-hour format
+    return targetDate || new Date(2025, 7, 23, 14, 0); // August 23rd, 2:00 PM
+  });
 
   const [timeLeft, setTimeLeft] = useState(() => {
     if (typeof window === "undefined") return 0;
-    const target = targetDate || eventDate;
-    return Math.max(0, Math.floor((+target - Date.now()) / 1000));
+    return Math.max(0, Math.floor((+eventDate - Date.now()) / 1000));
   });
 
   useEffect(() => {
     setIsMounted(true);
     if (typeof window !== "undefined") {
-      const target = targetDate || eventDate;
-      setTimeLeft(Math.max(0, Math.floor((+target - Date.now()) / 1000)));
+      setTimeLeft(Math.max(0, Math.floor((+eventDate - Date.now()) / 1000)));
     }
-  }, [targetDate, eventDate]);
+  }, [eventDate]);
 
   const shouldReduceMotion = useReducedMotion();
   const shouldAnimate = enableAnimations && !shouldReduceMotion;
@@ -214,10 +211,8 @@ const Countdown = ({
   useEffect(() => {
     if (!isMounted) return;
 
-    const target = targetDate || eventDate;
-
     const update = () => {
-      const remaining = Math.max(0, Math.floor((+target - Date.now()) / 1000));
+      const remaining = Math.max(0, Math.floor((+eventDate - Date.now()) / 1000));
       setTimeLeft(remaining);
 
       if (remaining === 0 && onComplete) {
@@ -228,7 +223,7 @@ const Countdown = ({
     update();
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
-  }, [targetDate, eventDate, onComplete, isMounted]);
+  }, [eventDate, onComplete, isMounted]);
 
   const getTimeUnits = (seconds: number) => {
     const days = Math.floor(seconds / 86400);
@@ -485,6 +480,7 @@ const Countdown = ({
               size="lg"
               variant="outline"
               reflection
+              onClick={() => window.open('https://www.instagram.com/p/DNQsOeUPv7E/?img_index=1', '_blank')}
               className="w-full px-6 py-4 sm:px-8 sm:py-6 text-base sm:text-lg font-semibold border-2 border-yellow-600/50 dark:border-yellow-300/50 text-yellow-600 dark:text-yellow-300 hover:bg-yellow-600/10 dark:hover:bg-yellow-300/10 shadow-lg shadow-yellow-600/10 dark:shadow-yellow-300/10"
             >
               Learn More
@@ -516,7 +512,7 @@ export default function CountdownDemo() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-4 flex items-center justify-center">
+    <div className="min-h-[80vh] md:min-h-screen bg-background p-4 flex items-center justify-center">
       <Countdown />
     </div>
   );
