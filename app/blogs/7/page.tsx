@@ -122,7 +122,7 @@ export default function BlogsPage() {
                 </p>
                 
                 <p>
-                  Whether it's a tech startup revolutionizing an industry or a small 
+                  Whether it&apos;s a tech startup revolutionizing an industry or a small 
                   business addressing local needs, entrepreneurship is at the core of 
                   economic and social progress.
                 </p>
