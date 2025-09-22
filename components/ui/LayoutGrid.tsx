@@ -92,7 +92,7 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
         cardRefs.current[lastIndex]?.focus();
         break;
     }
-  }, [cards.length, selected, getGridCols]);
+  }, [cards.length, selected, getGridCols, handleClick, handleOutsideClick]);
 
   // Generate meaningful alt text based on card content
   const generateAltText = (card: Card, index: number): string => {
@@ -158,9 +158,7 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
               onKeyDown={(e) => handleKeyDown(e, i, card)}
               aria-label={generateAltText(card, i)}
               aria-expanded={selected?.id === card.id}
-              aria-selected={selected?.id === card.id}
-              aria-posinset={i + 1}
-              aria-setsize={cards.length}
+              aria-pressed={selected?.id === card.id}
             >
               <motion.div
                 className={cn(

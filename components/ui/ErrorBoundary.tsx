@@ -82,7 +82,7 @@ const SectionErrorFallback: React.FC<FallbackUIProps> = ({
         <AlertTriangle className="h-12 w-12 text-amber-500 mx-auto" />
         <h3 className="text-lg font-semibold">Section Unavailable</h3>
         <p className="text-muted-foreground">
-          This section encountered an error and couldn't load properly.
+          This section encountered an error and couldn&apos;t load properly.
         </p>
       </div>
       
