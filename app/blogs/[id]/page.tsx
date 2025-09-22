@@ -8,9 +8,9 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "../../../components/ui/carousel";
-import { Card, CardContent } from "../../../components/ui/card";
-import { BackgroundGradient } from "../../../components/ui/background-gradient";
+} from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
+import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { 
   getBlogSEOData, 
   generateBlogPostingSchema, 
