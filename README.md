@@ -25,7 +25,7 @@ A modern, high-performance website for the Entrepreneurship Cell of IET Lucknow,
 
 - **Frontend:** HTML, CSS, JavaScript , React , Next.js
 - **Backend:** Node.js
-- **Hosting:** Vercel 
+- **Hosting:** Vercel
 
 ## 📁 Project Structure
 
@@ -44,9 +44,9 @@ ecell-website/
 
 ## 📌 Features
 
-- Dynamic homepage with upcoming events and announcements  
-- Events section with past and upcoming event details    
-- Responsive design for all screen sizes  
+- Dynamic homepage with upcoming events and announcements
+- Events section with past and upcoming event details
+- Responsive design for all screen sizes
 - Integrated social links
 - Blogs section for entrepreneurial blogs.
 - Services section for details regarding services provided by E-cell.

@@ -23,15 +23,15 @@ export const LayoutGrid = ({ cards }: { cards: Card[] }) => {
   const gridRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const handleClick = (card: Card) => {
+  const handleClick = useCallback((card: Card) => {
     setLastSelected(selected);
     setSelected(card);
-  };
+  }, [selected]);
 
-  const handleOutsideClick = () => {
+  const handleOutsideClick = useCallback(() => {
     setLastSelected(selected);
     setSelected(null);
-  };
+  }, [selected]);
 
   const getGridCols = useCallback(() => {
     if (typeof window === 'undefined') return 4;
