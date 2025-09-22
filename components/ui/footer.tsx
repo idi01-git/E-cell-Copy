@@ -22,7 +22,7 @@ export default function FooterSection() {
     const [showEasterEgg, setShowEasterEgg] = useState(false);
 
     return (
-      <footer className="py-16 md:py-13">
+      <footer className="py-16 md:py-13 pb-20 md:pb-16">
         <div className="mx-auto max-w-5xl px-6">
           <Link
             href="/"
@@ -79,30 +79,36 @@ export default function FooterSection() {
               <Instagram className="size-6" />
             </Link>
           </div>
-          <span className="text-muted-foreground block text-center text-sm">
-            © {new Date().getFullYear()}{" "}
-            <span className="font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
-              E-Cell IET Lucknow
-            </span>
-            , All rights reserved. Designed & Developed by{" "}
-            <Link
-              href="https://www.instagram.com/hated_shivang/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)] transition-all duration-300"
-            >
-              Shivang
-            </Link>{" "}
-            with{" "}
-            <button
-              onClick={() => setShowEasterEgg(true)}
-              className="text-red-500 hover:text-red-400 transition-colors duration-200 cursor-pointer text-base"
-              aria-label="Easter egg"
-            >
-              ❤️
-            </button>
-            .
-          </span>
+          <div className="text-muted-foreground text-center text-sm space-y-2">
+            <div>
+              © {new Date().getFullYear()}{" "}
+              <span className="font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">
+                E-Cell IET Lucknow
+              </span>
+              , All rights reserved.
+            </div>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-0">
+              <span>Designed & Developed by{" "}</span>
+              <span className="flex items-center gap-1">
+                <Link
+                  href="https://www.instagram.com/hated_shivang/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.5)] hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.8)] transition-all duration-300"
+                >
+                  Shivang
+                </Link>{" "}
+                <span>with</span>{" "}
+                <button
+                  onClick={() => setShowEasterEgg(true)}
+                  className="text-red-500 hover:text-red-400 transition-colors duration-200 cursor-pointer text-base ml-1"
+                  aria-label="Easter egg"
+                >
+                  ❤️
+                </button>
+              </span>
+            </div>
+          </div>
 
           {/* Easter Egg Modal */}
           {showEasterEgg && (
