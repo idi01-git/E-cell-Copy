@@ -1,13 +1,100 @@
-"use client";
 import React from "react";
 import { BackgroundGradient } from "../../../components/ui/background-gradient";
 import { IconAppWindow } from "@tabler/icons-react";
 import Image from "next/image";
-import { MotionConfig } from "framer-motion";
+import { Metadata } from "next";
+import { 
+  getBlogSEOData, 
+  generateBlogPostingSchema, 
+  generateCanonicalUrl,
+  SEO_CONSTANTS 
+} from "@/lib/seo";
+
+// Generate metadata for this blog page
+export async function generateMetadata(): Promise<Metadata> {
+  const blogId = 7;
+  const blogSEOData = getBlogSEOData(blogId);
+  
+  if (!blogSEOData) {
+    return {
+      title: 'Blog Not Found',
+      description: 'The requested blog post could not be found.',
+    };
+  }
+
+  return {
+    title: blogSEOData.title,
+    description: blogSEOData.description,
+    keywords: 'entrepreneurship, business ideas, startup guide, innovation, business development',
+    authors: [{ name: blogSEOData.author }],
+    openGraph: {
+      title: blogSEOData.title,
+      description: blogSEOData.description,
+      url: generateCanonicalUrl(blogSEOData.url),
+      siteName: SEO_CONSTANTS.SITE_NAME,
+      images: [
+        {
+          url: `${SEO_CONSTANTS.SITE_URL}${blogSEOData.image}`,
+          width: SEO_CONSTANTS.IMAGE_DIMENSIONS.width,
+          height: SEO_CONSTANTS.IMAGE_DIMENSIONS.height,
+          alt: blogSEOData.title,
+        },
+      ],
+      locale: 'en_US',
+      type: 'article',
+      publishedTime: blogSEOData.publishedTime,
+      modifiedTime: blogSEOData.modifiedTime || blogSEOData.publishedTime,
+      authors: [blogSEOData.author],
+      section: 'Entrepreneurship',
+      tags: ['entrepreneurship', 'business', 'startup'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: SEO_CONSTANTS.TWITTER_HANDLE,
+      creator: SEO_CONSTANTS.TWITTER_HANDLE,
+      title: blogSEOData.title,
+      description: blogSEOData.description,
+      images: {
+        url: `${SEO_CONSTANTS.SITE_URL}${blogSEOData.image}`,
+        alt: blogSEOData.title,
+      },
+    },
+    alternates: {
+      canonical: generateCanonicalUrl(blogSEOData.url),
+    },
+    robots: {
+      index: true,
+      follow: true,
+      nocache: false,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: false,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+  };
+}
 
 export default function BlogsPage() {
+  const blogId = 7;
+  const blogSEOData = getBlogSEOData(blogId);
+  const blogSchema = blogSEOData ? generateBlogPostingSchema(blogSEOData) : null;
   return (
-    <div className="p-6 bg-shivansh ">
+    <>
+      {/* JSON-LD Schema for Blog Posting */}
+      {blogSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(blogSchema),
+          }}
+        />
+      )}
+      
+      <div className="p-6 bg-shivansh ">
       <h1 className="heading">
         The Entrepreneurial<span className="text-purple"> Times</span>
       </h1>
@@ -90,6 +177,7 @@ export default function BlogsPage() {
           </button>
         </BackgroundGradient>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

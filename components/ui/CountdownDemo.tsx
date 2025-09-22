@@ -176,21 +176,21 @@ interface CountdownProps {
 
 const Countdown = ({
   targetDate,
-  title = "Eureka Countdown",
-  description = "Don't miss out on this amazing event!",
+  title = "Important Day for Me",
+  description = "Prepare for the Big Day",
   onComplete,
   className,
   enableAnimations = true,
 }: CountdownProps) => {
   const [isMounted, setIsMounted] = useState(false);
-  
+
   // Set your target date here - Example: August 23rd, 2:00 PM IST (GMT+5:30)
   const [eventDate] = useState(() => {
     // You can modify this date as needed
     // Format: new Date(year, month-1, day, hour, minute)
     // Month is 0-indexed (0 = January, 1 = February, etc.)
     // Hour is 24-hour format
-    return targetDate || new Date(2025, 7, 23, 14, 0); // August 23rd, 2:00 PM
+    return targetDate || new Date(2025, 8, 8, 0, 0); // September 8, 12:00 AM
   });
 
   const [timeLeft, setTimeLeft] = useState(() => {
@@ -212,7 +212,10 @@ const Countdown = ({
     if (!isMounted) return;
 
     const update = () => {
-      const remaining = Math.max(0, Math.floor((+eventDate - Date.now()) / 1000));
+      const remaining = Math.max(
+        0,
+        Math.floor((+eventDate - Date.now()) / 1000)
+      );
       setTimeLeft(remaining);
 
       if (remaining === 0 && onComplete) {
@@ -220,6 +223,12 @@ const Countdown = ({
       }
     };
 
+    // Hot like risin' sun, burnin' everything she touch
+    // She don't even want your money, can buy you and someone else
+    // She's addicted to the rush, I can never get enough
+    // She desensitized to money, need to pay with somethin' else
+
+    // hush by her.
     update();
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
@@ -458,6 +467,7 @@ const Countdown = ({
           className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4"
           variants={shouldAnimate ? childVariants : {}}
         >
+          {/* Get Notified button hidden for now
           <motion.div
             whileHover={shouldAnimate ? { scale: 1.05 } : {}}
             whileTap={shouldAnimate ? { scale: 0.95 } : {}}
@@ -471,6 +481,7 @@ const Countdown = ({
               {timeLeft > 0 ? "Get Notified" : "Join Event Now"}
             </Button>
           </motion.div>
+          */}
           <motion.div
             whileHover={shouldAnimate ? { scale: 1.05 } : {}}
             whileTap={shouldAnimate ? { scale: 0.95 } : {}}
@@ -480,7 +491,12 @@ const Countdown = ({
               size="lg"
               variant="outline"
               reflection
-              onClick={() => window.open('https://www.instagram.com/p/DNQsOeUPv7E/?img_index=1', '_blank')}
+              onClick={() =>
+                window.open(
+                  "https://www.instagram.com/p/DNQsOeUPv7E/?img_index=1",
+                  "_blank"
+                )
+              }
               className="w-full px-6 py-4 sm:px-8 sm:py-6 text-base sm:text-lg font-semibold border-2 border-yellow-600/50 dark:border-yellow-300/50 text-yellow-600 dark:text-yellow-300 hover:bg-yellow-600/10 dark:hover:bg-yellow-300/10 shadow-lg shadow-yellow-600/10 dark:shadow-yellow-300/10"
             >
               Learn More

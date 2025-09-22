@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Calendar, User, ArrowLeft } from "lucide-react";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import Navbar from "@/components/ui/Navbar";
-import Footer from "@/components/Footer";
+import FooterSection from "@/components/ui/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -116,7 +116,7 @@ export default function BlogReadPage() {
         </div>
       </div>
       
-      <Footer />
+      <FooterSection />
     </main>
   );
 }

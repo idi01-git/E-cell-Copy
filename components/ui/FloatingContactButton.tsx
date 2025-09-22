@@ -7,7 +7,7 @@ import { MessageCircle } from "lucide-react";
 const FloatingContactButton = ({ openModal }: { openModal: () => void }) => {
   return (
     <motion.div
-      className="fixed bottom-6 right-6 z-50 md:bottom-8 md:right-8 lg:bottom-10 lg:right-10"
+      className="fixed bottom-6 right-6 z-[55] md:bottom-8 md:right-8 lg:bottom-10 lg:right-10"
       initial={{ opacity: 0, scale: 0.8, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.8, y: 20 }}
@@ -19,7 +19,8 @@ const FloatingContactButton = ({ openModal }: { openModal: () => void }) => {
         onClick={openModal}
         className="group relative flex items-center justify-center w-14 h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 hover:border-white/30 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
         whileHover={{
-          boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)",
+          boxShadow:
+            "0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)",
         }}
       >
         {/* Subtle glow effect */}
@@ -55,4 +56,4 @@ const FloatingContactButton = ({ openModal }: { openModal: () => void }) => {
   );
 };
 
-export default FloatingContactButton; 
+export default FloatingContactButton;

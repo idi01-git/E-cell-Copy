@@ -2,9 +2,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Brain, Eye, Heart, Building, Link } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Anton } from "next/font/google";
-
-const anton = Anton({ weight: "400", subsets: ["latin"] });
 
 // Add CSS for wave pulse animation and central object effects
 const waveStyles = `
@@ -292,12 +289,16 @@ export default function RadialOrbitalFeatureSection({
       {/* Add wave pulse styles */}
       <style jsx>{waveStyles}</style>
 
-      {/* Background Text */}
+      {/* Background Text - Aggressive scaling on mobile, original size on desktop */}
       <div
-        className={`pointer-events-none whitespace-pre-wrap text-center text-[10rem] font-semibold leading-none absolute z-0 opacity-20 text-white tracking-wider ${anton.className}`}
-        style={{ fontFamily: "var(--font-anton), sans-serif" }}
+        className="pointer-events-none text-center font-black leading-tight absolute z-0 opacity-20 text-white tracking-wider font-montserrat px-4"
       >
-        Our Goals
+        <div className="block sm:hidden" style={{ fontSize: 'clamp(4rem, 25vw, 12rem)' }}>
+          Our<br />Goals
+        </div>
+        <div className="hidden sm:block whitespace-nowrap text-[10rem] xl:text-[12rem]">
+          Our Goals
+        </div>
       </div>
 
       <div className="relative w-full max-w-4xl h-full flex items-center justify-center z-10 px-2 sm:px-4">

@@ -10,6 +10,25 @@ import {
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
 
+interface ButtonProps {
+  borderRadius?: string;
+  children: React.ReactNode;
+  as?: any;
+  containerClassName?: string;
+  borderClassName?: string;
+  duration?: number;
+  className?: string;
+  role?: string;
+  'aria-label'?: string;
+  'aria-pressed'?: boolean;
+  'aria-expanded'?: boolean;
+  'aria-disabled'?: boolean;
+  tabIndex?: number;
+  onClick?: () => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
+  [key: string]: any;
+}
+
 export function Button({
   borderRadius = "1.75rem",
   children,
@@ -18,32 +37,53 @@ export function Button({
   borderClassName,
   duration,
   className,
+  role,
+  'aria-label': ariaLabel,
+  'aria-pressed': ariaPressed,
+  'aria-expanded': ariaExpanded,
+  'aria-disabled': ariaDisabled,
+  tabIndex,
+  onClick,
+  onKeyDown,
   ...otherProps
-}: {
-  borderRadius?: string;
-  children: React.ReactNode;
-  as?: any;
-  containerClassName?: string;
-  borderClassName?: string;
-  duration?: number;
-  className?: string;
-  [key: string]: any;
-}) {
+}: ButtonProps) {
+  // Determine if this should be interactive or decorative
+  const isInteractive = Component === 'button' || onClick || onKeyDown || role === 'button';
+  
+  // Handle keyboard events for interactive elements
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (isInteractive && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      onClick?.();
+    }
+    onKeyDown?.(e);
+  };
+
   return (
     <Component
       className={cn(
         // remove h-16 w-40, add  md:col-span-2
         "bg-transparent relative text-xl p-[1px] overflow-hidden md:col-span-2 md:row-span-1",
+        isInteractive && "focus:outline-none rounded-[1.75rem]",
         containerClassName
       )}
       style={{
         borderRadius: borderRadius,
       }}
+      role={role || (isInteractive ? 'button' : 'presentation')}
+      aria-label={ariaLabel}
+      aria-pressed={ariaPressed}
+      aria-expanded={ariaExpanded}
+      aria-disabled={ariaDisabled}
+      tabIndex={isInteractive ? (tabIndex ?? 0) : -1}
+      onClick={onClick}
+      onKeyDown={handleKeyDown}
       {...otherProps}
     >
       <div
         className="absolute inset-0 rounde-[1.75rem]"
         style={{ borderRadius: `calc(${borderRadius} * 0.96)` }}
+        aria-hidden="true"
       >
         <MovingBorder duration={duration} rx="30%" ry="30%">
           <div
@@ -51,6 +91,7 @@ export function Button({
               "h-20 w-20 opacity-[0.8] bg-[radial-gradient(#CBACF9_40%,transparent_60%)]",
               borderClassName
             )}
+            aria-hidden="true"
           />
         </MovingBorder>
       </div>
@@ -70,19 +111,21 @@ export function Button({
   );
 }
 
+interface MovingBorderProps {
+  children: React.ReactNode;
+  duration?: number;
+  rx?: string;
+  ry?: string;
+  [key: string]: any;
+}
+
 export const MovingBorder = ({
   children,
   duration = 2000,
   rx,
   ry,
   ...otherProps
-}: {
-  children: React.ReactNode;
-  duration?: number;
-  rx?: string;
-  ry?: string;
-  [key: string]: any;
-}) => {
+}: MovingBorderProps) => {
   const pathRef = useRef<any>(null);
   const progress = useMotionValue<number>(0);
 
@@ -113,6 +156,9 @@ export const MovingBorder = ({
         className="absolute h-full w-full"
         width="100%"
         height="100%"
+        aria-hidden="true"
+        focusable="false"
+        role="presentation"
         {...otherProps}
       >
         <rect
@@ -132,6 +178,7 @@ export const MovingBorder = ({
           display: "inline-block",
           transform,
         }}
+        aria-hidden="true"
       >
         {children}
       </motion.div>

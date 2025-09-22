@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import { motion, stagger, useAnimate } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { logger } from "@/lib/logger";
 
 export const TextGenerateEffect = ({
   words,
@@ -13,7 +14,7 @@ export const TextGenerateEffect = ({
   const [scope, animate] = useAnimate();
   let wordsArray = words.split(" ");
   useEffect(() => {
-    console.log(wordsArray);
+    logger.debug("TextGenerateEffect: words split", { length: wordsArray.length });
     animate(
       "span",
       {

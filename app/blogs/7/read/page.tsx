@@ -1,13 +1,18 @@
-"use client";
-
 import * as React from "react";
 import Image from "next/image";
 import { Calendar, User, ArrowLeft } from "lucide-react";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import Navbar from "@/components/ui/Navbar";
-import Footer from "@/components/Footer";
+import FooterSection from "@/components/ui/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Metadata } from "next";
+import { 
+  getBlogSEOData, 
+  generateArticleSchema, 
+  generateCanonicalUrl,
+  SEO_CONSTANTS 
+} from "@/lib/seo";
 
 // Blog data for blog 7
 const blogData = {
@@ -57,11 +62,93 @@ const blogData = {
   ]
 };
 
+// Generate metadata for this blog page
+export async function generateMetadata(): Promise<Metadata> {
+  const blogId = 7;
+  const blogSEOData = getBlogSEOData(blogId);
+  
+  if (!blogSEOData) {
+    return {
+      title: 'Blog Not Found',
+      description: 'The requested blog post could not be found.',
+    };
+  }
+
+  return {
+    title: blogSEOData.title,
+    description: blogSEOData.description,
+    keywords: 'entrepreneurship, future trends, business innovation, startup ecosystem, AI in business',
+    authors: [{ name: blogSEOData.author }],
+    openGraph: {
+      title: blogSEOData.title,
+      description: blogSEOData.description,
+      url: generateCanonicalUrl(blogSEOData.readUrl),
+      siteName: SEO_CONSTANTS.SITE_NAME,
+      images: [
+        {
+          url: `${SEO_CONSTANTS.SITE_URL}${blogSEOData.image}`,
+          width: SEO_CONSTANTS.IMAGE_DIMENSIONS.width,
+          height: SEO_CONSTANTS.IMAGE_DIMENSIONS.height,
+          alt: blogSEOData.title,
+        },
+      ],
+      locale: 'en_US',
+      type: 'article',
+      publishedTime: blogSEOData.publishedTime,
+      modifiedTime: blogSEOData.modifiedTime || blogSEOData.publishedTime,
+      authors: [blogSEOData.author],
+      section: 'Entrepreneurship',
+      tags: ['entrepreneurship', 'future trends', 'business innovation'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: SEO_CONSTANTS.TWITTER_HANDLE,
+      creator: SEO_CONSTANTS.TWITTER_HANDLE,
+      title: blogSEOData.title,
+      description: blogSEOData.description,
+      images: {
+        url: `${SEO_CONSTANTS.SITE_URL}${blogSEOData.image}`,
+        alt: blogSEOData.title,
+      },
+    },
+    alternates: {
+      canonical: generateCanonicalUrl(blogSEOData.readUrl),
+    },
+    robots: {
+      index: true,
+      follow: true,
+      nocache: false,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: false,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+  };
+}
+
 export default function BlogReadPage() {
+  const blogId = 7;
+  const blogSEOData = getBlogSEOData(blogId);
+  const articleSchema = blogSEOData ? generateArticleSchema(blogSEOData) : null;
   return (
-    <main className="relative bg-transparent flex justify-center items-center flex-col overflow-hidden mx-auto px-3 sm:px-6 lg:px-10 min-h-screen">
-      <Navbar />
-      <BackgroundBeams className="z-0" />
+    <>
+      {/* JSON-LD Schema for Article */}
+      {articleSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(articleSchema),
+          }}
+        />
+      )}
+      
+      <main className="relative bg-transparent flex justify-center items-center flex-col overflow-hidden mx-auto px-3 sm:px-6 lg:px-10 min-h-screen">
+        <Navbar />
+        <BackgroundBeams className="z-0" />
       
       <div className="max-w-4xl w-full relative z-10 pt-32">
         {/* Breadcrumb */}
@@ -116,7 +203,8 @@ export default function BlogReadPage() {
         </div>
       </div>
       
-      <Footer />
-    </main>
+      <FooterSection />
+      </main>
+    </>
   );
 }

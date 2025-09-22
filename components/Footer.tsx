@@ -25,25 +25,26 @@ const Footer = () => {
 
   return (
     <footer className="w-full pt-8 pb-10 bg-transparent" id="contact">
-      <div className="relative z-10 flex mt-16 md:flex-row flex-col justify-between items-center">
-        <p className="md:text-base text-sm md:font-normal font-light">
+      <div className="relative z-10 flex mt-8 md:mt-16 md:flex-row flex-col justify-between items-center gap-4 md:gap-0">
+        <p className="md:text-base text-sm md:font-normal font-light text-white/70 text-center md:text-left">
           Designed & Developed by Shivansh
         </p>
 
-        <div className="flex gap-4">
+        <div className="flex gap-4 md:gap-6">
           {socialLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
+              className="transition-transform duration-200 hover:scale-110 hover:opacity-80"
             >
               <Image
                 src={link.img}
                 alt={link.alt}
                 width={24}
                 height={24}
-                className="w-6 h-6"
+                className="w-5 h-5 md:w-6 md:h-6"
                 priority={false}
               />
             </a>

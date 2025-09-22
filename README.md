@@ -1,7 +1,11 @@
 # 🚀 E-Cell IET Lucknow Website
 
-Welcome to the official repository for the **Entrepreneurship Cell (E-Cell)** website of **IET Lucknow**!  
-This website serves as the digital front for showcasing events, initiatives, and resources aimed at nurturing entrepreneurial spirit among students.
+A modern, high-performance website for the Entrepreneurship Cell of IET Lucknow, built with cutting-edge web technologies.
+
+![Deployment Status](https://img.shields.io/badge/deployment-ready-brightgreen)
+![TypeScript](https://img.shields.io/badge/TypeScript-100%25-blue)
+![Next.js](https://img.shields.io/badge/Next.js-15.4.6-black)
+![Accessibility](https://img.shields.io/badge/WCAG-2.1%20AA-green)
 
 ## 🌐 Live Website
 
@@ -65,6 +69,36 @@ npm run dev
 
 Open `http://localhost:3000` to view it in the browser.
 
+## 📊 Error Monitoring & Analytics
+
+This project uses **Sentry** for comprehensive error monitoring and performance tracking:
+
+### Sentry Configuration
+
+- **Automatic Source Map Upload**: Source maps are automatically uploaded during production builds via the Sentry Next.js plugin (`withSentryConfig`)
+- **Error Boundaries**: Comprehensive error boundaries throughout the application
+- **Performance Monitoring**: Real-time performance metrics and Core Web Vitals tracking
+- **Environment Support**: Configured for development, staging, and production environments
+
+### Environment Variables
+
+Create a `.env.local` file with the following Sentry configuration:
+
+```bash
+# Sentry Configuration
+SENTRY_ORG=your-sentry-org
+SENTRY_PROJECT=your-sentry-project
+SENTRY_AUTH_TOKEN=your-sentry-auth-token
+NEXT_PUBLIC_SENTRY_DSN=your-sentry-dsn
+
+# Optional: Enable Sentry in development
+SENTRY_ENABLED=true
+```
+
+### Source Maps
+
+Source maps are automatically handled by the Sentry Next.js integration during `npm run build`. No manual upload scripts are needed.
+
 ## 🤝 Contributing
 
 I welcome contributions! Please open an issue to discuss what you would like to change.  
@@ -73,6 +107,5 @@ You can also fork the repository, make changes, and create a pull request.
 ## 🧑‍💻 Contributors
 
 - [Shivansh Kaushik](https://github.com/PhantomPhreak007)
-
 
 Made by the Shivansh Kaushik @ IET Lucknow

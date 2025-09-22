@@ -2,6 +2,7 @@
 
 import React from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -144,42 +145,42 @@ export const CardCarousel: React.FC<CarouselProps> = ({
               >
                 {images.map((image, index) => (
                   <SwiperSlide key={index}>
-                    <div className="size-full rounded-3xl relative group overflow-hidden">
-                      <Image
-                        src={image.src}
-                        width={500}
-                        height={500}
-                        className="size-full rounded-xl transition-transform duration-500 group-hover:scale-110"
-                        alt={image.alt}
-                      />
-                      {/* Hover Overlay - Bottom 1/3 */}
-                      <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out transform translate-y-full group-hover:translate-y-0">
-                        <div className="flex flex-col justify-end h-full p-4">
-                          <div className="flex items-center justify-between mb-2">
-                            {image.edition && (
-                              <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium text-white">
-                                {image.edition}
-                              </span>
-                            )}
-                          </div>
-                          <div className="text-white">
-                            {image.link && (
+                    <Link href={`/blogs/${index + 1}/read`} className="block size-full rounded-3xl relative group overflow-hidden">
+                      <div className="size-full rounded-3xl relative group overflow-hidden">
+                        <Image
+                          src={image.src}
+                          width={500}
+                          height={500}
+                          className="size-full rounded-xl transition-transform duration-500 group-hover:scale-110"
+                          alt={image.alt}
+                        />
+                        {/* Hover Overlay - Bottom 1/3 */}
+                        <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out transform translate-y-full group-hover:translate-y-0">
+                          <div className="flex flex-col justify-end h-full p-4">
+                            <div className="flex items-center justify-between mb-2">
+                              {image.edition && (
+                                <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium text-white">
+                                  {image.edition}
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-white">
                               <Button
                                 asChild
                                 variant="secondary"
                                 size="sm"
                                 className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/30 transition-all duration-300"
                               >
-                                <a href={image.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                                <span className="flex items-center gap-2">
                                   Read More
                                   <ArrowRight className="w-4 h-4" />
-                                </a>
+                                </span>
                               </Button>
-                            )}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </SwiperSlide>
                 ))}
               </Swiper>

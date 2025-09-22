@@ -42,7 +42,7 @@ function WordPullUp({
       initial="hidden"
       animate={shouldAnimate ? "show" : "hidden"}
       className={cn(
-        "font-display text-center text-4xl font-bold leading-[5rem] tracking-[-0.02em] drop-shadow-sm",
+        "font-montserrat text-center text-4xl font-black leading-[5rem] tracking-[-0.02em] drop-shadow-sm",
         className,
       )}
     >

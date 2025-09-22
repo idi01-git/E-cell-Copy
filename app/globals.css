@@ -23,9 +23,31 @@
   }
 }
 
-/* Optimize scrolling */
+/* Optimize scrolling and prevent layout shifts */
 html {
   scroll-behavior: smooth;
+}
+
+/* Prevent layout shifts during page load */
+body {
+  overflow-x: hidden;
+}
+
+/* Ensure consistent positioning for sections */
+section {
+  position: relative;
+}
+
+/* Prevent flash of unstyled content */
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 
 /* Optimize image rendering */
@@ -129,9 +151,6 @@ img {
   
   .font-dancing {
     font-family: 'Dancing Script', cursive;
-  }
-  .font-anton {
-    font-family: var(--font-anton), sans-serif;
   }
 }
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Navbar from "@/components/ui/Navbar";
-import Footer from "@/components/Footer";
+import FooterSection from "@/components/ui/footer";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { BackgroundPaths } from "@/components/ui/animated-infinity-background";
 import FadeInSection from "@/components/ui/FadeInSection";
@@ -139,7 +139,7 @@ const NewPage = () => {
         </FadeInSection>
       </div>
 
-      <Footer />
+      <FooterSection />
     </main>
   );
 };

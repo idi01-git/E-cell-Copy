@@ -1,11 +1,15 @@
 "use client";
 
-import * as Sentry from "@sentry/nextjs";
 import { logger } from "@/lib/logger";
 import { useEffect, useState } from "react";
 
-export default function GlobalError({ error, reset }) {
-  const [errorId, setErrorId] = useState(null);
+type GlobalErrorProps = {
+  error: Error;
+  reset: () => void;
+};
+
+export default function GlobalError({ error, reset }: GlobalErrorProps) {
+  const [errorId, setErrorId] = useState<string | null>(null);
 
   useEffect(() => {
     // Generate unique error ID
