@@ -280,7 +280,6 @@ export function Gallery() {
         >
           <CarouselContent
             onWheelCapture={(e) => {
-              e.preventDefault();
               e.stopPropagation();
             }}
             role="group"

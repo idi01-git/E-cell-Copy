@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Kapakana:wght@300..400&family=Tangerine&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+/* Optimized Google Fonts with font-display swap for better LCP */
+@import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap') layer(fonts);
+@import url('https://fonts.googleapis.com/css2?family=Kapakana:wght@300..400&display=swap') layer(fonts);
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap') layer(fonts);
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap') layer(fonts);
 
 @tailwind base;
 @tailwind components;
@@ -25,12 +26,39 @@
 
 /* Optimize scrolling and prevent layout shifts */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto; /* Instant scroll prevents jitter */
+  overflow-x: hidden;
 }
 
 /* Prevent layout shifts during page load */
 body {
   overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* GPU Acceleration for smooth animations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optimize transforms for smooth animations */
+section {
+  will-change: auto;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Prevent images from causing layout shift */
+img, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Reserve space for lazy-loaded content */
+[data-loading="true"] {
+  min-height: 400px;
 }
 
 /* Ensure consistent positioning for sections */

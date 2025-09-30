@@ -420,6 +420,15 @@ const blogReadContentMap: Record<number, {
   }
 };
 
+// Shared helper to parse and validate blog ID
+function parseBlogId(id: string): number | null {
+  const parsed = parseInt(id, 10);
+  if (Number.isNaN(parsed) || !Number.isFinite(parsed)) {
+    return null;
+  }
+  return parsed;
+}
+
 interface BlogReadPageProps {
   params: Promise<{
     id: string;
@@ -429,14 +438,16 @@ interface BlogReadPageProps {
 // Generate metadata for this blog read page
 export async function generateMetadata({ params }: BlogReadPageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const blogId = parseInt(resolvedParams.id);
+  const blogId = parseBlogId(resolvedParams.id);
+  
+  if (blogId === null) {
+    notFound();
+  }
+  
   const blogSEOData = getBlogSEOData(blogId);
   
   if (!blogSEOData) {
-    return {
-      title: 'Blog Not Found',
-      description: 'The requested blog post could not be found.',
-    };
+    notFound();
   }
 
   return {
@@ -497,7 +508,12 @@ export async function generateMetadata({ params }: BlogReadPageProps): Promise<M
 
 export default async function BlogReadPage({ params }: BlogReadPageProps) {
   const resolvedParams = await params;
-  const blogId = parseInt(resolvedParams.id);
+  const blogId = parseBlogId(resolvedParams.id);
+  
+  if (blogId === null) {
+    notFound();
+  }
+  
   const blogSEOData = getBlogSEOData(blogId);
   const blogContent = blogReadContentMap[blogId];
   

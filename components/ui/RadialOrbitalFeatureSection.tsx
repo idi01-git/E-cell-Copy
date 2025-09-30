@@ -1,7 +1,8 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { Brain, Eye, Heart, Building, Link } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useDevicePerformance } from "@/hooks/useDevicePerformance";
 
 // Add CSS for wave pulse animation and central object effects
 const waveStyles = `
@@ -137,10 +138,10 @@ const defaultTimelineData: TimelineItem[] = [
   },
 ];
 
-export default function RadialOrbitalFeatureSection({
-  timelineData = defaultTimelineData,
-}: RadialOrbitalFeatureSectionProps) {
-  const [isMounted, setIsMounted] = useState(false);
+const RadialOrbitalFeatureSection = () => {
+  const devicePerformance = useDevicePerformance();
+  const timelineData = defaultTimelineData;
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>(
     {}
   );
@@ -153,6 +154,8 @@ export default function RadialOrbitalFeatureSection({
   });
   const [activeNodeId, setActiveNodeId] = useState<number | null>(null);
   const [hiddenTitles, setHiddenTitles] = useState<Record<number, boolean>>({});
+  const [orbitRadius, setOrbitRadius] = useState<number>(200);
+  const [isInViewport, setIsInViewport] = useState<boolean>(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
@@ -210,23 +213,66 @@ export default function RadialOrbitalFeatureSection({
 
   useEffect(() => {
     setIsMounted(true);
+
+    const updateRadius = () => {
+      const width = window.innerWidth;
+      if (width < 640) {
+        setOrbitRadius(140);
+      } else if (width < 768) {
+        setOrbitRadius(160);
+      } else if (width < 1024) {
+        setOrbitRadius(180);
+      } else {
+        setOrbitRadius(200);
+      }
+    };
+
+    updateRadius();
+
+    let resizeTimeout: NodeJS.Timeout;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updateRadius, 150);
+    };
+    window.addEventListener("resize", debouncedResize);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsInViewport(entry.isIntersecting);
+        });
+      },
+      { threshold: 0.1, rootMargin: "100px" }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
     let rotationTimer: NodeJS.Timeout;
 
-    if (autoRotate) {
+    if (autoRotate && isInViewport) {
+      // Adjust rotation speed based on device performance (slower = smoother)
+      const rotationSpeed = devicePerformance === "low" ? 0.1 : devicePerformance === "medium" ? 0.15 : 0.2;
+      const intervalTime = devicePerformance === "low" ? 150 : devicePerformance === "medium" ? 120 : 100;
+      
       rotationTimer = setInterval(() => {
         setRotationAngle((prev) => {
-          const newAngle = (prev + 0.3) % 360;
+          const newAngle = (prev + rotationSpeed) % 360;
           return Number(newAngle.toFixed(3));
         });
-      }, 40);
+      }, intervalTime);
     }
 
     return () => {
       if (rotationTimer) {
         clearInterval(rotationTimer);
       }
+      window.removeEventListener("resize", debouncedResize);
+      clearTimeout(resizeTimeout);
+      observer.disconnect();
     };
-  }, [autoRotate]);
+  }, [autoRotate, isInViewport]);
 
   const centerViewOnNode = (nodeId: number) => {
     if (!nodeRefs.current[nodeId]) return;
@@ -238,15 +284,9 @@ export default function RadialOrbitalFeatureSection({
     setRotationAngle(270 - targetAngle);
   };
 
-  const calculateNodePosition = (index: number, total: number) => {
+  const calculateNodePosition = useCallback((index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
-    // Responsive radius based on screen size
-    const radius =
-      typeof window !== "undefined" && window.innerWidth < 768
-        ? 120
-        : typeof window !== "undefined" && window.innerWidth < 1024
-        ? 160
-        : 200;
+    const radius = orbitRadius;
     const radian = (angle * Math.PI) / 180;
 
     const x = radius * Math.cos(radian) + centerOffset.x;
@@ -259,7 +299,7 @@ export default function RadialOrbitalFeatureSection({
     );
 
     return { x, y, angle, zIndex, opacity };
-  };
+  }, [rotationAngle, orbitRadius, centerOffset.x, centerOffset.y]);
 
   const getRelatedItems = (itemId: number): number[] => {
     const currentItem = timelineData.find((item) => item.id === itemId);
@@ -278,6 +318,12 @@ export default function RadialOrbitalFeatureSection({
     return relatedItems.includes(itemId) && pulseEffect[itemId];
   };
 
+  const nodePositions = useMemo(() => {
+    return timelineData.map((_, index) =>
+      calculateNodePosition(index, timelineData.length)
+    );
+  }, [timelineData.length, rotationAngle, centerOffset.x, centerOffset.y, orbitRadius]);
+
   if (!isMounted) return null;
 
   return (
@@ -285,20 +331,21 @@ export default function RadialOrbitalFeatureSection({
       className="w-full min-h-[60vh] md:min-h-[80vh] lg:h-screen flex flex-col items-center justify-center bg-transparent overflow-hidden relative"
       ref={containerRef}
       onClick={handleContainerClick}
+      style={{
+        willChange: autoRotate ? "transform" : "auto",
+      }}
     >
-      {/* Add wave pulse styles */}
       <style jsx>{waveStyles}</style>
 
-      {/* Background Text - Aggressive scaling on mobile, original size on desktop */}
       <div
-        className="pointer-events-none text-center font-black leading-tight absolute z-0 opacity-20 text-white tracking-wider font-montserrat px-4"
+        className="pointer-events-none text-center font-black leading-tight absolute z-0 opacity-20 text-white tracking-wider font-montserrat px-4 text-[4rem] sm:text-[10rem] xl:text-[12rem]"
+        style={{
+          willChange: "auto",
+          transform: "translateZ(0)",
+        }}
       >
-        <div className="block sm:hidden" style={{ fontSize: 'clamp(4rem, 25vw, 12rem)' }}>
-          Our<br />Goals
-        </div>
-        <div className="hidden sm:block whitespace-nowrap text-[10rem] xl:text-[12rem]">
-          Our Goals
-        </div>
+        Our
+        <br className="sm:hidden" /> Goals
       </div>
 
       <div className="relative w-full max-w-4xl h-full flex items-center justify-center z-10 px-2 sm:px-4">
@@ -308,22 +355,31 @@ export default function RadialOrbitalFeatureSection({
           style={{
             perspective: "1000px",
             transform: `translate(${centerOffset.x}px, ${centerOffset.y}px)`,
+            willChange:
+              centerOffset.x !== 0 || centerOffset.y !== 0
+                ? "transform"
+                : "auto",
           }}
         >
-          {/* Central Orb: with wave effect and custom orb-pulse animation */}
-          <div className="absolute w-12 h-12 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-purple-500 via-blue-500 to-teal-500 animate-orb-pulse flex items-center justify-center z-10">
-            <div className="absolute w-16 h-16 md:w-20 md:h-20 rounded-full border border-white/20 animate-ping opacity-70"></div>
+          <div className="absolute w-16 h-16 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-purple-500 via-blue-500 to-teal-500 animate-orb-pulse flex items-center justify-center z-10">
+            <div className="absolute w-20 h-20 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full border border-white/20 animate-ping opacity-70"></div>
             <div
-              className="absolute w-20 h-20 md:w-24 md:h-24 rounded-full border border-white/10 animate-ping opacity-50"
+              className="absolute w-24 h-24 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-full border border-white/10 animate-ping opacity-50"
               style={{ animationDelay: "0.5s" }}
             ></div>
-            <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white/80 backdrop-blur-md" />
+            <div className="w-8 h-8 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full bg-white/80 backdrop-blur-md" />
           </div>
 
-          <div className="absolute w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full border border-white/10"></div>
+          <div
+            className="absolute rounded-full border border-white/10"
+            style={{
+              width: `${orbitRadius * 2}px`,
+              height: `${orbitRadius * 2}px`,
+            }}
+          ></div>
 
           {timelineData.map((item, index) => {
-            const position = calculateNodePosition(index, timelineData.length);
+            const position = nodePositions[index];
             const isExpanded = expandedItems[item.id];
             const isRelated = isRelatedToActive(item.id);
             const isPulsing = isPulsingNode(item.id);
@@ -334,6 +390,8 @@ export default function RadialOrbitalFeatureSection({
               transform: `translate(${position.x}px, ${position.y}px)`,
               zIndex: isExpanded ? 200 : position.zIndex,
               opacity: isExpanded ? 1 : position.opacity,
+              willChange:
+                isExpanded || isRelated ? "transform, opacity" : "auto",
             };
 
             return (
@@ -371,7 +429,7 @@ export default function RadialOrbitalFeatureSection({
 
                 <div
                   className={`
-                  w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center relative
+                  w-10 h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 rounded-full flex items-center justify-center relative
                   ${
                     isExpanded
                       ? "bg-white text-black"
@@ -401,7 +459,7 @@ export default function RadialOrbitalFeatureSection({
                   <Icon
                     size={
                       typeof window !== "undefined" && window.innerWidth < 768
-                        ? 12
+                        ? 16
                         : 16
                     }
                   />
@@ -409,8 +467,8 @@ export default function RadialOrbitalFeatureSection({
 
                 <div
                   className={`
-                  absolute top-12 whitespace-nowrap
-                  text-xs font-semibold tracking-wider
+                  absolute top-14 md:top-14 whitespace-nowrap
+                  text-xs md:text-sm font-semibold tracking-wider
                   transition-all duration-300
                   ${isExpanded ? "scale-125" : ""}
                   ${isTitleHidden ? "opacity-0" : "opacity-70"}
@@ -428,20 +486,20 @@ export default function RadialOrbitalFeatureSection({
                 </div>
 
                 {isExpanded && (
-                  <Card className="absolute top-16 md:top-20 left-1/2 -translate-x-1/2 w-[240px] md:w-[260px] min-h-[200px] md:min-h-[253px] bg-black/90 backdrop-blur-lg border-white/30 shadow-xl shadow-white/10 overflow-visible">
+                  <Card className="absolute top-20 md:top-20 lg:top-24 left-1/2 -translate-x-1/2 w-[280px] md:w-[280px] lg:w-[300px] min-h-[220px] md:min-h-[220px] bg-black/90 backdrop-blur-lg border-white/30 shadow-xl shadow-white/10 overflow-visible">
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-white/50"></div>
-                    <div className="p-4 pb-2">
+                    <div className="p-5 pb-2">
                       <div className="flex justify-between items-center">
                         <span className="px-2 py-1 text-xs text-black bg-white border border-black rounded">
                           {item.title}
                         </span>
                       </div>
-                      <h3 className="text-sm mt-2 text-white font-semibold">
+                      <h3 className="text-base md:text-base mt-2 text-white font-semibold">
                         {item.heading}
                       </h3>
                     </div>
                     <CardContent
-                      className="text-sm text-white/80"
+                      className="text-sm md:text-sm text-white/80"
                       style={{
                         textShadow:
                           "0 0 16px rgba(139,92,246,0.5), 0 0 32px rgba(20,184,166,0.35)",
@@ -458,4 +516,6 @@ export default function RadialOrbitalFeatureSection({
       </div>
     </div>
   );
-}
+};
+
+export default RadialOrbitalFeatureSection;

@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 import { cn } from "@/lib/utils";
 
@@ -24,21 +24,18 @@ function FlipText({
 }: FlipTextProps) {
   return (
     <div className="flex justify-center space-x-2">
-      <AnimatePresence mode="wait">
-        {word.split("").map((char, i) => (
-          <motion.span
-            key={i}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            variants={framerProps}
-            transition={{ duration, delay: i * delayMultiple }}
-            className={cn("origin-center drop-shadow-sm", className)}
-          >
-            {char}
-          </motion.span>
-        ))}
-      </AnimatePresence>
+      {word.split("").map((char, i) => (
+        <motion.span
+          key={`${char}-${i}`}
+          initial="hidden"
+          animate="visible"
+          variants={framerProps}
+          transition={{ duration, delay: i * delayMultiple }}
+          className={cn("origin-center drop-shadow-sm", className)}
+        >
+          {char}
+        </motion.span>
+      ))}
     </div>
   );
 }

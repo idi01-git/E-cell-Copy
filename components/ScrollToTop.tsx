@@ -1,32 +1,32 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 
 export function ScrollToTop() {
   const pathname = usePathname();
+  const isFirstLoad = useRef(true);
 
   useEffect(() => {
-    // Only scroll to top if there's no hash in the URL (for deep-linking)
+    // Skip scroll on first load to prevent auto-scroll
+    if (isFirstLoad.current) {
+      isFirstLoad.current = false;
+      return;
+    }
+
+    // Only scroll to top on route changes if there's no hash in the URL
     if (!window.location.hash) {
       // Immediate scroll to prevent flash
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'instant' });
       
       // Additional scroll after a short delay to handle dynamic content
       const timeoutId = setTimeout(() => {
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'instant' });
       }, 100);
       
       return () => clearTimeout(timeoutId);
     }
   }, [pathname]);
-
-  // Also handle initial page load
-  useEffect(() => {
-    if (!window.location.hash) {
-      window.scrollTo(0, 0);
-    }
-  }, []);
 
   return null;
 }

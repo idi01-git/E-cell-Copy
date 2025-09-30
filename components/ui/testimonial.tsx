@@ -102,49 +102,47 @@ const AnimatedTestimonials = ({
           <div className="relative w-full max-w-xs">
             {/* Container with 4:5 aspect ratio */}
             <div className="relative w-full" style={{ aspectRatio: "4/5" }}>
-              <AnimatePresence>
-                {testimonials.map((testimonial, index) => (
-                  <motion.div
-                    key={testimonial.src}
-                    // Animation properties reverted to the previous version.
-                    initial={{
-                      opacity: 0,
-                      scale: 0.9,
-                      y: 50,
-                      rotate: randomRotate(),
+              {/* Render all testimonials for stacked card effect */}
+              {testimonials.map((testimonial, index) => (
+                <motion.div
+                  key={testimonial.src}
+                  initial={{
+                    opacity: 0,
+                    scale: 0.9,
+                    y: 50,
+                    rotate: randomRotate(),
+                  }}
+                  animate={{
+                    opacity: isActive(index) ? 1 : 0.5,
+                    scale: isActive(index) ? 1 : 0.9,
+                    y: isActive(index) ? 0 : 20,
+                    zIndex: isActive(index)
+                      ? testimonials.length
+                      : testimonials.length - Math.abs(index - active),
+                    rotate: isActive(index) ? "0deg" : randomRotate(),
+                  }}
+                  exit={{ opacity: 0, scale: 0.9, y: -50 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="absolute inset-0 origin-bottom"
+                  style={{ perspective: "1000px" }}
+                >
+                  <Image
+                    src={testimonial.src}
+                    alt={testimonial.name}
+                    width={400}
+                    height={500}
+                    draggable={false}
+                    className="h-full w-full rounded-3xl object-cover shadow-2xl"
+                    style={{ aspectRatio: "4/5" }}
+                    onError={(e) => {
+                      e.currentTarget.src = `https://placehold.co/400x500/e2e8f0/64748b?text=${testimonial.name.charAt(
+                        0
+                      )}`;
+                      e.currentTarget.onerror = null;
                     }}
-                    animate={{
-                      opacity: isActive(index) ? 1 : 0.5,
-                      scale: isActive(index) ? 1 : 0.9,
-                      y: isActive(index) ? 0 : 20,
-                      zIndex: isActive(index)
-                        ? testimonials.length
-                        : testimonials.length - Math.abs(index - active),
-                      rotate: isActive(index) ? "0deg" : randomRotate(),
-                    }}
-                    exit={{ opacity: 0, scale: 0.9, y: -50 }}
-                    transition={{ duration: 0.5, ease: "easeInOut" }}
-                    className="absolute inset-0 origin-bottom"
-                    style={{ perspective: "1000px" }}
-                  >
-                    <Image
-                      src={testimonial.src}
-                      alt={testimonial.name}
-                      width={400}
-                      height={500}
-                      draggable={false}
-                      className="h-full w-full rounded-3xl object-cover shadow-2xl"
-                      style={{ aspectRatio: "4/5" }}
-                      onError={(e) => {
-                        e.currentTarget.src = `https://placehold.co/400x500/e2e8f0/64748b?text=${testimonial.name.charAt(
-                          0
-                        )}`;
-                        e.currentTarget.onerror = null;
-                      }}
-                    />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+                  />
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>

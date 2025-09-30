@@ -298,14 +298,15 @@ const Navbar = ({
         </a>
         <div className="flex items-center justify-between px-8 py-4 bg-background/80 backdrop-blur-md border border-border rounded-full shadow-lg w-full max-w-4xl relative">
           <div className="flex items-center">
-            <div className="mr-6">
-              <Link href="/" aria-label="Go to homepage" className="w-8 h-8 inline-block focus:outline-none focus:bg-yellow-400/10 rounded-full transition-colors">
+            <div className="mr-6 flex items-center">
+              <Link href="/" aria-label="Go to homepage" className="w-8 h-8 inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-full transition-all">
                 <Image
                   src="/ecell-logo.png"
                   alt="E-Cell Logo"
                   width={32}
                   height={32}
                   className="rounded-full"
+                  style={{ height: "auto" }}
                   priority={true}
                 />
               </Link>
@@ -362,7 +363,7 @@ const Navbar = ({
       </div>
       <div className="flex items-center justify-between px-8 py-4 bg-background/80 backdrop-blur-md border border-border rounded-full shadow-lg w-full max-w-4xl relative">
         <div className="flex items-center">
-          <div className="mr-6">{logo}</div>
+          <div className="mr-6 flex items-center">{logo}</div>
         </div>
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center relative bg-background/50 backdrop-blur-sm rounded-full px-2 py-1 border border-border/50" aria-label="Main navigation">

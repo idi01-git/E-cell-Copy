@@ -478,10 +478,29 @@ const FacultyGrid: React.FC = () => {
         "Mentored 500+ aspiring entrepreneurs",
       ],
     },
+    {
+      id: "4",
+      name: "Dr. Seethalekshmi K",
+      position: "Chairman",
+      subject: "IIC Lucknow",
+      photo: "/mentors/sl.webp",
+      email: "seethalekshmi@ietlucknow.ac.in",
+      phone: "+91 (522) 456-7890",
+      office: "IIC Office, IET Lucknow",
+      bio: "Dr. Seethalekshmi K is the Chairman of the Institution's Innovation Council (IIC) at IET Lucknow and a Professor in Electrical Engineering. She holds a Ph.D. from IIT Kanpur with expertise in power system dynamics, control, protection, and wide-area measurement systems. With rich academic and research experience, she mentors students and startups in power and energy domains. She also leads innovation initiatives at the institute, fostering creativity, skill building, and collaboration.",
+      experience: "20+ years in power systems research and teaching",
+      education: "PhD in Electrical Engineering, IIT Kanpur",
+      specialization: "Power System Dynamics & Control, Protection, WAMS",
+      achievements: [
+        "Recipient of competitive research grants in power and energy systems",
+        "Senior Member, IEEE",
+        "Guided multiple PG/PhD scholars and published extensively",
+      ],
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-background p-8" ref={sectionRef}>
+    <div className="min-h-screen bg-background py-16 px-2" ref={sectionRef}>
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -502,8 +521,8 @@ const FacultyGrid: React.FC = () => {
         `,
         }}
       />
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+      <div className="w-full max-w-[2000px] mx-auto">
+        <div className="text-center mb-20">
           {isInView && (
             <FlipText
               className="text-4xl md:text-6xl font-bold text-black dark:text-white mb-4"
@@ -527,7 +546,7 @@ const FacultyGrid: React.FC = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, delay: 1.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 md:gap-20 lg:gap-24 xl:gap-32 justify-items-center"
         >
           {facultyMembers.map((faculty, index) => (
             <motion.div

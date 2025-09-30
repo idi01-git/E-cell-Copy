@@ -22,6 +22,7 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   preload: true,
+  adjustFontFallback: true,
   fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "sans-serif"],
 });
 
@@ -31,6 +32,7 @@ const poppins = Poppins({
   variable: "--font-poppins",
   display: "swap",
   preload: true,
+  adjustFontFallback: true,
   fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "sans-serif"],
 });
 
@@ -40,6 +42,7 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
   display: "swap",
   preload: true,
+  adjustFontFallback: true,
   fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "sans-serif"],
 });
 
@@ -163,8 +166,12 @@ export default function RootLayout({
   // Client-side logging will be handled by individual components
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
+        {/* Preconnect to external domains for faster loading */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
         {/* Favicon and App Icons with Fallback */}
         <link rel="icon" href={logoUrl} sizes="any" />
         <link rel="apple-touch-icon" href={logoUrl} />
@@ -251,8 +258,6 @@ export default function RootLayout({
         
         {/* Client-side initialization */}
         <ClientInit />
-        
-        {/* Scroll to top on route change */}
         <ScrollToTop />
         
         {/* Optimized EmailJS Script Loading with Client Component */}

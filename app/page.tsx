@@ -83,6 +83,10 @@ const Home = () => {
   
   // Use shared scroll velocity hook
   const { isScrolling, scrollVelocity } = useScrollVelocity({ threshold: 2 });
+  
+  // PERFORMANCE: Track if initial prefetch is complete
+  const [componentsLoaded, setComponentsLoaded] = useState(false);
+  const [forceLoadAll, setForceLoadAll] = useState(false);
 
   useEffect(() => {
     // Set page context for error tracking
@@ -92,6 +96,24 @@ const Home = () => {
       timestamp: new Date().toISOString(),
     });
     logger.setTag("page_type", "home");
+    
+    // CRITICAL FIX: Force load all sections after first interaction
+    // This fixes the issue where navbar clicks don't work until manual scroll
+    const handleFirstInteraction = () => {
+      setForceLoadAll(true);
+      setComponentsLoaded(true);
+    };
+
+    // Listen for any user interaction
+    window.addEventListener('click', handleFirstInteraction, { once: true });
+    window.addEventListener('scroll', handleFirstInteraction, { once: true });
+    window.addEventListener('touchstart', handleFirstInteraction, { once: true });
+    
+    // Auto-trigger after 2 seconds as fallback
+    const autoLoadTimer = setTimeout(() => {
+      setForceLoadAll(true);
+      setComponentsLoaded(true);
+    }, 2000);
     
     // Use a timeout to ensure this runs after hydration
     const timer = setTimeout(() => {
@@ -112,7 +134,13 @@ const Home = () => {
       }
     }, 0);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(autoLoadTimer);
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('scroll', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+    };
   }, []);
 
   // Scroll velocity detection is now handled by the shared hook
@@ -157,9 +185,9 @@ const Home = () => {
       />
       <BackgroundBeams className="z-0" />
       <div className="max-w-7xl w-full relative z-10 pt-4 md:pt-20 lg:pt-32 xl:pt-44">
-        <FadeInSection>
+        {/* <FadeInSection>
           <CountdownDemo />
-        </FadeInSection>
+        </FadeInSection> */}
         <FadeInSection>
           <div id="about" className="my-6 md:my-12 lg:my-20 max-w-5xl mx-auto">
             <div className="text-center mb-8 md:mb-16">
@@ -206,45 +234,63 @@ const Home = () => {
         </SectionErrorBoundary>
         
         <SectionErrorBoundary>
-          <DeferredSection
-            fallback={<LoadingComponent text="Loading Gallery..." height="h-[600px]" isScrolling={isScrolling} />}
-            rootMargin="500px 0px"
-            scrollVelocityThreshold={2}
-            loadingDelay={isScrolling ? 300 : 100}
-            enableScrollAwareness={true}
-          >
+          {forceLoadAll ? (
             <FadeInSection>
               <Gallery />
             </FadeInSection>
-          </DeferredSection>
+          ) : (
+            <DeferredSection
+              fallback={<LoadingComponent text="Loading Gallery..." height="h-[600px]" isScrolling={isScrolling} />}
+              rootMargin="100px 0px"
+              scrollVelocityThreshold={2}
+              loadingDelay={0}
+              enableScrollAwareness={false}
+            >
+              <FadeInSection>
+                <Gallery />
+              </FadeInSection>
+            </DeferredSection>
+          )}
         </SectionErrorBoundary>
         
         <SectionErrorBoundary>
-          <DeferredSection
-            fallback={<LoadingComponent text="Loading Features..." height="h-[600px]" isScrolling={isScrolling} />}
-            rootMargin="500px 0px"
-            scrollVelocityThreshold={2}
-            loadingDelay={isScrolling ? 300 : 100}
-            enableScrollAwareness={true}
-          >
+          {forceLoadAll ? (
             <FadeInSection>
               <RadialOrbitalFeatureSection />
             </FadeInSection>
-          </DeferredSection>
+          ) : (
+            <DeferredSection
+              fallback={<LoadingComponent text="Loading Features..." height="h-[600px]" isScrolling={isScrolling} />}
+              rootMargin="100px 0px"
+              scrollVelocityThreshold={2}
+              loadingDelay={0}
+              enableScrollAwareness={false}
+            >
+              <FadeInSection>
+                <RadialOrbitalFeatureSection />
+              </FadeInSection>
+            </DeferredSection>
+          )}
         </SectionErrorBoundary>
         
         <SectionErrorBoundary>
-          <DeferredSection
-            fallback={<LoadingComponent text="Loading Mentors..." height="h-[500px]" isScrolling={isScrolling} />}
-            rootMargin="500px 0px"
-            scrollVelocityThreshold={2}
-            loadingDelay={isScrolling ? 300 : 100}
-            enableScrollAwareness={true}
-          >
+          {forceLoadAll ? (
             <FadeInSection>
               <Jordon />
             </FadeInSection>
-          </DeferredSection>
+          ) : (
+            <DeferredSection
+              fallback={<LoadingComponent text="Loading Mentors..." height="h-[500px]" isScrolling={isScrolling} />}
+              rootMargin="100px 0px"
+              scrollVelocityThreshold={2}
+              loadingDelay={0}
+              enableScrollAwareness={false}
+            >
+              <FadeInSection>
+                <Jordon />
+              </FadeInSection>
+            </DeferredSection>
+          )}
         </SectionErrorBoundary>
 
         {/* Contact Section with Title */}

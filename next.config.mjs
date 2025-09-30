@@ -6,50 +6,113 @@ const withBundleAnalyzer = createBundleAnalyzer({
 });
 
 const nextConfig = {
-  // Enhanced Image Optimization
+  // PERFORMANCE: Enable React strict mode for better performance
+  reactStrictMode: true,
+  
+  // PERFORMANCE: Optimize images
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
-    ],
     formats: ['image/avif', 'image/webp'],
-    minimumCacheTTL: 2592000, // 30 days
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
     dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-
-  // Performance Optimizations
-  compress: true,
-  poweredByHeader: false,
-  generateEtags: true, // Re-enabled for better caching
   
-  // Advanced Experimental Features
+  // PERFORMANCE: Enable compression
+  compress: true,
+  
+  // PERFORMANCE: Optimize production builds
+  productionBrowserSourceMaps: false,
+  
+  // PERFORMANCE: Experimental features for better performance
   experimental: {
-    // optimizeCss: true, // Disabled due to critters dependency issues
-    // CSS optimization handled by Tailwind and build process
-    optimizePackageImports: [
-      'lucide-react', 
-      'framer-motion', 
-      '@tabler/icons-react',
-      'react-icons',
-      'swiper'
-    ],
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', 'framer-motion', '@tabler/icons-react', 'react-icons', 'swiper'],
     webVitalsAttribution: ['CLS', 'LCP'],
     optimizeServerReact: true,
     serverMinification: true,
     serverSourceMaps: process.env.NODE_ENV === 'production', // Enable for Sentry in production
     esmExternals: true,
   },
-
+  
+  // PERFORMANCE: Webpack optimizations
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // PERFORMANCE: Enable caching in development
+    if (dev) {
+      config.cache = {
+        type: 'filesystem',
+      };
+    }
+    
+    // PERFORMANCE: Optimize bundle splitting
+    if (!isServer && !dev) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            default: false,
+            vendors: false,
+            // Framework chunk (React, Next.js)
+            framework: {
+              chunks: 'all',
+              name: 'framework',
+              test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
+              priority: 40,
+              enforce: true,
+            },
+            // UI Libraries chunk
+            ui: {
+              name: 'ui-libs',
+              test: /[\\/]node_modules[\\/](@tabler|lucide-react|react-icons|framer-motion)[\\/]/,
+              chunks: 'all',
+              priority: 30,
+            },
+            // Utilities chunk
+            utils: {
+              name: 'utils',
+              test: /[\\/]node_modules[\\/](@?clsx|tailwind-merge|class-variance-authority)[\\/]/,
+              chunks: 'all',
+              priority: 20,
+            },
+            // Vendor chunk
+            vendor: {
+              name: 'vendor',
+              chunks: 'all',
+              test: /node_modules/,
+              priority: 10,
+            },
+            // Common chunk
+            common: {
+              name: 'common',
+              minChunks: 2,
+              chunks: 'all',
+              priority: 5,
+              reuseExistingChunk: true,
+              enforce: true,
+            },
+          },
+        },
+      };
+    }
+    
+    // Bundle analysis in development
+    if (dev && process.env.ANALYZE === 'true') {
+      config.plugins.push(
+        new webpack.DefinePlugin({
+          'process.env.BUNDLE_ANALYZE': JSON.stringify('true'),
+        })
+      );
+    }
+    
+    return config;
+  },
+  
   // Source Maps for Sentry
   productionBrowserSourceMaps: process.env.NODE_ENV === 'production',
-
+  
   // Enhanced Compiler Options
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? {
@@ -57,9 +120,6 @@ const nextConfig = {
     } : false,
     reactRemoveProperties: process.env.NODE_ENV === 'production',
   },
-
-  // Build Optimization
-  reactStrictMode: true,
   
   // TypeScript and ESLint
   typescript: {
@@ -68,7 +128,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
-
+  
   // Advanced Caching Headers
   async headers() {
     return [
@@ -129,66 +189,7 @@ const nextConfig = {
       },
     ];
   },
-
-  // Webpack Bundle Optimization
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Production optimizations
-    if (!dev && !isServer) {
-      // Enhanced chunk splitting
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          default: false,
-          vendors: false,
-          // Framework chunk (React, Next.js)
-          framework: {
-            chunks: 'all',
-            name: 'framework',
-            test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
-            priority: 40,
-            enforce: true,
-          },
-          // UI Libraries chunk
-          ui: {
-            name: 'ui-libs',
-            test: /[\\/]node_modules[\\/](@tabler|lucide-react|react-icons|framer-motion)[\\/]/,
-            chunks: 'all',
-            priority: 30,
-          },
-          // Utilities chunk
-          utils: {
-            name: 'utils',
-            test: /[\\/]node_modules[\\/](clsx|tailwind-merge|class-variance-authority)[\\/]/,
-            chunks: 'all',
-            priority: 20,
-          },
-          // Common chunk for shared modules
-          commons: {
-            name: 'commons',
-            minChunks: 2,
-            chunks: 'all',
-            priority: 10,
-          },
-        },
-      };
-
-      // Tree shaking optimization
-      config.optimization.usedExports = true;
-      config.optimization.sideEffects = false;
-    }
-
-    // Bundle analysis in development
-    if (dev && process.env.ANALYZE === 'true') {
-      config.plugins.push(
-        new webpack.DefinePlugin({
-          'process.env.BUNDLE_ANALYZE': JSON.stringify('true'),
-        })
-      );
-    }
-
-    return config;
-  },
-
+  
   // Output Configuration
   output: 'standalone',
   

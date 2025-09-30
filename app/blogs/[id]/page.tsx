@@ -164,6 +164,110 @@ Entrepreneurship is a challenging yet fulfilling journey that requires vision, p
   },
 };
 
+// Simple markdown renderer component for blog content
+function MarkdownContent({ content }: { content: string }) {
+  const lines = content.split('\n');
+  const elements: React.ReactElement[] = [];
+  let i = 0;
+  
+  while (i < lines.length) {
+    const line = lines[i];
+    
+    // Headings
+    if (line.startsWith('### ')) {
+      elements.push(
+        <h3 key={i} className="text-xl font-bold mt-6 mb-3">
+          {line.substring(4)}
+        </h3>
+      );
+      i++;
+      continue;
+    }
+    if (line.startsWith('## ')) {
+      elements.push(
+        <h2 key={i} className="text-2xl font-bold mt-8 mb-4">
+          {line.substring(3)}
+        </h2>
+      );
+      i++;
+      continue;
+    }
+    
+    // Bullet lists
+    if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
+      const listItems: React.ReactElement[] = [];
+      const startIdx = i;
+      while (
+        i < lines.length &&
+        (lines[i].trim().startsWith('- ') || lines[i].trim().startsWith('* '))
+      ) {
+        listItems.push(
+          <li key={i}>
+            {lines[i].trim().substring(2)}
+          </li>
+        );
+        i++;
+      }
+      elements.push(
+        <ul key={startIdx} className="ml-6 list-disc">
+          {listItems}
+        </ul>
+      );
+      continue;
+    }
+    
+    // Numbered lists
+    if (/^\d+\.\s/.test(line.trim())) {
+      const listItems: React.ReactElement[] = [];
+      const startIdx = i;
+      while (i < lines.length && /^\d+\.\s/.test(lines[i].trim())) {
+        listItems.push(
+          <li key={i}>
+            {lines[i].trim().replace(/^\d+\.\s/, '')}
+          </li>
+        );
+        i++;
+      }
+      elements.push(
+        <ol key={startIdx} className="ml-6 list-decimal">
+          {listItems}
+        </ol>
+      );
+      continue;
+    }
+    
+    // Empty lines
+    if (line.trim() === '') {
+      elements.push(<div key={i} className="h-2" />);
+      i++;
+      continue;
+    }
+    
+    // Regular paragraphs with bold text support
+    const formattedLine = line.split('**').map((part, j) =>
+      j % 2 === 1 ? <strong key={j}>{part}</strong> : part
+    );
+    
+    elements.push(
+      <p key={i} className="leading-relaxed">
+        {formattedLine}
+      </p>
+    );
+    i++;
+  }
+  
+  return <div className="space-y-4">{elements}</div>;
+}
+
+// Shared helper to parse and validate blog ID
+function parseBlogId(id: string): number | null {
+  const parsed = parseInt(id, 10);
+  if (Number.isNaN(parsed) || !Number.isFinite(parsed)) {
+    return null;
+  }
+  return parsed;
+}
+
 interface BlogPageProps {
   params: Promise<{
     id: string;
@@ -173,14 +277,16 @@ interface BlogPageProps {
 // Generate metadata for this blog page
 export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const blogId = parseInt(resolvedParams.id);
+  const blogId = parseBlogId(resolvedParams.id);
+  
+  if (blogId === null) {
+    notFound();
+  }
+  
   const blogSEOData = getBlogSEOData(blogId);
   
   if (!blogSEOData) {
-    return {
-      title: 'Blog Not Found',
-      description: 'The requested blog post could not be found.',
-    };
+    notFound();
   }
 
   return {
@@ -241,7 +347,12 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
 
 export default async function BlogPage({ params }: BlogPageProps) {
   const resolvedParams = await params;
-  const blogId = parseInt(resolvedParams.id);
+  const blogId = parseBlogId(resolvedParams.id);
+  
+  if (blogId === null) {
+    notFound();
+  }
+  
   const blogSEOData = getBlogSEOData(blogId);
   const blogContent = blogContentMap[blogId];
   
@@ -269,19 +380,22 @@ export default async function BlogPage({ params }: BlogPageProps) {
           </h1>
           <div className="container mt-[35px] w-full items-center justify-center">
             <BackgroundGradient className="rounded-[22px] w-xl p-8 sm:p-10 bg-shivansh">
-              <Image
-                src="/news.jpg"
-                alt="Entrepreneurship article"
-                height="400"
-                width="600"
-                className="mx-auto"
-              />
-              <p className="text-base sm:text-3xl text-black mt-4 mb-2 dark:text-neutral-200">
+              <div className="relative w-full aspect-[3/2] mx-auto mb-4">
+                <Image
+                  src="/news.jpg"
+                  alt="Entrepreneurship article"
+                  fill
+                  className="object-cover rounded-lg"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  priority
+                />
+              </div>
+              <h1 className="text-base sm:text-3xl text-black mt-4 mb-2 dark:text-neutral-200">
                 {blogContent.title}
-              </p>
-              <p className="text-md text-neutral-600 dark:text-neutral-400">
-                {blogContent.content}
-              </p>
+              </h1>
+              <div className="text-neutral-600 dark:text-neutral-400">
+                <MarkdownContent content={blogContent.content || ''} />
+              </div>
               <button className="rounded-full pl-4 pr-4 py-1 text-white flex items-center space-x-1 bg-black mt-4 text-s font-bold dark:bg-zinc-800">
                 <span>Author - {blogContent.author}</span>
               </button>

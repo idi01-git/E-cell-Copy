@@ -8,40 +8,31 @@
     "dev:clean": "next dev --turbo",
     "dev:analyze": "set ANALYZE=true && next dev",
     "dev:perf": "set ANALYZE=true && set NODE_ENV=development && next dev",
-    
     "build": "next build",
     "build:analyze": "set ANALYZE=true && next build",
     "build:stats": "set ANALYZE=true && next build --profile",
     "build:production": "set NODE_ENV=production && next build",
-    
     "start": "next start",
     "preview": "next build && next start",
-    
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "type-check": "tsc --noEmit",
-    
     "analyze:build": "npm run build:analyze && npm run analyze:server && npm run analyze:client",
     "analyze:server": "npx next-bundle-analyzer server",
     "analyze:client": "npx next-bundle-analyzer client",
     "bundle:stats": "npx webpack-bundle-analyzer .next/analyze/client.json",
-    
     "perf:audit": "npx lighthouse http://localhost:3000 --output=json --output-path=./lighthouse-report.json",
     "perf:lighthouse": "npx lighthouse http://localhost:3000 --view",
     "size:check": "npx webpack-bundle-analyzer .next/analyze/client.json",
-    
     "optimize:images": "npx next-optimized-images",
     "optimize:fonts": "echo 'Font optimization completed via next/font'",
     "check:deps": "npx depcheck",
     "audit:deps": "npm audit --audit-level moderate",
-    
     "check:bundle": "npm run build && npm run analyze:build",
     "check:perf": "npm run build && npm run start & sleep 5 && npm run perf:lighthouse",
     "check:all": "npm run type-check && npm run lint && npm run build && npm run check:bundle",
-    
     "sentry:test": "sentry-cli send-event -m 'Test error from CLI'",
     "error:test": "echo 'Testing error boundaries and fallback components'",
-    
     "deploy": "vercel --prod",
     "deploy:preview": "vercel"
   },
