@@ -154,9 +154,9 @@ export function BackgroundPaths({
             )}
 
             {/* Main title */}
-            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tighter">
+            <h1 className="text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tighter px-2">
               {words.map((word, wordIndex) => (
-                <span key={wordIndex} className="inline-block mr-4 last:mr-0">
+                <span key={wordIndex} className="inline-block mr-2 xs:mr-3 sm:mr-4 last:mr-0 whitespace-nowrap">
                   {word.split("").map((letter, letterIndex) => (
                     <motion.span
                       key={`${wordIndex}-${letterIndex}`}

@@ -1,3 +1,0 @@
-[33mebfac9e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mcheck-2[m[33m, [m[1;31morigin/check-2[m[33m)[m fix: escape all unescaped entities in JSX for clean build
-[33m20c15b9[m fix: escape all unescaped entities in codebase for build safety
-[33m0360674[m fix: escape unescaped entities for Vercel build
