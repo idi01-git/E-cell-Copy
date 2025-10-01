@@ -79,7 +79,7 @@ export default function FooterSection() {
             </span>
             , All rights reserved.
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-0">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-1">
             <span>Designed & Developed by</span>{" "}
             <span className="flex items-center gap-1">
               <Link
@@ -90,7 +90,7 @@ export default function FooterSection() {
               >
                 Shivang
               </Link>{" "}
-              <span>with</span>{" "}
+              <span>with </span>
               <button
                 onClick={() => setShowEasterEgg(true)}
                 className="text-red-500 hover:text-red-400 transition-colors duration-200 cursor-pointer text-base ml-1"
@@ -122,8 +122,9 @@ export default function FooterSection() {
 
               <div className="mb-6">
                 <p className="text-2xl font-semibold text-gray-800 mb-2">
-                  01001100 01101111 01110110 01100101 00100000 00111101 00100000
-                  01001000 01110101 01110011 01101000
+                  00110110 00110101 00100000 00110110 00110110 00100000 00110110
+                  00110001 00100000 00110010 00110010 00110110 00100000 00110001
+                  00110101 00110011 00100000 00110001 00110110 00110101
                 </p>
                 <div className="flex justify-center items-center gap-2 text-red-500">
                   <span className="text-xl animate-bounce">❤️</span>
