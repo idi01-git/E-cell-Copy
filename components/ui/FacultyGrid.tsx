@@ -34,6 +34,7 @@ interface FacultyMember {
   education: string;
   specialization: string;
   achievements: string[];
+  iconType?: "crown" | "lightbulb" | "building" | "rocket" | "book";
 }
 
 interface GlowCardProps {
@@ -74,20 +75,19 @@ const GlowCard: React.FC<GlowCardProps> = ({
 
   useEffect(() => {
     const syncPointer = (e: PointerEvent) => {
-      const { clientX: x, clientY: y } = e;
-
-      if (cardRef.current) {
-        cardRef.current.style.setProperty("--x", x.toFixed(2));
-        cardRef.current.style.setProperty(
-          "--xp",
-          (x / window.innerWidth).toFixed(2)
-        );
-        cardRef.current.style.setProperty("--y", y.toFixed(2));
-        cardRef.current.style.setProperty(
-          "--yp",
-          (y / window.innerHeight).toFixed(2)
-        );
-      }
+      if (!cardRef.current) return;
+      
+      const rect = cardRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      // Set card-relative position
+      cardRef.current.style.setProperty("--x", x.toFixed(2));
+      cardRef.current.style.setProperty("--y", y.toFixed(2));
+      
+      // Set normalized position (0-1)
+      cardRef.current.style.setProperty("--xp", (x / rect.width).toFixed(2));
+      cardRef.current.style.setProperty("--yp", (y / rect.height).toFixed(2));
     };
 
     document.addEventListener("pointermove", syncPointer);
@@ -125,10 +125,9 @@ const GlowCard: React.FC<GlowCardProps> = ({
           hsl(var(--hue, 210) 70% 80% / 0.15), transparent 70%
         )`,
         backgroundColor: "var(--backdrop, transparent)",
-        backgroundSize:
-          "calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)))",
-        backgroundPosition: "50% 50%",
-        backgroundAttachment: "fixed",
+        backgroundSize: "100% 100%",
+        backgroundPosition: "0 0",
+        backgroundAttachment: "scroll",
         border: "var(--border-size) solid var(--backup-border)",
         position: "relative",
         touchAction: "auto",
@@ -154,10 +153,10 @@ const GlowCard: React.FC<GlowCardProps> = ({
       inset: calc(var(--border-size) * -1);
       border: var(--border-size) solid transparent;
       border-radius: calc(var(--radius) * 1px);
-      background-attachment: fixed;
-      background-size: calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
+      background-attachment: scroll;
+      background-size: 100% 100%;
       background-repeat: no-repeat;
-      background-position: 50% 50%;
+      background-position: 0 0;
       mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
       mask-clip: padding-box, border-box;
       mask-composite: intersect;
@@ -176,9 +175,9 @@ const GlowCard: React.FC<GlowCardProps> = ({
         calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at
         calc(var(--x, 0) * 1px)
         calc(var(--y, 0) * 1px),
-        hsl(var(--hue, 210) 50% 50% / 0.8), transparent 100%
-      ); /* Adjusted to match existing card's before glow */
-      filter: brightness(1.5); /* Adjusted to match existing card's before glow */
+        hsl(var(--hue, 210) 60% 60% / 1), transparent 100%
+      );
+      filter: brightness(2); /* Enhanced border glow */
     }
     
     [data-glow]::after {
@@ -186,8 +185,9 @@ const GlowCard: React.FC<GlowCardProps> = ({
         calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at
         calc(var(--x, 0) * 1px)
         calc(var(--y, 0) * 1px),
-        hsl(0 100% 100% / 0.6), transparent 100%
-      ); /* Adjusted to match existing card's after glow */
+        hsl(0 100% 100% / 0.8), transparent 100%
+      );
+      filter: brightness(1.8); /* Extra shine at borders */
     }
     
     /* The inner data-glow element from the reference is not directly used for visual effect here,
@@ -278,15 +278,24 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       ? faculty.bio.substring(0, 97) + "..."
       : faculty.bio;
 
-  // Get appropriate icon based on position
+  // Get appropriate icon based on custom iconType or position
   const getPositionIcon = () => {
-    switch (faculty.position.toLowerCase()) {
+    // Use custom icon if specified, otherwise fall back to position-based logic
+    const iconType = faculty.iconType || faculty.position.toLowerCase();
+    
+    switch (iconType) {
+      case "crown":
       case "director":
         return <Crown className="w-5 h-5 text-primary-foreground" />;
+      case "lightbulb":
+        return <Lightbulb className="w-5 h-5 text-primary-foreground" />;
+      case "building":
       case "chairman":
         return <Building className="w-5 h-5 text-primary-foreground" />;
+      case "rocket":
       case "founder":
         return <Rocket className="w-5 h-5 text-primary-foreground" />;
+      case "book":
       default:
         return <BookOpen className="w-5 h-5 text-primary-foreground" />;
     }
@@ -443,8 +452,8 @@ const FacultyGrid: React.FC = () => {
     {
       id: "2",
       name: "Dr. Pushkar Tripathi",
-      position: "Chairman",
-      subject: "IIC Lucknow",
+      position: "Director",
+      subject: "NNF",
       photo: "/mentors/pt.webp",
       email: "chairman.iic@ietlucknow.ac.in",
       phone: "+91 (522) 234-5678",
@@ -458,6 +467,7 @@ const FacultyGrid: React.FC = () => {
         "Established 50+ startup partnerships",
         "Mentored 200+ student entrepreneurs",
       ],
+      iconType: "lightbulb",
     },
     {
       id: "3",

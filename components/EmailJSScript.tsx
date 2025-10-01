@@ -14,7 +14,14 @@ const EmailJSScript = () => {
       onLoad={() => {
         try {
           if (typeof window !== 'undefined' && (window as any).emailjs) {
-            (window as any).emailjs.init("SsELCJJIDgQSbh_XE");
+            const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+            
+            if (!publicKey) {
+              console.error('EmailJS public key not configured. Set NEXT_PUBLIC_EMAILJS_PUBLIC_KEY environment variable.');
+              return;
+            }
+            
+            (window as any).emailjs.init(publicKey);
             console.log('EmailJS initialized successfully');
           } else {
             console.warn('EmailJS not available after script load');

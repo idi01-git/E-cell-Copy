@@ -241,6 +241,17 @@ const ContactSection: React.FC<ContactSectionProps> = ({
       if (typeof window !== "undefined" && (window as any).emailjs) {
         const { emailjs } = window as any;
 
+        // Get EmailJS configuration from environment variables
+        const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+        const templateAdmin = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ADMIN;
+        const templateAutoReply = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_AUTO_REPLY;
+        const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+        // Validate all credentials exist
+        if (!serviceId || !templateAdmin || !templateAutoReply || !publicKey) {
+          throw new Error('EmailJS configuration missing. Please set environment variables.');
+        }
+
         // Template parameters for admin notification
         const adminTemplateParams = {
           from_name: formData.name,
@@ -268,18 +279,18 @@ const ContactSection: React.FC<ContactSectionProps> = ({
 
         // Send email to admin with timeout
         const adminPromise = emailjs.send(
-          "service_dq0of8p",
-          "template_ugdke5g",
+          serviceId,
+          templateAdmin,
           adminTemplateParams,
-          "SsELCJJIDgQSbh_XE"
+          publicKey
         );
 
         // Send auto-reply to user with timeout
         const autoReplyPromise = emailjs.send(
-          "service_dq0of8p",
-          "template_8yak58f",
+          serviceId,
+          templateAutoReply,
           autoReplyParams,
-          "SsELCJJIDgQSbh_XE"
+          publicKey
         );
 
         // Wait for both emails to be sent with timeout

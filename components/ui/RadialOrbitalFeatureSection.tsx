@@ -159,6 +159,13 @@ const RadialOrbitalFeatureSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
+  const rotationAngleRef = useRef<number>(0);
+  const animationFrameRef = useRef<number | null>(null);
+  const lastTimestampRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    rotationAngleRef.current = rotationAngle;
+  }, [rotationAngle]);
 
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
@@ -249,30 +256,39 @@ const RadialOrbitalFeatureSection = () => {
       observer.observe(containerRef.current);
     }
 
-    let rotationTimer: NodeJS.Timeout;
-
     if (autoRotate && isInViewport) {
-      // Adjust rotation speed based on device performance (slower = smoother)
-      const rotationSpeed = devicePerformance === "low" ? 0.1 : devicePerformance === "medium" ? 0.15 : 0.2;
-      const intervalTime = devicePerformance === "low" ? 150 : devicePerformance === "medium" ? 120 : 100;
-      
-      rotationTimer = setInterval(() => {
-        setRotationAngle((prev) => {
-          const newAngle = (prev + rotationSpeed) % 360;
-          return Number(newAngle.toFixed(3));
-        });
-      }, intervalTime);
+      const maxDelta = 0.05; // cap delta to avoid large jumps
+      const rotationSpeed = devicePerformance === "low" ? 10 : devicePerformance === "medium" ? 14 : 18; // degrees per second
+
+      const animate = (timestamp: number) => {
+        if (lastTimestampRef.current === null) {
+          lastTimestampRef.current = timestamp;
+        }
+
+        const delta = Math.min((timestamp - lastTimestampRef.current) / 1000, maxDelta);
+        lastTimestampRef.current = timestamp;
+
+        const nextAngle = (rotationAngleRef.current + rotationSpeed * delta) % 360;
+        rotationAngleRef.current = nextAngle;
+        setRotationAngle(Number(nextAngle.toFixed(2)));
+
+        animationFrameRef.current = requestAnimationFrame(animate);
+      };
+
+      animationFrameRef.current = requestAnimationFrame(animate);
     }
 
     return () => {
-      if (rotationTimer) {
-        clearInterval(rotationTimer);
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
       }
+      lastTimestampRef.current = null;
       window.removeEventListener("resize", debouncedResize);
       clearTimeout(resizeTimeout);
       observer.disconnect();
     };
-  }, [autoRotate, isInViewport]);
+  }, [autoRotate, isInViewport, devicePerformance]);
 
   const centerViewOnNode = (nodeId: number) => {
     if (!nodeRefs.current[nodeId]) return;
@@ -322,7 +338,7 @@ const RadialOrbitalFeatureSection = () => {
     return timelineData.map((_, index) =>
       calculateNodePosition(index, timelineData.length)
     );
-  }, [timelineData.length, rotationAngle, centerOffset.x, centerOffset.y, orbitRadius]);
+  }, [timelineData, calculateNodePosition]);
 
   if (!isMounted) return null;
 
@@ -392,6 +408,9 @@ const RadialOrbitalFeatureSection = () => {
               opacity: isExpanded ? 1 : position.opacity,
               willChange:
                 isExpanded || isRelated ? "transform, opacity" : "auto",
+              transition: autoRotate
+                ? "none"
+                : "transform 0.7s ease, opacity 0.7s ease",
             };
 
             return (
@@ -400,7 +419,7 @@ const RadialOrbitalFeatureSection = () => {
                 ref={(el) => {
                   nodeRefs.current[item.id] = el;
                 }}
-                className="absolute transition-all duration-700 cursor-pointer"
+                className="absolute cursor-pointer"
                 style={nodeStyle}
                 onClick={(e) => {
                   e.stopPropagation();
