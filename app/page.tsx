@@ -13,24 +13,49 @@ import FadeInSection from "@/components/ui/FadeInSection";
 import ContactSection from "@/components/ui/ContactSection";
 import FloatingContactButton from "@/components/ui/FloatingContactButton";
 import DeferredSection from "@/components/ui/DeferredSection";
-import { SectionErrorBoundary, AsyncErrorBoundary } from "@/components/ui/ErrorBoundary";
+import {
+  SectionErrorBoundary,
+  AsyncErrorBoundary,
+} from "@/components/ui/ErrorBoundary";
 import { logger } from "@/lib/logger";
 
 // Enhanced Loading Component with scroll-aware behavior
-const LoadingComponent = ({ text, height = "h-96", isScrolling = false }: { text: string; height?: string; isScrolling?: boolean }) => (
-  <div className={`${height} flex items-center justify-center transition-opacity duration-300 ${isScrolling ? 'opacity-50' : 'opacity-100'}`}>
+const LoadingComponent = ({
+  text,
+  height = "h-96",
+  isScrolling = false,
+}: {
+  text: string;
+  height?: string;
+  isScrolling?: boolean;
+}) => (
+  <div
+    className={`${height} flex items-center justify-center transition-opacity duration-300 ${
+      isScrolling ? "opacity-50" : "opacity-100"
+    }`}
+  >
     <div className="animate-pulse bg-gradient-to-r from-white/5 via-white/10 to-white/5 rounded-lg w-full h-full flex flex-col items-center justify-center space-y-4">
-      <div className={`w-8 h-8 border-2 border-yellow-400 border-t-transparent rounded-full ${isScrolling ? 'animate-none' : 'animate-spin'}`}></div>
+      <div
+        className={`w-8 h-8 border-2 border-yellow-400 border-t-transparent rounded-full ${
+          isScrolling ? "animate-none" : "animate-spin"
+        }`}
+      ></div>
       <span className="text-white/70 text-sm font-medium">{text}</span>
     </div>
   </div>
 );
 
 // Standardized dynamic imports with consistent loading states and SSR configuration
-const BackgroundBeams = dynamic(() => import("@/components/ui/background-beams").then(mod => ({ default: mod.BackgroundBeams })), {
-  ssr: false,
-  loading: () => null, // Background component, no loading state needed
-});
+const BackgroundBeams = dynamic(
+  () =>
+    import("@/components/ui/background-beams").then((mod) => ({
+      default: mod.BackgroundBeams,
+    })),
+  {
+    ssr: false,
+    loading: () => null, // Background component, no loading state needed
+  }
+);
 
 const MorphingText = dynamic(() => import("@/components/ui/morphing-text"), {
   ssr: true,
@@ -41,49 +66,68 @@ const MorphingText = dynamic(() => import("@/components/ui/morphing-text"), {
   ),
 });
 
-const TextGenerateEffect = dynamic(() => import("@/components/ui/text-generate-effect").then(mod => ({ default: mod.TextGenerateEffect })), {
-  ssr: true,
-  loading: () => (
-    <div className="h-12 flex items-center justify-center">
-      <div className="animate-pulse bg-white/10 rounded w-64 h-6"></div>
-    </div>
-  ),
-});
+const TextGenerateEffect = dynamic(
+  () =>
+    import("@/components/ui/text-generate-effect").then((mod) => ({
+      default: mod.TextGenerateEffect,
+    })),
+  {
+    ssr: true,
+    loading: () => (
+      <div className="h-12 flex items-center justify-center">
+        <div className="animate-pulse bg-white/10 rounded w-64 h-6"></div>
+      </div>
+    ),
+  }
+);
 
 // Below-the-fold components with strategic lazy loading
 const Events = dynamic(() => import("@/components/Services"), {
   ssr: false,
-  loading: () => <LoadingComponent text="Loading Events..." height="h-[600px]" />,
+  loading: () => (
+    <LoadingComponent text="Loading Events..." height="h-[600px]" />
+  ),
 });
 
 const Blogssec = dynamic(() => import("@/components/Blogssec"), {
   ssr: false,
-  loading: () => <LoadingComponent text="Loading Blog Section..." height="h-[500px]" />,
+  loading: () => (
+    <LoadingComponent text="Loading Blog Section..." height="h-[500px]" />
+  ),
 });
 
 const Gallery = dynamic(() => import("@/components/ui/Gallery"), {
   ssr: false,
-  loading: () => <LoadingComponent text="Loading Gallery..." height="h-[600px]" />,
+  loading: () => (
+    <LoadingComponent text="Loading Gallery..." height="h-[600px]" />
+  ),
 });
 
 const Jordon = dynamic(() => import("@/components/Jordon"), {
   ssr: false,
-  loading: () => <LoadingComponent text="Loading Mentors..." height="h-[500px]" />,
+  loading: () => (
+    <LoadingComponent text="Loading Mentors..." height="h-[500px]" />
+  ),
 });
 
-const RadialOrbitalFeatureSection = dynamic(() => import("@/components/ui/RadialOrbitalFeatureSection"), {
-  ssr: false,
-  loading: () => <LoadingComponent text="Loading Features..." height="h-[600px]" />,
-});
+const RadialOrbitalFeatureSection = dynamic(
+  () => import("@/components/ui/RadialOrbitalFeatureSection"),
+  {
+    ssr: false,
+    loading: () => (
+      <LoadingComponent text="Loading Features..." height="h-[600px]" />
+    ),
+  }
+);
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  
+
   // Use shared scroll velocity hook
   const { isScrolling, scrollVelocity } = useScrollVelocity({ threshold: 2 });
-  
+
   // PERFORMANCE: Track if initial prefetch is complete
   const [componentsLoaded, setComponentsLoaded] = useState(false);
   const [forceLoadAll, setForceLoadAll] = useState(false);
@@ -96,7 +140,7 @@ const Home = () => {
       timestamp: new Date().toISOString(),
     });
     logger.setTag("page_type", "home");
-    
+
     // CRITICAL FIX: Force load all sections after first interaction
     // This fixes the issue where navbar clicks don't work until manual scroll
     const handleFirstInteraction = () => {
@@ -105,16 +149,18 @@ const Home = () => {
     };
 
     // Listen for any user interaction
-    window.addEventListener('click', handleFirstInteraction, { once: true });
-    window.addEventListener('scroll', handleFirstInteraction, { once: true });
-    window.addEventListener('touchstart', handleFirstInteraction, { once: true });
-    
+    window.addEventListener("click", handleFirstInteraction, { once: true });
+    window.addEventListener("scroll", handleFirstInteraction, { once: true });
+    window.addEventListener("touchstart", handleFirstInteraction, {
+      once: true,
+    });
+
     // Auto-trigger after 2 seconds as fallback
     const autoLoadTimer = setTimeout(() => {
       setForceLoadAll(true);
       setComponentsLoaded(true);
     }, 2000);
-    
+
     // Use a timeout to ensure this runs after hydration
     const timer = setTimeout(() => {
       if (typeof window !== "undefined") {
@@ -137,9 +183,9 @@ const Home = () => {
     return () => {
       clearTimeout(timer);
       clearTimeout(autoLoadTimer);
-      window.removeEventListener('click', handleFirstInteraction);
-      window.removeEventListener('scroll', handleFirstInteraction);
-      window.removeEventListener('touchstart', handleFirstInteraction);
+      window.removeEventListener("click", handleFirstInteraction);
+      window.removeEventListener("scroll", handleFirstInteraction);
+      window.removeEventListener("touchstart", handleFirstInteraction);
     };
   }, []);
 
@@ -226,13 +272,13 @@ const Home = () => {
             <Events />
           </FadeInSection>
         </SectionErrorBoundary>
-        
+
         <SectionErrorBoundary>
           <FadeInSection>
             <Blogssec />
           </FadeInSection>
         </SectionErrorBoundary>
-        
+
         <SectionErrorBoundary>
           {forceLoadAll ? (
             <FadeInSection>
@@ -240,7 +286,13 @@ const Home = () => {
             </FadeInSection>
           ) : (
             <DeferredSection
-              fallback={<LoadingComponent text="Loading Gallery..." height="h-[600px]" isScrolling={isScrolling} />}
+              fallback={
+                <LoadingComponent
+                  text="Loading Gallery..."
+                  height="h-[600px]"
+                  isScrolling={isScrolling}
+                />
+              }
               rootMargin="100px 0px"
               scrollVelocityThreshold={2}
               loadingDelay={0}
@@ -252,7 +304,7 @@ const Home = () => {
             </DeferredSection>
           )}
         </SectionErrorBoundary>
-        
+
         <SectionErrorBoundary>
           {forceLoadAll ? (
             <FadeInSection>
@@ -260,7 +312,13 @@ const Home = () => {
             </FadeInSection>
           ) : (
             <DeferredSection
-              fallback={<LoadingComponent text="Loading Features..." height="h-[600px]" isScrolling={isScrolling} />}
+              fallback={
+                <LoadingComponent
+                  text="Loading Features..."
+                  height="h-[600px]"
+                  isScrolling={isScrolling}
+                />
+              }
               rootMargin="100px 0px"
               scrollVelocityThreshold={2}
               loadingDelay={0}
@@ -272,7 +330,7 @@ const Home = () => {
             </DeferredSection>
           )}
         </SectionErrorBoundary>
-        
+
         <SectionErrorBoundary>
           {forceLoadAll ? (
             <FadeInSection>
@@ -280,7 +338,13 @@ const Home = () => {
             </FadeInSection>
           ) : (
             <DeferredSection
-              fallback={<LoadingComponent text="Loading Mentors..." height="h-[500px]" isScrolling={isScrolling} />}
+              fallback={
+                <LoadingComponent
+                  text="Loading Mentors..."
+                  height="h-[500px]"
+                  isScrolling={isScrolling}
+                />
+              }
               rootMargin="100px 0px"
               scrollVelocityThreshold={2}
               loadingDelay={0}

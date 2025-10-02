@@ -76,15 +76,15 @@ const GlowCard: React.FC<GlowCardProps> = ({
   useEffect(() => {
     const syncPointer = (e: PointerEvent) => {
       if (!cardRef.current) return;
-      
+
       const rect = cardRef.current.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      
+
       // Set card-relative position
       cardRef.current.style.setProperty("--x", x.toFixed(2));
       cardRef.current.style.setProperty("--y", y.toFixed(2));
-      
+
       // Set normalized position (0-1)
       cardRef.current.style.setProperty("--xp", (x / rect.width).toFixed(2));
       cardRef.current.style.setProperty("--yp", (y / rect.height).toFixed(2));
@@ -282,7 +282,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const getPositionIcon = () => {
     // Use custom icon if specified, otherwise fall back to position-based logic
     const iconType = faculty.iconType || faculty.position.toLowerCase();
-    
+
     switch (iconType) {
       case "crown":
       case "director":
@@ -303,7 +303,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
   return (
     <GlowCard
-      className={`w-80 h-[420px] cursor-pointer ${className}`}
+      className={`w-full max-w-[320px] min-w-[280px] h-[420px] cursor-pointer ${className}`}
       glowColor="blue" // You can make this configurable if needed
       customSize={true} // Indicate that width/height are handled by className
     >
@@ -510,7 +510,10 @@ const FacultyGrid: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background py-16 px-2" ref={sectionRef}>
+    <div
+      className="min-h-screen bg-background py-16 px-4 sm:px-6 md:px-8 lg:px-12"
+      ref={sectionRef}
+    >
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -556,7 +559,7 @@ const FacultyGrid: React.FC = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8, delay: 1.2 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-16 md:gap-20 lg:gap-24 xl:gap-32 justify-items-center"
+          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-y-20 gap-x-8 sm:gap-y-24 sm:gap-x-12 md:gap-y-28 md:gap-x-16 lg:gap-y-32 lg:gap-x-20 xl:gap-y-40 xl:gap-x-24 justify-items-center items-start"
         >
           {facultyMembers.map((faculty, index) => (
             <motion.div
