@@ -363,37 +363,37 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               animate={{ rotateY: 0 }}
               exit={{ rotateY: -90 }}
               transition={{ duration: 0.3 }}
-              className="absolute inset-0 p-4 flex flex-col justify-between"
+              className="absolute inset-0 p-5 flex flex-col h-full"
             >
-              <div className="space-y-4">
-                <div>
-                  <p className="text-sm text-muted-foreground text-center leading-relaxed">
-                    {faculty.bio}
-                  </p>
-                </div>
+              {/* Bio section - fills available vertical space */}
+              <div className="flex-1 flex flex-col justify-between">
+                <p className="flex-1 text-sm text-muted-foreground text-center leading-relaxed w-full">
+                  {faculty.bio}
+                </p>
+              </div>
 
-                <div className="border-t border-border pt-3">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm">
-                      <Mail className="w-4 h-4 text-yellow-500 flex-shrink-0" />
-                      <span className="text-yellow-500 truncate">
-                        {faculty.email}
-                      </span>
-                    </div>
+              {/* Contact details section */}
+              <div className="border-t border-border pt-4 mt-4">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-5 h-5 text-yellow-500 flex-shrink-0" />
+                    <span className="text-yellow-500 truncate text-sm">
+                      {faculty.email}
+                    </span>
+                  </div>
 
-                    <div className="flex items-center gap-2 text-sm">
-                      <Phone className="w-4 h-4 text-yellow-500 flex-shrink-0" />
-                      <span className="text-yellow-500 truncate">
-                        {faculty.phone}
-                      </span>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-5 h-5 text-yellow-500 flex-shrink-0" />
+                    <span className="text-yellow-500 truncate text-sm">
+                      {faculty.phone}
+                    </span>
+                  </div>
 
-                    <div className="flex items-center gap-2 text-sm">
-                      <MapPin className="w-4 h-4 text-yellow-500 flex-shrink-0" />
-                      <span className="text-yellow-500 truncate">
-                        {faculty.office}
-                      </span>
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-yellow-500 flex-shrink-0" />
+                    <span className="text-yellow-500 truncate text-sm">
+                      {faculty.office}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -439,7 +439,7 @@ const FacultyGrid: React.FC = () => {
       email: "director@ietlucknow.ac.in",
       phone: "+91 (522) 123-4567",
       office: "Director Office, IET Lucknow",
-      bio: "Prof. Vineet Kansal is the Director of IET Lucknow and a senior faculty member in Computer Science & Engineering. He holds a Ph.D. from IIT Delhi and has over 30 years of experience in academics, research, and administration. His expertise includes Artificial Intelligence, Software Engineering, and Digital Learning. He has held key positions such as Pro-Vice Chancellor of AKTU. A strong advocate for innovation and entrepreneurship, he is affiliated with professional bodies like IEEE, ACM, CSI, and ISTE.",
+      bio: "Director of IET Lucknow with a Ph.D. from IIT Delhi and 30+ years in academics and leadership. Former Pro-Vice Chancellor of AKTU. Expert in AI, Software Engineering, and Digital Learning. Advocate of innovation, entrepreneurship, and industry collaboration. Member of IEEE, ACM, CSI, and ISTE. Renowned for advancing digital learning and nurturing future tech leaders.",
       experience: "20+ years in academic leadership and management",
       education: "PhD in Engineering Management, IIT Delhi",
       specialization: "Institutional Leadership, Educational Innovation",
@@ -447,6 +447,25 @@ const FacultyGrid: React.FC = () => {
         "Excellence in Leadership Award 2023",
         "Published 50+ research papers",
         "Led 100+ institutional initiatives",
+      ],
+    },
+    {
+      id: "4",
+      name: "Dr. Seethalekshmi K",
+      position: "Chairman",
+      subject: "IIC Lucknow",
+      photo: "/mentors/sl.webp",
+      email: "seethalekshmi@ietlucknow.ac.in",
+      phone: "+91 (522) 456-7890",
+      office: "IIC Office, IET Lucknow",
+      bio: "Chairman of IIC at IET Lucknow and Professor in Electrical Engineering with a Ph.D. from IIT Kanpur and 25+ years in academia. Expert in power system dynamics, control, and protection. Mentors students and startups in power and energy. Promotes creativity, collaboration, and entrepreneurship. Member of IEEE, IE, ISTE, and SESI. Known for driving innovation and nurturing future energy leaders.",
+      experience: "20+ years in power systems research and teaching",
+      education: "PhD in Electrical Engineering, IIT Kanpur",
+      specialization: "Power System Dynamics & Control, Protection, WAMS",
+      achievements: [
+        "Recipient of competitive research grants in power and energy systems",
+        "Senior Member, IEEE",
+        "Guided multiple PG/PhD scholars and published extensively",
       ],
     },
     {
@@ -458,7 +477,7 @@ const FacultyGrid: React.FC = () => {
       email: "chairman.iic@ietlucknow.ac.in",
       phone: "+91 (522) 234-5678",
       office: "IIC Office, IET Lucknow",
-      bio: "Dr. Pushkar Tripathi is Chairman of the Institution's Innovation Council and Assistant Professor in Electrical Engineering at IET Lucknow. He holds a Ph.D. and M.Tech from IIT Roorkee, and a B.Tech from IET. His research includes power system protection, FACTS, and machine learning in power systems. A startup mentor and innovation leader, he co-founded the E-Cell, heads Navyug Navachar Foundation, and actively supports student-led hackathons, workshops, and entrepreneurial initiatives.",
+      bio: "Chairman of IIC and Assistant Professor in Electrical Engineering at IET Lucknow, with a Ph.D. and M.Tech from IIT Roorkee. Research in power systems, smart grids, and machine learning. Co-founder of E-Cell and heads Navyug Navachar Foundation, fostering innovation and entrepreneurship. Actively promotes hackathons, student startups, and initiatives encouraging creativity and technology solutions.",
       experience: "15 years in innovation and incubation",
       education: "PhD in Technology Management, IIT Kanpur",
       specialization: "Innovation Management, Startup Incubation",
@@ -478,7 +497,7 @@ const FacultyGrid: React.FC = () => {
       email: "founder@ecellietlucknow.ac.in",
       phone: "+91 (522) 345-6789",
       office: "E-Cell Office, IET Lucknow",
-      bio: "Dr. Anurag Verma is an Assistant Professor in Electrical Engineering at IET Lucknow. He completed his Ph.D. in Smart Home Energy Management from Thapar Institute in 2021. His interests include energy forecasting, optimization, and smart building systems. A core member of IET's innovation ecosystem, he co-founded the E-Cell and actively supports IIC, accreditation efforts, and IEEE activities. He mentors students in energy innovation, sustainability, and startup incubation",
+      bio: "Assistant Professor in Electrical Engineering at IET Lucknow. Ph.D. in Smart Home Energy Management from Thapar Institute (2021). Research in energy forecasting, smart building systems, and sustainable technologies. Co-founder of E-Cell and supports IIC and IEEE initiatives. Mentors students and startups in energy innovation, entrepreneurship, and sustainability.",
       experience: "12 years in entrepreneurship and mentorship",
       education: "PhD in Entrepreneurship, IIM Ahmedabad",
       specialization: "Entrepreneurship Development, Student Mentorship",
@@ -486,25 +505,6 @@ const FacultyGrid: React.FC = () => {
         "Entrepreneur of the Year Award",
         "Founded 10+ successful startups",
         "Mentored 500+ aspiring entrepreneurs",
-      ],
-    },
-    {
-      id: "4",
-      name: "Dr. Seethalekshmi K",
-      position: "Chairman",
-      subject: "IIC Lucknow",
-      photo: "/mentors/sl.webp",
-      email: "seethalekshmi@ietlucknow.ac.in",
-      phone: "+91 (522) 456-7890",
-      office: "IIC Office, IET Lucknow",
-      bio: "Dr. Seethalekshmi K is the Chairman of the Institution's Innovation Council (IIC) at IET Lucknow and a Professor in Electrical Engineering. She holds a Ph.D. from IIT Kanpur with expertise in power system dynamics, control, protection, and wide-area measurement systems. With rich academic and research experience, she mentors students and startups in power and energy domains. She also leads innovation initiatives at the institute, fostering creativity, skill building, and collaboration.",
-      experience: "20+ years in power systems research and teaching",
-      education: "PhD in Electrical Engineering, IIT Kanpur",
-      specialization: "Power System Dynamics & Control, Protection, WAMS",
-      achievements: [
-        "Recipient of competitive research grants in power and energy systems",
-        "Senior Member, IEEE",
-        "Guided multiple PG/PhD scholars and published extensively",
       ],
     },
   ];
@@ -548,7 +548,7 @@ const FacultyGrid: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: 0.8, duration: 0.8 }}
-            className="text-xl text-black/80 dark:text-white/80"
+            className="text-base md:text-lg text-black/80 dark:text-white/80"
           >
             Meet our distinguished mentors who guide and inspire the next
             generation of entrepreneurs

@@ -257,7 +257,7 @@ export function Gallery() {
           Gallery
         </h2>
         <p
-          className="text-xl text-black/80 dark:text-white/80 max-w-4xl mx-auto px-4"
+          className="text-base md:text-lg text-black/80 dark:text-white/80 max-w-4xl mx-auto px-4"
           id="gallery-description"
         >
           Dive into our gallery of startup shenanigans—where ideas spark, chaos

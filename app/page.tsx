@@ -248,7 +248,7 @@ const Home = () => {
                 <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 tracking-tight">
                   Empowering Student Entrepreneurs
                 </h3>
-                <p className="text-lg md:text-xl text-white/80 leading-relaxed max-w-4xl mx-auto font-light">
+                <p className="text-base md:text-lg text-white/80 leading-relaxed max-w-4xl mx-auto font-light">
                   We inspire and equip students to transform innovative ideas
                   into successful ventures through hands-on programs, expert
                   mentorship, and a vibrant startup ecosystem. Our mission is to
